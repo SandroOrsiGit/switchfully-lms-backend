@@ -10,8 +10,6 @@ public abstract class AbstractUser {
     private Long id;
     @Column(name = "email")
     private String email;
-    @Column(name = "password")
-    private String password;
     @Column(name = "display_name")
     private String displayName;
 }
