@@ -29,4 +29,34 @@ public class ClassGroup {
             inverseJoinColumns = @JoinColumn(name = "student_id")
     )
     private List<Student> students;
+
+    public ClassGroup() {
+    }
+
+    public ClassGroup(String name) {
+        this.name = name;
+    }
+
+
+    //---Getters------------------
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public List<Coach> getCoaches() {
+        return coaches;
+    }
+
+    public List<Student> getStudents() {
+        return students;
+    }
 }
