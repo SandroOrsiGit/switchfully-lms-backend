@@ -19,7 +19,6 @@ public class WebSecurityConfig {
         http.csrf(
                 c -> c.ignoringRequestMatchers("/register")
         );
-        http.cors(c -> c.disable());
         http.authorizeHttpRequests(c -> c.anyRequest().permitAll());
         http.oauth2ResourceServer(c -> c.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())));
         return http.build();
