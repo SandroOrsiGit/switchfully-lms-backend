@@ -22,4 +22,13 @@ public class CreateUserDto {
     public String getPassword() {
         return password;
     }
+
+    @Override
+    public String toString() {
+        return "CreateUserDto{" +
+                "displayName='" + displayName + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
 }

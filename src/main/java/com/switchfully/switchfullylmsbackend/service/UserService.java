@@ -16,7 +16,6 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-
     public void addUser(CreateUserDto createUserDto) {
         Student student = studentMapper.mapCreateUserDtoToStudent(createUserDto);
         userRepository.save(student);

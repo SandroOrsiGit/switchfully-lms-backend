@@ -19,8 +19,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping(consumes = "application/json", produces = "application/json")
-    public void registerUser(CreateUserDto createUserDto) {
-
+    public void registerUser(@RequestBody CreateUserDto createUserDto) {
         userService.addUser(createUserDto);
     }
 }

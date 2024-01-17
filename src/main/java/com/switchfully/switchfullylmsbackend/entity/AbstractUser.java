@@ -21,4 +21,16 @@ public abstract class AbstractUser {
     public AbstractUser() {
 
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
 }
