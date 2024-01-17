@@ -20,7 +20,7 @@ public class UserController {
     @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping(consumes = "application/json", produces = "application/json")
     public void registerUser(CreateUserDto createUserDto) {
-        CreateUserDto temp = new CreateUserDto("test", "test@test", "test");
-        userService.addUser(temp);
+
+        userService.addUser(createUserDto);
     }
 }
