@@ -12,4 +12,25 @@ public abstract class AbstractUser {
     private String email;
     @Column(name = "display_name")
     private String displayName;
+
+    public AbstractUser(String email, String displayName) {
+        this.email = email;
+        this.displayName = displayName;
+    }
+
+    public AbstractUser() {
+
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
 }

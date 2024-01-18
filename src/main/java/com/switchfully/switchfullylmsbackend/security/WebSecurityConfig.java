@@ -16,7 +16,9 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
-        http.cors(c -> c.disable());
+        http.csrf(
+                c -> c.ignoringRequestMatchers("/register")
+        );
         http.authorizeHttpRequests(c -> c.anyRequest().permitAll());
         http.oauth2ResourceServer(c -> c.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())));
         return http.build();
