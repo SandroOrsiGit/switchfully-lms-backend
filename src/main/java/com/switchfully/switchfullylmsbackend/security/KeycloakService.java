@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
+import java.util.Arrays;
 
 
 @Service
@@ -31,7 +32,8 @@ public class KeycloakService {
     public void addUser(CreateUserDto createUserDto) {
         String createdUserId = createUser(createUserDto);
         getUser(createdUserId).resetPassword(createCredentialRepresentation(createUserDto.getPassword()));
-//        addRole(getUser(createdUserId), createUserDto.role().getLabel());
+        // TODO addUser creates error
+//        addRole( getUser(createdUserId), "student");
     }
     private String createUser(CreateUserDto createUserDto) {
         try {
@@ -47,9 +49,10 @@ public class KeycloakService {
         passwordCredentials.setValue(password);
         return passwordCredentials;
     }
-    //    private void addRole(UserResource user, String roleName) {
+        private void addRole(UserResource user, String roleName) {
 //        user.roles().clientLevel(getClientUUID()).add(Lists.newArrayList(getRole(roleName)));
-//    }
+         realmResource.users().get( getClientUUID() ).roles().realmLevel().add( Arrays.asList( getRole(roleName)) );
+    }
     private String getClientUUID() {
         return realmResource.clients().findByClientId(clientID).get(0).getId();
     }
