@@ -15,5 +15,12 @@ pipeline {
         always {
             junit allowEmptyResults: true, testResults: '**/target/surefire-reports/*.xml'
         }
+        success {
+            jacoco(
+                execPattern: '**/build/jacoco/*.exec',
+                classPattern: '**/build/classes/java/main',
+                sourcePattern: '**/src/main'
+            )
+        }
     }
 }
