@@ -4,6 +4,7 @@ import com.switchfully.switchfullylmsbackend.dto.CreateModuleDto;
 import com.switchfully.switchfullylmsbackend.dto.ModuleDto;
 import com.switchfully.switchfullylmsbackend.service.ModuleService;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,6 +19,7 @@ public class ModuleController {
    }
 
    @PostMapping(produces = "application/json")
+   @PreAuthorize("hasAuthority('coach')")
    @ResponseStatus(HttpStatus.CREATED)
    public ModuleDto createModule(@RequestBody CreateModuleDto createModuleDto) {
       return moduleService.saveModule(createModuleDto);
