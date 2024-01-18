@@ -2,6 +2,8 @@ package com.switchfully.switchfullylmsbackend;
 
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.keycloak.OAuth2Constants;
+import org.keycloak.adapters.KeycloakConfigResolver;
+import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.KeycloakBuilder;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,13 +24,16 @@ public class SwitchfullyLmsBackendApplication {
 		return KeycloakBuilder.builder()
 				.serverUrl("https://keycloak.switchfully.com")
 				.grantType(OAuth2Constants.PASSWORD)
-				.realm("java-2023-10")
+				.realm("master")
 				.clientId("admin-cli")
 				.username(adminUsername)
 				.password(adminPassword)
 				.resteasyClient(ResteasyClientBuilder.newBuilder().build())
 				.build();
 	}
-
+	@Bean
+	public KeycloakConfigResolver KeycloakConfigResolver() {
+		return new KeycloakSpringBootConfigResolver();
+	}
 }
 

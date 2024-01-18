@@ -33,9 +33,6 @@ public class KeycloakService {
         getUser(createdUserId).resetPassword(createCredentialRepresentation(createUserDto.getPassword()));
 //        addRole(getUser(createdUserId), createUserDto.role().getLabel());
     }
-    private Response createUser(String username) {
-        return realmResource.users().create(createUserRepresentation(username));
-    }
     private String createUser(CreateUserDto createUserDto) {
         try {
             return CreatedResponseUtil.getCreatedId(createUser(createUserDto.getEmail()));
@@ -43,18 +40,35 @@ public class KeycloakService {
             throw new UserAlreadyExistsException(createUserDto.getEmail());
         }
     }
-//    private void addRole(UserResource user, String roleName) {
+    private CredentialRepresentation createCredentialRepresentation(String password) {
+        CredentialRepresentation passwordCredentials = new CredentialRepresentation();
+        passwordCredentials.setTemporary(false);
+        passwordCredentials.setType(CredentialRepresentation.PASSWORD);
+        passwordCredentials.setValue(password);
+        return passwordCredentials;
+    }
+    //    private void addRole(UserResource user, String roleName) {
 //        user.roles().clientLevel(getClientUUID()).add(Lists.newArrayList(getRole(roleName)));
 //    }
+    private String getClientUUID() {
+        return realmResource.clients().findByClientId(clientID).get(0).getId();
+    }
+
+    private Response createUser(String username) {
+        return realmResource.users().create(createUserRepresentation(username));
+    }
+    private UserResource getUser(String userId) {
+        return realmResource.users().get(userId);
+    }
+
+
     private RoleRepresentation getRole(String roleToAdd) {
         return getClientResource().roles().get(roleToAdd).toRepresentation();
     }
     private ClientResource getClientResource() {
         return realmResource.clients().get(getClientUUID());
     }
-    private String getClientUUID() {
-        return realmResource.clients().findByClientId(clientID).get(0).getId();
-    }
+
 
     private UserRepresentation createUserRepresentation(String username) {
         UserRepresentation user = new UserRepresentation();
@@ -63,14 +77,6 @@ public class KeycloakService {
         return user;
     }
 
-    private CredentialRepresentation createCredentialRepresentation(String password) {
-        CredentialRepresentation passwordCredentials = new CredentialRepresentation();
-        passwordCredentials.setTemporary(false);
-        passwordCredentials.setType(CredentialRepresentation.PASSWORD);
-        passwordCredentials.setValue(password);
-        return passwordCredentials;
-    }
-    private UserResource getUser(String userId) {
-        return realmResource.users().get(userId);
-    }
+
+
 }

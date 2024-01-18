@@ -22,8 +22,11 @@ public class UserService {
 
     public void addUser(CreateUserDto createUserDto) {
         Student student = studentMapper.mapCreateUserDtoToStudent(createUserDto);
+
+        System.out.println("before keycloak user registration");
         keycloakService.addUser(createUserDto);
         System.out.println("keycloakuser added: "+createUserDto);
+
         userRepository.save(student);
     }
 }
