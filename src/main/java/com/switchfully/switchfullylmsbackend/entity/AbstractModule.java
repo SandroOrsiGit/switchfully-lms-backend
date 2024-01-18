@@ -15,4 +15,21 @@ public abstract class AbstractModule {
     @OneToMany
     @JoinColumn(name = "module_id")
     private List<Codelab> codelabs;
+    
+    private AbstractModule(Long id, String name, List<Codelab> codelabs) {
+    }
+    
+    public Long getId() {
+        return id;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public List<Codelab> getCodelabs() {
+        return codelabs;
+    }
+    
+    
 }
