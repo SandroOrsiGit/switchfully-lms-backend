@@ -24,7 +24,7 @@ class UserControllerTest {
     @Test
     void UserControllerTest() {
         // given
-        CreateUserDto user = new CreateUserDto("displayName", "user@example.com", "password");
+        CreateUserDto user = new CreateUserDto("displayName", "user@example.com");
 
         // when
         RestAssured
