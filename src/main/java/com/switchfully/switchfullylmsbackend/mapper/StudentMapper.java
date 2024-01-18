@@ -13,8 +13,7 @@ public class StudentMapper {
     public Student mapCreateUserDtoToStudent(CreateUserDto createUserDto) {
         return new Student(
                 createUserDto.getEmail(),
-                createUserDto.getDisplayName(),
-                null
+                createUserDto.getDisplayName()
         );
     }
 }

@@ -12,10 +12,10 @@ public class Student extends AbstractUser {
 
     public Student(
                    String email,
-                   String displayName,
-                   List<CodelabProgress> codelabProgresses) {
+                   String displayName
+                ) {
         super(email, displayName);
-        this.codelabProgresses = codelabProgresses;
+
     }
 
     public Student() {
