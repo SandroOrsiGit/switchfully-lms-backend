@@ -14,13 +14,18 @@ public class Module extends AbstractModule {
    @OneToMany
    @JoinColumn(name = "parent_module_id")
    private List<SubModule> subModules;
-   
-   public Module(Long id, String name, List<Codelab> codelabs, List<SubModule> subModules) {
-      super(id, name, codelabs);
-      this.subModules = subModules;
+
+   public Module(String name) {
+      super(name);
    }
-   
+
+   public Module() {
+      super();
+   }
+
    public List<SubModule> getSubModules() {
       return subModules;
    }
+
+
 }

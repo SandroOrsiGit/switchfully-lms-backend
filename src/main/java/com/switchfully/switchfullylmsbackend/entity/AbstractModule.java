@@ -15,10 +15,15 @@ public abstract class AbstractModule {
     @OneToMany
     @JoinColumn(name = "module_id")
     private List<Codelab> codelabs;
-    
-    private AbstractModule(Long id, String name, List<Codelab> codelabs) {
+
+    public AbstractModule(String name) {
+        this.name = name;
     }
-    
+
+    public AbstractModule() {
+
+    }
+
     public Long getId() {
         return id;
     }
