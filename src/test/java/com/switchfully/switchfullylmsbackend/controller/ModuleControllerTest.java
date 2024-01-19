@@ -1,5 +1,6 @@
 package com.switchfully.switchfullylmsbackend.controller;
 
+import com.nimbusds.oauth2.sdk.TokenResponse;
 import com.switchfully.switchfullylmsbackend.dto.CreateModuleDto;
 import io.restassured.RestAssured;
 import io.restassured.authentication.FormAuthConfig;
@@ -23,31 +24,24 @@ public class ModuleControllerTest {
     @Autowired
     private ModuleController moduleController;
 
-
     @Test
-    void givenCreateModuleDto_whenPostingToBackend_thenStatusCodeCreatedIsReturned() {
+    void givenCreateModuleDtoAndCoach_whenPostingToBackend_thenStatusCodeCreatedIsReturned() {
         //GIVEN
         CreateModuleDto createModuleDto = new CreateModuleDto();
         createModuleDto.setName("TestName");
 
-        // Configure Form Authentication
-        FormAuthConfig formConfig = new FormAuthConfig("http://keycloak.switchfully.com/realms/java-2023-10/protocol/openid-connect/token",
-                "coach@lms.com", "coach");
-
-
         String accessToken = RestAssured
                 .given()
-                .auth()
-//                .form("your-client-id", "your-client-secret")
-                .form("keycloak-example", "Z8kzdqRzPcfWZENlvPebAo3UCjeiQ0UZ")
-                .param("grant_type", "password")
-                .param("username", "coach@lms.com")
-                .param("password", "coach")
-                .post("http://keycloak.switchfully.com/realms/java-2023-10/protocol/openid-connect/token")
+                .contentType("application/x-www-form-urlencoded; charset=utf-8")
+                .formParam("client_id", "keycloak-example")
+                .formParam("client_secret", "Z8kzdqRzPcfWZENlvPebAo3UCjeiQ0UZ")
+                .formParam("grant_type", "password")
+                .formParam("username", "coach@lms.com")
+                .formParam("password", "coach")
+                .when()
+                .post("https://keycloak.switchfully.com/realms/java-2023-10/protocol/openid-connect/token")
                 .then()
-                .extract()
-                .path("access_token");
-
+                .extract().body().jsonPath().get("access_token");
 
         //WHEN
         RestAssured
@@ -63,6 +57,42 @@ public class ModuleControllerTest {
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.CREATED.value());
+
+    }
+
+    @Test
+    void givenCreateModuleDtoAndStudent_whenPostingToBackend_thenStatusCodeForbiddenIsReturned() {
+        //GIVEN
+        CreateModuleDto createModuleDto = new CreateModuleDto();
+        createModuleDto.setName("TestName");
+
+        String accessToken = RestAssured
+                .given()
+                .contentType("application/x-www-form-urlencoded; charset=utf-8")
+                .formParam("client_id", "keycloak-example")
+                .formParam("client_secret", "Z8kzdqRzPcfWZENlvPebAo3UCjeiQ0UZ")
+                .formParam("grant_type", "password")
+                .formParam("username", "student@lms.com")
+                .formParam("password", "student")
+                .when()
+                .post("https://keycloak.switchfully.com/realms/java-2023-10/protocol/openid-connect/token")
+                .then()
+                .extract().body().jsonPath().get("access_token");
+
+        //WHEN
+        RestAssured
+                .given()
+                .auth()
+                .oauth2(accessToken)
+                .body(createModuleDto)
+                .accept(ContentType.JSON)
+                .contentType(ContentType.JSON)
+                .port(port)
+                .when()
+                .post("/modules")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.FORBIDDEN.value());
 
     }
 }
