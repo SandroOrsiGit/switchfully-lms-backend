@@ -17,7 +17,7 @@ public class ClassGroupController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping(path="/create-classgroup", consumes = "application/json", produces = "application/json")
+    @PostMapping(consumes = "application/json", produces = "application/json")
     public ClassGroupDto addClassGroup(@RequestBody CreateClassGroupDto createClassgroupDto) {
         return classgroupService.addClassGroup(createClassgroupDto);
     }
