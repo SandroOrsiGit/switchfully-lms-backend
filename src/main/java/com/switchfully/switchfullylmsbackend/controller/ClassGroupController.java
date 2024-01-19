@@ -6,8 +6,9 @@ import com.switchfully.switchfullylmsbackend.service.ClassGroupService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-//@CrossOrigin("http://localhost:4200")
+@CrossOrigin("http://localhost:4200")
 @RestController
+@RequestMapping(path="/classgroup")
 public class ClassGroupController {
     private final ClassGroupService classgroupService;
 

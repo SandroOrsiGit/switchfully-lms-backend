@@ -1,9 +1,13 @@
 package com.switchfully.switchfullylmsbackend.mapper;
 
 import com.switchfully.switchfullylmsbackend.dto.ClassGroupDto;
+import com.switchfully.switchfullylmsbackend.dto.CoachDto;
 import com.switchfully.switchfullylmsbackend.dto.CreateClassGroupDto;
 import com.switchfully.switchfullylmsbackend.entity.ClassGroup;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class ClassGroupMapper {
@@ -27,13 +31,16 @@ public class ClassGroupMapper {
         return new ClassGroupDto(
                 addedClassGroup.getId(),
                 addedClassGroup.getName(),
-                courseMapper.mapCourseToCourseDto(addedClassGroup.getCourse()),
-                addedClassGroup.getCoaches().stream()
-                        .map(coachMapper::mapCoachToCoachDto)
-                        .toList(),
-                addedClassGroup.getStudents().stream()
-                        .map(studentMapper::mapStudentToStudentDto)
-                        .toList()
+                null,
+                new ArrayList<>(),
+                new ArrayList<>()
+//                courseMapper.mapCourseToCourseDto(addedClassGroup.getCourse()),
+//                addedClassGroup.getCoaches().stream()
+//                        .map(coachMapper::mapCoachToCoachDto)
+//                        .toList(),
+//                addedClassGroup.getStudents().stream()
+//                        .map(studentMapper::mapStudentToStudentDto)
+//                        .toList()
         );
     }
 }

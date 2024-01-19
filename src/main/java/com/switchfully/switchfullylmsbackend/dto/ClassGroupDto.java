@@ -11,6 +11,8 @@ public class ClassGroupDto {
     private List<CoachDto> coachDtoList;
     private List<StudentDto> studentDtoList;
 
+    public ClassGroupDto() {
+    }
     public ClassGroupDto(Long id, String name, CourseDto courseDto, List<CoachDto> coachDtoList, List<StudentDto> studentDtoList) {
         this.id = id;
         this.name = name;
@@ -19,7 +21,7 @@ public class ClassGroupDto {
         this.studentDtoList = studentDtoList;
     }
 
-//    ---Getters---------------
+    //    ---Getters---------------
     public Long getId() {
         return id;
     }
