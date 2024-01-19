@@ -32,20 +32,21 @@ public class KeycloakService {
     }
 
     public void addUser(CreateUserDto createUserDto) {
-        String createdUserId = createUser(createUserDto);           // create user in keycloak to get Id
-        UserResource userResource =  getUser(createdUserId);
-        System.out.println("addUser userResource: " + userResource.toString() );
-        userResource.resetPassword(createCredentialRepresentation(createUserDto.getPassword()));
-        // TODO addUser creates error
+        String createdUserId = createUser(createUserDto);                                       // create user in keycloak to get Id
+        UserResource userResource = realmResource.users().get(createdUserId);                   // get user form keycloak
+        userResource.resetPassword(createCredentialRepresentation(createUserDto.getPassword()));// set user password
         addRole( userResource, "student");
     }
     private String createUser(CreateUserDto createUserDto) {
         try {
-            return CreatedResponseUtil.getCreatedId(createUser(createUserDto.getEmail()));
+            return CreatedResponseUtil.getCreatedId( realmResource
+                    .users().create( createUserRepresentation(createUserDto.getEmail()) ));
         } catch (WebApplicationException exception) {
             throw new UserAlreadyExistsException(createUserDto.getEmail());
         }
     }
+
+
     private CredentialRepresentation createCredentialRepresentation(String password) {
         CredentialRepresentation passwordCredentials = new CredentialRepresentation();
         passwordCredentials.setTemporary(false);
@@ -54,41 +55,13 @@ public class KeycloakService {
         return passwordCredentials;
     }
         private void addRole(UserResource userResource, String userRole) {
-////        user.roles().clientLevel(getClientUUID()).add(Lists.newArrayList(getRole(roleName)));
-//           RoleRepresentation returnedRole = getRole(roleName);
-//            System.out.println("addRole getRole: "+returnedRole);
-//
-//         realmResource.users().get( getClientUUID() ).roles().realmLevel().add( List.of( returnedRole ));
-//        String userRole = "student";
-//        List<RoleRepresentation> roleRepresentationList = userResource.roles().realmLevel().listAvailable();
-//        List<RoleRepresentation> roleRepresentationList = realmResource.clients().findByClientId( clientID );
-        ClientRepresentation clientRepresentation = realmResource.clients().findByClientId( clientID ).get(0);
-        System.out.println("list= "+clientRepresentation);
+        ClientRepresentation clientRepresentation = realmResource
+                .clients().findByClientId( clientID ).get(0);
         RoleRepresentation roleRepresentation = realmResource
                 .clients().get( clientRepresentation.getId() )
-                .roles().get( userRole).toRepresentation();
-        userResource.roles().clientLevel(clientRepresentation.getId() ).add( Arrays.asList(roleRepresentation) );
+                .roles().get( userRole ).toRepresentation();
+        userResource.roles().clientLevel( clientRepresentation.getId() ).add( Arrays.asList(roleRepresentation) );
     }
-
-    private String getClientUUID() {
-        return realmResource.clients().findByClientId(clientID).get(0).getId();
-    }
-
-    private Response createUser(String username) {
-        return realmResource.users().create(createUserRepresentation(username));
-    }
-    private UserResource getUser(String userId) {
-        return realmResource.users().get(userId);
-    }
-
-    private RoleRepresentation getRole(String roleToAdd) {
-        return getClientResource().roles().get(roleToAdd).toRepresentation();
-    }
-    private ClientResource getClientResource() {
-        return realmResource.clients().get(getClientUUID());
-    }
-
-
     private UserRepresentation createUserRepresentation(String username) {
         UserRepresentation user = new UserRepresentation();
         user.setUsername(username);
