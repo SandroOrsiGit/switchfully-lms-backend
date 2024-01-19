@@ -2,6 +2,7 @@ package com.switchfully.switchfullylmsbackend.entity;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -12,6 +13,10 @@ public class ClassGroup {
     private Long id;
     @Column(name = "name")
     private String name;
+    @Column(name = "start_date")
+    private LocalDate startDate;
+    @Column(name = "end_date")
+    private LocalDate endDate;
     @ManyToOne
     @JoinColumn(name = "course_id")
     private Course course;
@@ -33,12 +38,13 @@ public class ClassGroup {
     public ClassGroup() {
     }
 
-    public ClassGroup(String name) {
+    public ClassGroup(String name, LocalDate startDate, LocalDate endDate) {
         this.name = name;
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
-
-    //---Getters------------------
+//---Getters------------------
 
     public Long getId() {
         return id;
@@ -46,6 +52,14 @@ public class ClassGroup {
 
     public String getName() {
         return name;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
     }
 
     public Course getCourse() {

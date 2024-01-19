@@ -23,7 +23,9 @@ public class ClassGroupMapper {
 
     public ClassGroup mapCreateClassGroupDtoToClassGroup(CreateClassGroupDto createClassGroupDto) {
         return new ClassGroup(
-                createClassGroupDto.getName()
+                createClassGroupDto.getName(),
+                createClassGroupDto.getStartDate(),
+                createClassGroupDto.getEndDate()
         );
     }
 
@@ -31,6 +33,8 @@ public class ClassGroupMapper {
         return new ClassGroupDto(
                 addedClassGroup.getId(),
                 addedClassGroup.getName(),
+                addedClassGroup.getStartDate(),
+                addedClassGroup.getEndDate(),
                 null,
                 new ArrayList<>(),
                 new ArrayList<>()
