@@ -2,6 +2,7 @@ package com.switchfully.switchfullylmsbackend.controller;
 
 import com.nimbusds.oauth2.sdk.TokenResponse;
 import com.switchfully.switchfullylmsbackend.dto.CreateModuleDto;
+import com.switchfully.switchfullylmsbackend.dto.ModuleDto;
 import io.restassured.RestAssured;
 import io.restassured.authentication.FormAuthConfig;
 import io.restassured.http.ContentType;
@@ -44,7 +45,7 @@ public class ModuleControllerTest {
                 .extract().body().jsonPath().get("access_token");
 
         //WHEN
-        RestAssured
+        ModuleDto moduleDto = RestAssured
                 .given()
                 .auth()
                 .oauth2(accessToken)
@@ -56,7 +57,12 @@ public class ModuleControllerTest {
                 .post("/modules")
                 .then()
                 .assertThat()
-                .statusCode(HttpStatus.CREATED.value());
+                .statusCode(HttpStatus.CREATED.value())
+                .extract()
+                .as(ModuleDto.class);
+
+        assertThat(moduleDto).isInstanceOf(ModuleDto.class);
+        assertThat(moduleDto.getName()).isEqualTo(createModuleDto.getName());
 
     }
 
