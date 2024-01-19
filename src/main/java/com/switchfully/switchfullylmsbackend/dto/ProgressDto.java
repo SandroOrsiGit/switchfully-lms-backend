@@ -1,12 +1,13 @@
 package com.switchfully.switchfullylmsbackend.dto;
 
-public class CourseDto {
+public class ProgressDto {
     private Long id;
     private String name;
 
-    public CourseDto() {
+    public ProgressDto() {
     }
-    public CourseDto(Long id, String name) {
+
+    public ProgressDto(Long id, String name) {
         this.id = id;
         this.name = name;
     }
