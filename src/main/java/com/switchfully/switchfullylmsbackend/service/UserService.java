@@ -1,6 +1,7 @@
 package com.switchfully.switchfullylmsbackend.service;
 
 import com.switchfully.switchfullylmsbackend.dto.user.CreateUserDto;
+import com.switchfully.switchfullylmsbackend.dto.user.UpdateUserDto;
 import com.switchfully.switchfullylmsbackend.entity.AbstractUser;
 import com.switchfully.switchfullylmsbackend.dto.user.UserDto;
 import com.switchfully.switchfullylmsbackend.entity.Student;

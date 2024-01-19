@@ -8,9 +8,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin("http://localhost:4200")
+
 @RestController
 @RequestMapping(path="/classgroup")
+@CrossOrigin(origins = "http://localhost:4200")
 public class ClassGroupController {
     private final ClassGroupService classgroupService;
 
@@ -25,8 +26,8 @@ public class ClassGroupController {
     }
 
     @GetMapping(produces = "application/json")
+    @CrossOrigin(origins = "http://localhost:4200")
     public List<ClassGroupDto> getClassGroupsByStudent(@RequestParam Long studentId) {
-        System.out.println(classgroupService.getClassGroupsByStudentId(studentId));
         return classgroupService.getClassGroupsByStudentId(studentId);
     }
 }
