@@ -41,9 +41,9 @@ public class ModuleControllerTest {
 //                .form("your-client-id", "your-client-secret")
                 .form("keycloak-example", "Z8kzdqRzPcfWZENlvPebAo3UCjeiQ0UZ")
                 .param("grant_type", "password")
-//                .param("username", "coach@lms.com")
-//                .param("password", "coach")
-//                .post("http://keycloak.switchfully.com/realms/java-2023-10/protocol/openid-connect/token")
+                .param("username", "coach@lms.com")
+                .param("password", "coach")
+                .post("http://keycloak.switchfully.com/realms/java-2023-10/protocol/openid-connect/token")
                 .then()
                 .extract()
                 .path("access_token");
