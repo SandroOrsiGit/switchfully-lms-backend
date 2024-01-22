@@ -90,7 +90,7 @@ public class ClassGroupControllerTests {
                 .extract().body().jsonPath().get("access_token");
 
         //WHEN
-        ClassGroupDto classGroupDto = RestAssured
+        RestAssured
                 .given()
                 .auth()
                 .oauth2(accessToken)
@@ -102,12 +102,8 @@ public class ClassGroupControllerTests {
                 .post("/classgroup")
                 .then()
                 .assertThat()
-                .statusCode(HttpStatus.FORBIDDEN.value())
-                .extract()
-                .as(ClassGroupDto.class);
+                .statusCode(HttpStatus.FORBIDDEN.value());
 
-        assertThat(classGroupDto).isInstanceOf(ClassGroupDto.class);
-        assertThat(classGroupDto.getName()).isEqualTo(createClassGroupDto.getName());
 
     }
 
