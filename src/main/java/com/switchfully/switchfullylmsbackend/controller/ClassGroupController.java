@@ -6,6 +6,7 @@ import com.switchfully.switchfullylmsbackend.service.ClassGroupService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 @RestController
 @RequestMapping(path="/classgroup")
@@ -22,6 +23,12 @@ public class ClassGroupController {
     @PreAuthorize("hasAuthority('coach')")
     public ClassGroupDto addClassGroup(@RequestBody CreateClassGroupDto createClassgroupDto) {
         return classgroupService.addClassGroup(createClassgroupDto);
+    }
+
+    @GetMapping(produces = "application/json")
+    @CrossOrigin(origins = "http://localhost:4200")
+    public List<ClassGroupDto> getClassGroupsByStudent(@RequestParam Long studentId) {
+        return classgroupService.getClassGroupsByStudentId(studentId);
     }
 }
 
