@@ -8,6 +8,7 @@ import com.switchfully.switchfullylmsbackend.entity.Student;
 import com.switchfully.switchfullylmsbackend.mapper.StudentMapper;
 import com.switchfully.switchfullylmsbackend.mapper.UserMapper;
 import com.switchfully.switchfullylmsbackend.repository.UserRepository;
+import com.switchfully.switchfullylmsbackend.security.KeycloakService;
 import org.json.JSONObject;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -22,15 +23,19 @@ public class UserService {
 
     private final StudentMapper studentMapper;
     private final UserRepository userRepository;
+    private final KeycloakService keycloakService;
     private final UserMapper userMapper;
-    public UserService(StudentMapper studentMapper, UserRepository userRepository, UserMapper userMapper) {
+
+    public UserService(StudentMapper studentMapper, UserRepository userRepository, KeycloakService keycloakService, UserMapper userMapper) {
         this.studentMapper = studentMapper;
         this.userRepository = userRepository;
+        this.keycloakService = keycloakService;
         this.userMapper = userMapper;
     }
 
     public void addUser(CreateUserDto createUserDto) {
         Student student = studentMapper.mapCreateUserDtoToStudent(createUserDto);
+        keycloakService.addUser(createUserDto);
         userRepository.save(student);
     }
 

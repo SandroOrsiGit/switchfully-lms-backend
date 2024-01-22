@@ -10,8 +10,6 @@ import io.restassured.RestAssured;
 import static io.restassured.http.ContentType.JSON;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class UserControllerTest {
@@ -24,7 +22,7 @@ class UserControllerTest {
     @Test
     void UserControllerTest() {
         // given
-        CreateUserDto user = new CreateUserDto("displayName", "user@example.com");
+        CreateUserDto user = new CreateUserDto("displayName", "user@example.com", "password");
 
         // when
         RestAssured
