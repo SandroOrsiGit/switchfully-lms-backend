@@ -4,10 +4,9 @@ import com.switchfully.switchfullylmsbackend.dto.ClassGroupDto;
 import com.switchfully.switchfullylmsbackend.dto.CreateClassGroupDto;
 import com.switchfully.switchfullylmsbackend.service.ClassGroupService;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-
 
 @RestController
 @RequestMapping(path="/classgroup")
@@ -21,6 +20,7 @@ public class ClassGroupController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(consumes = "application/json", produces = "application/json")
+    @PreAuthorize("hasAuthority('coach')")
     public ClassGroupDto addClassGroup(@RequestBody CreateClassGroupDto createClassgroupDto) {
         return classgroupService.addClassGroup(createClassgroupDto);
     }
@@ -31,3 +31,5 @@ public class ClassGroupController {
         return classgroupService.getClassGroupsByStudentId(studentId);
     }
 }
+
+
