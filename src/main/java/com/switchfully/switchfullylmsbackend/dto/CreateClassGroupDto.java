@@ -30,4 +30,16 @@ public class CreateClassGroupDto {
     public LocalDate getEndDate() {
         return endDate;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
 }
