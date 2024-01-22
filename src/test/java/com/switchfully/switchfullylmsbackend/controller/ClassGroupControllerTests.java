@@ -103,8 +103,6 @@ public class ClassGroupControllerTests {
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.FORBIDDEN.value());
-
-
     }
 
 }
