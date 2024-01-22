@@ -1,11 +1,10 @@
 package com.switchfully.switchfullylmsbackend.security;
 
-import com.switchfully.switchfullylmsbackend.dto.user.CreateUserDto;
+import com.switchfully.switchfullylmsbackend.dtos.users.CreateUserDto;
+import com.switchfully.switchfullylmsbackend.exceptions.UserAlreadyExistsException;
 import org.keycloak.admin.client.CreatedResponseUtil;
 import org.keycloak.admin.client.Keycloak;
-import org.keycloak.admin.client.resource.ClientResource;
 import org.keycloak.admin.client.resource.RealmResource;
-import org.keycloak.admin.client.resource.RealmsResource;
 import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.representations.idm.ClientRepresentation;
 import org.keycloak.representations.idm.CredentialRepresentation;
@@ -15,9 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Response;
 import java.util.Arrays;
-import java.util.List;
 
 
 @Service
