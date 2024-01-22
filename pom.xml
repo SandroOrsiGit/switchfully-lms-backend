@@ -70,6 +70,7 @@
 			<artifactId>spring-mock-mvc</artifactId>
 			<scope>test</scope>
 		</dependency>
+
 <!--		keycloack user registration-->
 		<dependency>
 			<groupId>org.keycloak</groupId>
@@ -88,23 +89,10 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.github.dasniko</groupId>
-			<artifactId>testcontainers-keycloak</artifactId>
-			<version>${testcontainers-keycloak.version}</version>
-			<scope>test</scope>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20231013</version>
 		</dependency>
-		<dependency>
-			<groupId>org.testcontainers</groupId>
-			<artifactId>testcontainers</artifactId>
-			<version>${testcontainers.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.testcontainers</groupId>
-			<artifactId>junit-jupiter</artifactId>
-			<version>${testcontainers-junit-jupiter.version}</version>
-			<scope>test</scope>
-		</dependency>
-
 	</dependencies>
 
 	<dependencyManagement>
