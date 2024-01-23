@@ -17,6 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase
 public class ClassGroupControllerTests {
+
     @LocalServerPort
     private int port;
 
