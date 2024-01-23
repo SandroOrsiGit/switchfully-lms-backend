@@ -4,7 +4,10 @@ import com.switchfully.switchfullylmsbackend.dtos.users.CreateUserDto;
 import com.switchfully.switchfullylmsbackend.dtos.users.UpdateUserDto;
 import com.switchfully.switchfullylmsbackend.entities.AbstractUser;
 import com.switchfully.switchfullylmsbackend.dtos.users.UserDto;
+import com.switchfully.switchfullylmsbackend.entities.Coach;
 import com.switchfully.switchfullylmsbackend.entities.Student;
+import com.switchfully.switchfullylmsbackend.exception.IdNotFoundException;
+import com.switchfully.switchfullylmsbackend.exception.InvalidRoleException;
 import com.switchfully.switchfullylmsbackend.mappers.StudentMapper;
 import com.switchfully.switchfullylmsbackend.mappers.UserMapper;
 import com.switchfully.switchfullylmsbackend.repositories.UserRepository;
@@ -47,6 +50,24 @@ public class UserService {
         AbstractUser user = userRepository.findById(updateUserDto.getId()).orElseThrow(() -> new IllegalArgumentException("User not found"));
         user.setDisplayName(updateUserDto.getDisplayName());
         userRepository.save(user);
+    }
+
+    public UserDto getUserById(Long userId) {
+        AbstractUser user = userRepository.findById(userId)
+                .orElseThrow(() -> new IdNotFoundException("User with id " + userId + " not found"));
+        String role;
+        if(user instanceof Student){
+            role = "student";
+        }else if (user instanceof Coach){
+            role = "coach";
+        }else{
+            throw new InvalidRoleException("User role is not valid");
+        }
+        return userMapper.mapAbstractUserToUserDto(user, role);
+    }
+
+    public String getRoleByUserId(Long userId) {
+        return getUserById(userId).getRole();
     }
 
 
