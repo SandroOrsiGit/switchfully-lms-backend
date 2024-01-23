@@ -3,6 +3,7 @@ package com.switchfully.switchfullylmsbackend.mappers;
 import com.switchfully.switchfullylmsbackend.dtos.codelabprogresses.CodelabProgressDto;
 import com.switchfully.switchfullylmsbackend.dtos.users.StudentDto;
 import com.switchfully.switchfullylmsbackend.dtos.users.CreateUserDto;
+import com.switchfully.switchfullylmsbackend.dtos.users.StudentNoCodelabProgressDto;
 import com.switchfully.switchfullylmsbackend.entities.Student;
 import org.springframework.stereotype.Component;
 
@@ -23,6 +24,14 @@ public class StudentMapper {
                 student.getEmail(),
                 student.getDisplayName(),
                 mapCodelabProgressListToCodelabProgressListDto(student)
+        );
+    }
+
+    public StudentNoCodelabProgressDto mapStudentToStudentNoCodelabProgressDto(Student student) {
+        return new StudentNoCodelabProgressDto(
+        student.getId(),
+        student.getEmail(),
+        student.getDisplayName()
         );
     }
 

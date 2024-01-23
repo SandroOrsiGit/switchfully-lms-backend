@@ -18,9 +18,10 @@ public class CodelabProgressMapper {
     public CodelabProgressDto mapCodelabProgressToCodelabProgressDto(CodelabProgress codelabProgress) {
         return new CodelabProgressDto(
                 codelabProgress.getId(),
-                codelabMapper.mapCodelabToCodelabDto(codelabProgress.getCodelab()),
+                codelabMapper.mapCodelabToCodelabNoCommentDto(codelabProgress.getCodelab()),
                 progressMapper.mapProgressToProgressDto(codelabProgress.getProgress())
         );
     }
+
 
 }

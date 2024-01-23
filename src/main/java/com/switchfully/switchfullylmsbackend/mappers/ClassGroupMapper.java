@@ -4,7 +4,7 @@ import com.switchfully.switchfullylmsbackend.dtos.classgroups.ClassGroupDto;
 import com.switchfully.switchfullylmsbackend.dtos.classgroups.CreateClassGroupDto;
 import com.switchfully.switchfullylmsbackend.dtos.courses.CourseDto;
 import com.switchfully.switchfullylmsbackend.dtos.users.CoachDto;
-import com.switchfully.switchfullylmsbackend.dtos.users.StudentDto;
+import com.switchfully.switchfullylmsbackend.dtos.users.StudentNoCodelabProgressDto;
 import com.switchfully.switchfullylmsbackend.entities.ClassGroup;
 import org.springframework.stereotype.Component;
 
@@ -41,7 +41,7 @@ public class ClassGroupMapper {
                     mapCourseToCourseDto(addedClassGroup),
                     //TODO implement coach always existing
                     mapCoachListToCoachDtoList(addedClassGroup),
-                    mapStudentListToStudentDtoList(addedClassGroup)
+                    mapStudentListToStudentNoCodelabProgressDtoList(addedClassGroup)
             );
 
 //        return new ClassGroupDto(
@@ -80,12 +80,12 @@ public class ClassGroupMapper {
         }
     }
 
-    private List<StudentDto> mapStudentListToStudentDtoList(ClassGroup classGroup) {
+    private List<StudentNoCodelabProgressDto> mapStudentListToStudentNoCodelabProgressDtoList(ClassGroup classGroup) {
         if (classGroup.getStudents().isEmpty()) {
             return new ArrayList<>();
         } else {
             return classGroup.getStudents().stream()
-                    .map(studentMapper::mapStudentToStudentDto)
+                    .map(studentMapper::mapStudentToStudentNoCodelabProgressDto)
                     .collect(Collectors.toList());
         }
     }

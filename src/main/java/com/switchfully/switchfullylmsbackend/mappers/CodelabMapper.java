@@ -1,6 +1,7 @@
 package com.switchfully.switchfullylmsbackend.mappers;
 
 import com.switchfully.switchfullylmsbackend.dtos.codelabs.CodelabDto;
+import com.switchfully.switchfullylmsbackend.dtos.codelabs.CodelabNoCommentDto;
 import com.switchfully.switchfullylmsbackend.dtos.comments.CommentDto;
 import com.switchfully.switchfullylmsbackend.entities.Codelab;
 import org.springframework.stereotype.Component;
@@ -21,6 +22,13 @@ public class CodelabMapper {
                 codelab.getId(),
                 codelab.getName(),
                 mapCommentListToCommentDtoList(codelab)
+        );
+    }
+
+    public CodelabNoCommentDto mapCodelabToCodelabNoCommentDto(Codelab codelab) {
+        return new CodelabNoCommentDto(
+                codelab.getId(),
+                codelab.getName()
         );
     }
 

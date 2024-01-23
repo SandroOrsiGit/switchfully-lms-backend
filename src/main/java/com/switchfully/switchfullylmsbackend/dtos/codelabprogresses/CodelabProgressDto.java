@@ -1,16 +1,17 @@
 package com.switchfully.switchfullylmsbackend.dtos.codelabprogresses;
 
+import com.switchfully.switchfullylmsbackend.dtos.codelabs.CodelabNoCommentDto;
 import com.switchfully.switchfullylmsbackend.dtos.progresses.ProgressDto;
 import com.switchfully.switchfullylmsbackend.dtos.codelabs.CodelabDto;
 
 public class CodelabProgressDto {
     private Long id;
-    private CodelabDto codelab;
+    private CodelabNoCommentDto codelab;
     private ProgressDto progress;
 
     public CodelabProgressDto() {
     }
-    public CodelabProgressDto(Long id, CodelabDto codelab, ProgressDto progress) {
+    public CodelabProgressDto(Long id, CodelabNoCommentDto codelab, ProgressDto progress) {
         this.id = id;
         this.codelab = codelab;
         this.progress = progress;
@@ -21,7 +22,7 @@ public class CodelabProgressDto {
     public Long getId() {
         return id;
     }
-    public CodelabDto getCodelab() {
+    public CodelabNoCommentDto getCodelab() {
         return codelab;
     }
     public ProgressDto getProgress() {

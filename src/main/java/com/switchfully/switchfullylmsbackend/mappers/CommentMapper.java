@@ -6,17 +6,17 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class CommentMapper {
-    private StudentMapper studentMapper;
 
-    public CommentMapper(StudentMapper studentMapper) {
-        this.studentMapper = studentMapper;
+
+    public CommentMapper() {
+
     }
 
     public CommentDto mapCommentToCommentDto(Comment comment) {
         return new CommentDto(
                 comment.getId(),
                 comment.getText(),
-                studentMapper.mapStudentToStudentDto(comment.getStudent())
+                comment.getStudent().getDisplayName()
         );
     }
 }
