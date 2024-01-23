@@ -3,6 +3,7 @@ package com.switchfully.switchfullylmsbackend.services;
 import com.switchfully.switchfullylmsbackend.dtos.classgroups.ClassGroupDto;
 import com.switchfully.switchfullylmsbackend.dtos.classgroups.CreateClassGroupDto;
 import com.switchfully.switchfullylmsbackend.entities.ClassGroup;
+import com.switchfully.switchfullylmsbackend.exceptions.StudentDoesntExistException;
 import com.switchfully.switchfullylmsbackend.mappers.ClassGroupMapper;
 import com.switchfully.switchfullylmsbackend.repositories.ClassGroupRepository;
 import jakarta.transaction.Transactional;
@@ -28,9 +29,14 @@ public class ClassGroupService {
         return classGroupMapper.mapClassGroupToClassGroupDto(addedClassGroup);
     }
 
-    public List<ClassGroupDto> getClassGroupsByStudentId(Long studentId) {
-        return classGroupRepository.findByStudentsId(studentId)
-                .stream()
+    public List<ClassGroupDto> getClassGroupsByStudentId(Long studentId) throws StudentDoesntExistException {
+        List<ClassGroup> classGroups = classGroupRepository.findByStudentsId(studentId);
+
+        if (classGroups.isEmpty()) {
+            throw new StudentDoesntExistException();
+        }
+
+        return classGroups.stream()
                 .map(classGroupMapper::mapClassGroupToClassGroupDto)
                 .collect(Collectors.toList());
     }

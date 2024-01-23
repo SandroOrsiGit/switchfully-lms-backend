@@ -105,4 +105,5 @@ public class ClassGroupControllerTest {
                 .statusCode(HttpStatus.FORBIDDEN.value());
     }
 
+    // TODO add integration test for getClassGroupsByStudent
 }
