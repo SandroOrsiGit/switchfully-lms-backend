@@ -6,7 +6,6 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
@@ -15,14 +14,15 @@ import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureTestDatabase
-public class ClassGroupControllerTests {
+//@AutoConfigureTestDatabase
+public class ClassGroupControllerTest {
     @LocalServerPort
     private int port;
 
     @Autowired
     private ClassGroupController classGroupController;
 
+    // TODO test if this works when we have a test database
     @Test
     void givenCreateClassGroupDtoAndCoach_whenPostingToBackend_thenStatusCodeCreatedIsReturned() {
         //GIVEN
@@ -55,7 +55,7 @@ public class ClassGroupControllerTests {
                 .contentType(ContentType.JSON)
                 .port(port)
                 .when()
-                .post("/classgroup")
+                .post("/class-group")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.CREATED.value())
@@ -99,7 +99,7 @@ public class ClassGroupControllerTests {
                 .contentType(ContentType.JSON)
                 .port(port)
                 .when()
-                .post("/classgroup")
+                .post("/class-group")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.FORBIDDEN.value());
