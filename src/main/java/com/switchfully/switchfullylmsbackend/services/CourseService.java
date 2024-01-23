@@ -4,8 +4,10 @@ import com.switchfully.switchfullylmsbackend.dtos.courses.*;
 import com.switchfully.switchfullylmsbackend.mappers.*;
 import com.switchfully.switchfullylmsbackend.repositories.*;
 import org.springframework.stereotype.*;
+import org.springframework.transaction.annotation.*;
 
 @Service
+@Transactional
 public class CourseService {
 
     private final CourseRepository courseRepository;
