@@ -22,4 +22,8 @@ public class Student extends AbstractUser {
     public Student() {
 
     }
+
+    public List<CodelabProgress> getCodelabProgresses() {
+        return codelabProgresses;
+    }
 }
