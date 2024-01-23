@@ -1,12 +1,11 @@
 package com.switchfully.switchfullylmsbackend.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 
 import java.util.List;
 
 @Entity
+@Table(name = "modules")
 public class Module extends AbstractModule {
    
    @OneToMany
