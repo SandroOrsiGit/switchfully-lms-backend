@@ -7,6 +7,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class CourseMapper {
     public CourseDto mapCourseToCourseDto(Course course) {
-        return null;
+        return new CourseDto(
+                course.getId(),
+                course.getName()
+        );
     }
+
+
 }

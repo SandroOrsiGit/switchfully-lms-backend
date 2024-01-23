@@ -7,7 +7,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class StudentMapper {
     public StudentDto mapStudentToStudentDto(Student student) {
-        return null;
+        return new StudentDto(
+                student.getId(),
+                student.getEmail(),
+                student.getDisplayName(),
+                student.
+        )
     }
 
     public Student mapCreateUserDtoToStudent(CreateUserDto createUserDto) {

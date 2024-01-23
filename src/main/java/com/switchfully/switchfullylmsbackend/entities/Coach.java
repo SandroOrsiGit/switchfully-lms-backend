@@ -11,4 +11,6 @@ public class Coach extends AbstractUser {
     public Coach() {
 
     }
+
+
 }
