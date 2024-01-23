@@ -1,4 +1,4 @@
-package com.switchfully.switchfullylmsbackend.exception;
+package com.switchfully.switchfullylmsbackend.exceptions;
 
 public class InvalidRoleException extends IllegalArgumentException {
 	public InvalidRoleException(String message){

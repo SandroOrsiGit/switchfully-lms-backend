@@ -21,4 +21,11 @@ public class Student extends AbstractUser {
     public Student() {
 
     }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "codelabProgresses=" + codelabProgresses +
+                "} " + super.toString();
+    }
 }

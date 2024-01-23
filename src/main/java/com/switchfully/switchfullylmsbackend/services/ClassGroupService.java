@@ -3,7 +3,7 @@ package com.switchfully.switchfullylmsbackend.services;
 import com.switchfully.switchfullylmsbackend.dtos.classgroups.ClassGroupDto;
 import com.switchfully.switchfullylmsbackend.dtos.classgroups.CreateClassGroupDto;
 import com.switchfully.switchfullylmsbackend.entities.ClassGroup;
-import com.switchfully.switchfullylmsbackend.exception.InvalidRoleException;
+import com.switchfully.switchfullylmsbackend.exceptions.InvalidRoleException;
 import com.switchfully.switchfullylmsbackend.mappers.ClassGroupMapper;
 import com.switchfully.switchfullylmsbackend.repositories.ClassGroupRepository;
 import jakarta.transaction.Transactional;
@@ -34,9 +34,10 @@ public class ClassGroupService {
     public List<ClassGroupDto> getClassGroupsByUserId(Long userId) {
         String role = userService.getRoleByUserId(userId);
         List<ClassGroup> classGroups;
-        if(role.equals("Student")){
+        System.out.println(role);
+        if(role.equals("student")){
             classGroups = classGroupRepository.findByStudentsId(userId);
-        }else if(role.equals("Coach")) {
+        }else if(role.equals("coach")) {
             classGroups = classGroupRepository.findByCoachesId(userId);
         }else{
             throw new InvalidRoleException("User role is not valid");
