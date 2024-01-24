@@ -60,7 +60,7 @@ class ClassGroupServiceTest {
         when(classGroupMapper.mapCreateClassGroupDtoToClassGroup(createClassGroupDto)).thenReturn(classGroupToAdd);
         when(classGroupRepository.save(any(ClassGroup.class))).thenReturn(addedClassGroup);
         when(classGroupMapper.mapClassGroupToClassGroupDto(addedClassGroup)).thenReturn(expectedClassGroupDto);
-         ClassGroupDto resultClassGroupDto = classGroupService.addClassGroup(createClassGroupDto);
+        ClassGroupDto resultClassGroupDto = classGroupService.addClassGroup(createClassGroupDto);
 
         // then
         assertEquals(expectedClassGroupDto, resultClassGroupDto);
