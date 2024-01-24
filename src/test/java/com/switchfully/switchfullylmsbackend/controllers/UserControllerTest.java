@@ -14,7 +14,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase
-// The following line disables keycloak for this test file
+// The following line disables keycloak registration for this test file
 @ActiveProfiles("test")
 class UserControllerTest {
 
