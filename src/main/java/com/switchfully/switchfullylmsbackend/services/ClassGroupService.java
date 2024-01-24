@@ -34,7 +34,6 @@ public class ClassGroupService {
     public List<ClassGroupDto> getClassGroupsByUserId(Long userId) {
         String role = userService.getRoleByUserId(userId);
         List<ClassGroup> classGroups;
-        System.out.println(role);
         if(role.equals("student")){
             classGroups = classGroupRepository.findByStudentsId(userId);
         }else if(role.equals("coach")) {
