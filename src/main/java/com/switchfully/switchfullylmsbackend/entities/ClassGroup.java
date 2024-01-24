@@ -43,6 +43,7 @@ public class ClassGroup {
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.coaches = new ArrayList<>();
         this.students = new ArrayList<>();
     }
 

@@ -36,13 +36,13 @@ public class ClassGroupControllerTest {
         String accessToken = RestAssured
                 .given()
                 .contentType("application/x-www-form-urlencoded; charset=utf-8")
-                .formParam("client_id", "keycloak-example")
-                .formParam("client_secret", "Z8kzdqRzPcfWZENlvPebAo3UCjeiQ0UZ")
+                .formParam("client_id", "switchfully-lms")
+                .formParam("client_secret", "rcb6nKkHvjxqqWsBIVrelsN6SysGEXD3")
                 .formParam("grant_type", "password")
                 .formParam("username", "coach@lms.com")
                 .formParam("password", "coach")
                 .when()
-                .post("https://keycloak.switchfully.com/realms/java-2023-10/protocol/openid-connect/token")
+                .post("https://keycloak.switchfully.com/realms/switchfully-lms-test/protocol/openid-connect/token")
                 .then()
                 .extract().body().jsonPath().get("access_token");
 
@@ -56,7 +56,7 @@ public class ClassGroupControllerTest {
                 .contentType(ContentType.JSON)
                 .port(port)
                 .when()
-                .post("/classgroup")
+                .post("/class-group")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.CREATED.value())
@@ -100,7 +100,7 @@ public class ClassGroupControllerTest {
                 .contentType(ContentType.JSON)
                 .port(port)
                 .when()
-                .post("/classgroup")
+                .post("/class-group")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.FORBIDDEN.value());
