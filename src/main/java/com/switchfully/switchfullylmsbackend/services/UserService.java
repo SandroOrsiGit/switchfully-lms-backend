@@ -4,10 +4,8 @@ import com.switchfully.switchfullylmsbackend.dtos.users.CreateUserDto;
 import com.switchfully.switchfullylmsbackend.dtos.users.UpdateUserDto;
 import com.switchfully.switchfullylmsbackend.entities.AbstractUser;
 import com.switchfully.switchfullylmsbackend.dtos.users.UserDto;
-import com.switchfully.switchfullylmsbackend.entities.Coach;
 import com.switchfully.switchfullylmsbackend.entities.Student;
 import com.switchfully.switchfullylmsbackend.exceptions.IdNotFoundException;
-import com.switchfully.switchfullylmsbackend.exceptions.InvalidRoleException;
 import com.switchfully.switchfullylmsbackend.mappers.StudentMapper;
 import com.switchfully.switchfullylmsbackend.mappers.UserMapper;
 import com.switchfully.switchfullylmsbackend.repositories.UserRepository;
@@ -55,14 +53,7 @@ public class UserService {
     public UserDto getUserById(Long userId) {
         AbstractUser user = userRepository.findById(userId)
                 .orElseThrow(() -> new IdNotFoundException("User with id " + userId + " not found"));
-        String role;
-        if(user instanceof Student){
-            role = "student";
-        }else if (user instanceof Coach){
-            role = "coach";
-        }else{
-            throw new InvalidRoleException("User role is not valid");
-        }
+        String role = user.getRole();
         return userMapper.mapAbstractUserToUserDto(user, role);
     }
 
@@ -84,7 +75,7 @@ public class UserService {
         return userMapper.mapAbstractUserToUserDto(user, roles.get(0));
     }
 
-    private static String decode(String encodedString) {
+    protected static String decode(String encodedString) {
         return new String(Base64.getUrlDecoder().decode(encodedString));
     }
 }

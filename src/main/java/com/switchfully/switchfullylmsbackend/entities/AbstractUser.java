@@ -38,4 +38,5 @@ public abstract class AbstractUser {
         this.displayName = displayName;
     }
 
+    public abstract String getRole();
 }

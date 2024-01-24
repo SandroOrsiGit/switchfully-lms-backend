@@ -23,6 +23,11 @@ public class Student extends AbstractUser {
     }
 
     @Override
+    public String getRole() {
+        return "student";
+    }
+
+    @Override
     public String toString() {
         return "Student{" +
                 "codelabProgresses=" + codelabProgresses +
