@@ -2,6 +2,7 @@ package com.switchfully.switchfullylmsbackend.mappers;
 
 import com.switchfully.switchfullylmsbackend.dtos.codelabs.CodelabDto;
 import com.switchfully.switchfullylmsbackend.dtos.codelabs.CodelabNoCommentDto;
+import com.switchfully.switchfullylmsbackend.dtos.codelabs.CreateCodelabDto;
 import com.switchfully.switchfullylmsbackend.dtos.comments.CommentDto;
 import com.switchfully.switchfullylmsbackend.entities.Codelab;
 import org.springframework.stereotype.Component;
@@ -33,12 +34,18 @@ public class CodelabMapper {
     }
 
     private List<CommentDto> mapCommentListToCommentDtoList(Codelab codelab) {
-        if (codelab.getComments().isEmpty()) {
+        if (codelab.getComments() == null || codelab.getComments().isEmpty()) {
             return new ArrayList<>();
         } else {
             return codelab.getComments().stream()
                     .map(commentMapper::mapCommentToCommentDto)
                     .collect(Collectors.toList());
         }
+    }
+
+    public Codelab mapCreateCodelabDtoToCodelab(CreateCodelabDto createCodelabDto) {
+        return new Codelab(
+                createCodelabDto.getName()
+        );
     }
 }
