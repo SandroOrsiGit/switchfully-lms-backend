@@ -15,4 +15,16 @@ public class Codelab {
     @OneToMany
     @JoinColumn(name = "codelab_id")
     private List<Comment> comments;
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
 }

@@ -16,9 +16,14 @@ public class Student extends AbstractUser {
                 ) {
         super(email, displayName);
 
+
     }
 
     public Student() {
 
+    }
+
+    public List<CodelabProgress> getCodelabProgresses() {
+        return codelabProgresses;
     }
 }

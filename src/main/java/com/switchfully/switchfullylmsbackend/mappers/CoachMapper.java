@@ -7,6 +7,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class CoachMapper {
     public CoachDto mapCoachToCoachDto(Coach coach) {
-        return null;
+        return new CoachDto(
+                coach.getId(),
+                coach.getEmail(),
+                coach.getDisplayName()
+        );
     }
+
+
 }
