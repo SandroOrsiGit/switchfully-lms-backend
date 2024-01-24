@@ -24,5 +24,12 @@ public class Module extends AbstractModule {
       return subModules;
    }
 
+   @ManyToMany
+   @JoinTable(
+           name = "courses_modules",
+           joinColumns = @JoinColumn(name = "module_id"),
+           inverseJoinColumns = @JoinColumn(name = "course_id")
+   )
+   private List<Course> courses;
 
 }

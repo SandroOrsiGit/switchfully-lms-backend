@@ -21,6 +21,14 @@ public class Course {
     )
     private List<Module> modules;
 
+    @ManyToMany
+    @JoinTable(
+            name = "courses_class_groups",
+            joinColumns = @JoinColumn(name = "course_id"),
+            inverseJoinColumns = @JoinColumn(name = "class_group_id")
+    )
+    private List<ClassGroup> classGroups;
+
     public Course() {
     }
 

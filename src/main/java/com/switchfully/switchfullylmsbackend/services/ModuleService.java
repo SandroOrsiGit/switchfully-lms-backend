@@ -7,13 +7,14 @@ import com.switchfully.switchfullylmsbackend.entities.AbstractUser;
 import com.switchfully.switchfullylmsbackend.entities.ClassGroup;
 import com.switchfully.switchfullylmsbackend.entities.Course;
 import com.switchfully.switchfullylmsbackend.entities.Student;
+import com.switchfully.switchfullylmsbackend.entities.Module;
 import com.switchfully.switchfullylmsbackend.mappers.ModuleMapper;
 import com.switchfully.switchfullylmsbackend.repositories.ClassGroupRepository;
 import com.switchfully.switchfullylmsbackend.repositories.CourseRepository;
 import com.switchfully.switchfullylmsbackend.repositories.ModuleRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.switchfully.switchfullylmsbackend.entities.Module;
+
 
 import java.util.List;
 
@@ -47,11 +48,11 @@ public class ModuleService {
         if (abstractUser instanceof Student) {
             List<ClassGroup> classGroupList = classGroupRepository.findByStudentsId(abstractUser.getId() );
             List<Course> courseList = classGroupList.stream()
-                    .map(courseRepository::findAllByClassGroup)
+                    .map(courseRepository::findByClassGroups)
                     .flatMap(List::stream)
                     .toList();
             List<Module> moduleList = courseList.stream()
-                    .map(moduleRepository::findAllCourse)
+                    .map(moduleRepository::findByCourses)
                     .flatMap(List::stream)
                     .toList();
             return moduleList.stream()
