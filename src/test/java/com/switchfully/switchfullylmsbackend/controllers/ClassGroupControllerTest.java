@@ -43,8 +43,6 @@ public class ClassGroupControllerTest {
                 LocalDate.now().plusDays(1)
         );
         
-        System.out.println(keycloakTestRealm);
-        
         String accessToken = RestAssured
                 .given()
                 .contentType("application/x-www-form-urlencoded; charset=utf-8")
