@@ -2,6 +2,8 @@ package com.switchfully.switchfullylmsbackend.entities;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "courses")
 public class Course {
@@ -10,6 +12,14 @@ public class Course {
     private Long id;
     @Column(name = "name")
     private String name;
+
+    @ManyToMany
+    @JoinTable(
+            name = "courses_modules",
+            joinColumns = @JoinColumn(name = "course_id"),
+            inverseJoinColumns = @JoinColumn(name = "module_id")
+    )
+    private List<Module> modules;
 
     public Course() {
     }

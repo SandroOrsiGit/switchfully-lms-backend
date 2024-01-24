@@ -8,7 +8,6 @@ import com.switchfully.switchfullylmsbackend.entities.Student;
 import com.switchfully.switchfullylmsbackend.mappers.StudentMapper;
 import com.switchfully.switchfullylmsbackend.mappers.UserMapper;
 import com.switchfully.switchfullylmsbackend.repositories.UserRepository;
-import com.switchfully.switchfullylmsbackend.security.DefaultKeycloakService;
 import com.switchfully.switchfullylmsbackend.security.KeycloakService;
 import org.json.JSONObject;
 import org.springframework.security.core.Authentication;
@@ -19,7 +18,6 @@ import org.springframework.stereotype.Service;
 import java.util.Objects;
 import java.util.Base64;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {
@@ -52,13 +50,14 @@ public class UserService {
         user.setDisplayName(updateUserDto.getDisplayName());
         userRepository.save(user);
     }
-
-    public UserDto getUserByToken(String bearerToken) {
+    public AbstractUser getUserByToken(String bearerToken) {
         String[] chunks = bearerToken.split("\\.");
         JSONObject payload = new JSONObject(decode(chunks[1]));
 
-        AbstractUser user = userRepository.findByEmail(payload.get("preferred_username").toString());
-
+        return userRepository.findByEmail(payload.get("preferred_username").toString());
+    }
+    public UserDto getUserDtoByToken(String bearerToken) {
+        AbstractUser user = getUserByToken(bearerToken);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         List<String> roles = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority).toList();
@@ -69,4 +68,6 @@ public class UserService {
     private static String decode(String encodedString) {
         return new String(Base64.getUrlDecoder().decode(encodedString));
     }
+
+
 }

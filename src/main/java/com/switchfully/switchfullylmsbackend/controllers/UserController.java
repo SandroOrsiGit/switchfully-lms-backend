@@ -27,7 +27,7 @@ public class UserController {
 
     @GetMapping()
     public UserDto getUserByToken(@RequestHeader("Authorization") String bearerToken){
-        return userService.getUserByToken(bearerToken);
+        return userService.getUserDtoByToken(bearerToken);
     }
 
     @ResponseStatus(HttpStatus.OK)
