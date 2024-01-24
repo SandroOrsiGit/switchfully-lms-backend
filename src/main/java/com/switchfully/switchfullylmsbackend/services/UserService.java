@@ -14,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
 import java.util.Objects;
 import java.util.Base64;
 import java.util.List;
@@ -33,10 +34,11 @@ public class UserService {
         this.userMapper = userMapper;
     }
 
-    public void addUser(CreateUserDto createUserDto) {
+    public AbstractUser addUser(CreateUserDto createUserDto) {
         Student student = studentMapper.mapCreateUserDtoToStudent(createUserDto);
         keycloakService.addUser(createUserDto);
         userRepository.save(student);
+        return userRepository.findById(student.getId()).get();
     }
 
     public void updateUser(UpdateUserDto updateUserDto) {
@@ -48,7 +50,6 @@ public class UserService {
         user.setDisplayName(updateUserDto.getDisplayName());
         userRepository.save(user);
     }
-
 
     public UserDto getUserByToken(String bearerToken) {
         String[] chunks = bearerToken.split("\\.");

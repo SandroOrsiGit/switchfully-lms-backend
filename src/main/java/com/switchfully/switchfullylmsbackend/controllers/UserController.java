@@ -3,6 +3,7 @@ package com.switchfully.switchfullylmsbackend.controllers;
 import com.switchfully.switchfullylmsbackend.dtos.users.CreateUserDto;
 import com.switchfully.switchfullylmsbackend.dtos.users.UserDto;
 import com.switchfully.switchfullylmsbackend.dtos.users.UpdateUserDto;
+import com.switchfully.switchfullylmsbackend.entities.AbstractUser;
 import com.switchfully.switchfullylmsbackend.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -20,8 +21,8 @@ public class UserController {
 
     @ResponseStatus(HttpStatus.CREATED)
 	@PostMapping(consumes = "application/json", produces = "application/json", path = "/register")
-    public void registerUser(@RequestBody CreateUserDto createUserDto) {
-        userService.addUser(createUserDto);
+    public AbstractUser registerUser(@RequestBody CreateUserDto createUserDto) {
+        return userService.addUser(createUserDto);
     }
 
     @GetMapping()

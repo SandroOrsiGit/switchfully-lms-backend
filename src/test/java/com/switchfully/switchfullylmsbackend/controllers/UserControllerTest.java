@@ -1,26 +1,28 @@
 package com.switchfully.switchfullylmsbackend.controllers;
 
 import com.switchfully.switchfullylmsbackend.dtos.users.CreateUserDto;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.annotation.DirtiesContext;
 import io.restassured.RestAssured;
 import static io.restassured.http.ContentType.JSON;
+
 import org.junit.jupiter.api.Test;
+import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@AutoConfigureTestDatabase
+// The following line disables keycloak for this test file
+@ActiveProfiles("test")
 class UserControllerTest {
+
     @LocalServerPort
     private int port;
 
-    @Autowired
-    UserController userController;
-
     @Test
-    void UserControllerTest() {
+    void registerUserTest() {
         // given
         CreateUserDto user = new CreateUserDto("displayName", "user@example.com", "password");
 
@@ -32,7 +34,7 @@ class UserControllerTest {
                 .contentType(JSON)
                 .port(port)
                 .when()
-                .post("/register")
+                .post("user/register")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.CREATED.value());
