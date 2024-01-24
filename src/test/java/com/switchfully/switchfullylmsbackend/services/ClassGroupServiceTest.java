@@ -70,7 +70,7 @@ class ClassGroupServiceTest {
     @Test
     void givenExistingStudentId_whenGetClassGroupsByStudentId_thenReturnClassGroupDtoList() {
         // given
-        Long studentId = 1L;
+        Long userId = 1L;
         ClassGroup classGroup1 = new ClassGroup("name1", LocalDate.now(), LocalDate.now().plusDays(1));
         ClassGroup classGroup2 = new ClassGroup("name2", LocalDate.now(), LocalDate.now().plusDays(1));
         ClassGroupDto classGroupDto1 = new ClassGroupDto(1L,"name1", LocalDate.now(), LocalDate.now().plusDays(1), null, new ArrayList<>(), new ArrayList<>());
@@ -79,11 +79,11 @@ class ClassGroupServiceTest {
         List<ClassGroup> classGroupList = Arrays.asList(classGroup1, classGroup2);
 
         // when
-        when(classGroupRepository.findByStudentsId(studentId)).thenReturn(classGroupList);
+        when(classGroupRepository.findByStudentsId(userId)).thenReturn(classGroupList);
         when(classGroupMapper.mapClassGroupToClassGroupDto(classGroup1)).thenReturn(classGroupDto1);
         when(classGroupMapper.mapClassGroupToClassGroupDto(classGroup2)).thenReturn(classGroupDto2);
 
-        List<ClassGroupDto> result = classGroupService.getClassGroupsByStudentId(studentId);
+        List<ClassGroupDto> result = classGroupService.getClassGroupsByUserId(userId);
 
         // then
         assertEquals(2, result.size());
@@ -96,12 +96,12 @@ class ClassGroupServiceTest {
     @Test
     void givenUndefinedStudentId_whenGetClassGroupsByStudentId_thenReturnClassGroupDtoList() {
         // given
-        Long studentId = 10000L;
+        Long userId = 10000L;
 
 
         // when & then
         StudentDoesntExistException exception = assertThrows(StudentDoesntExistException.class, () -> {
-            classGroupService.getClassGroupsByStudentId(studentId);
+            classGroupService.getClassGroupsByUserId(userId);
         });
 
     }

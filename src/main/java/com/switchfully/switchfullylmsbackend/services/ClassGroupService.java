@@ -3,6 +3,7 @@ package com.switchfully.switchfullylmsbackend.services;
 import com.switchfully.switchfullylmsbackend.dtos.classgroups.ClassGroupDto;
 import com.switchfully.switchfullylmsbackend.dtos.classgroups.CreateClassGroupDto;
 import com.switchfully.switchfullylmsbackend.entities.ClassGroup;
+import com.switchfully.switchfullylmsbackend.exceptions.InvalidRoleException;
 import com.switchfully.switchfullylmsbackend.exceptions.StudentDoesntExistException;
 import com.switchfully.switchfullylmsbackend.mappers.ClassGroupMapper;
 import com.switchfully.switchfullylmsbackend.repositories.ClassGroupRepository;
@@ -17,10 +18,12 @@ import java.util.stream.Collectors;
 public class ClassGroupService {
     private final ClassGroupRepository classGroupRepository;
     private final ClassGroupMapper classGroupMapper;
+    private final UserService userService;
 
-    public ClassGroupService(ClassGroupRepository classGroupRepository, ClassGroupMapper classGroupMapper) {
+    public ClassGroupService(ClassGroupRepository classGroupRepository, ClassGroupMapper classGroupMapper, UserService userService) {
         this.classGroupRepository = classGroupRepository;
         this.classGroupMapper = classGroupMapper;
+        this.userService = userService;
     }
 
     public ClassGroupDto addClassGroup(CreateClassGroupDto createClassGroupDto) {
@@ -28,15 +31,19 @@ public class ClassGroupService {
         ClassGroup addedClassGroup = classGroupRepository.save(classGroup);
         return classGroupMapper.mapClassGroupToClassGroupDto(addedClassGroup);
     }
-
-    public List<ClassGroupDto> getClassGroupsByStudentId(Long studentId) throws StudentDoesntExistException {
-        List<ClassGroup> classGroups = classGroupRepository.findByStudentsId(studentId);
-
-        if (classGroups.isEmpty()) {
-            throw new StudentDoesntExistException();
+    
+    public List<ClassGroupDto> getClassGroupsByUserId(Long userId) {
+        String role = userService.getRoleByUserId(userId);
+        List<ClassGroup> classGroups;
+        if(role.equals("student")){
+            classGroups = classGroupRepository.findByStudentsId(userId);
+        }else if(role.equals("coach")) {
+            classGroups = classGroupRepository.findByCoachesId(userId);
+        }else{
+            throw new InvalidRoleException("User role is not valid");
         }
-
-        return classGroups.stream()
+        return classGroups
+                .stream()
                 .map(classGroupMapper::mapClassGroupToClassGroupDto)
                 .collect(Collectors.toList());
     }

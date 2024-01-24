@@ -6,6 +6,7 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
@@ -23,7 +24,16 @@ public class ClassGroupControllerTest {
 
     @Autowired
     private ClassGroupController classGroupController;
-
+    
+    @Value("${keycloak.resource}")
+    public String keycloakResource;
+    
+    @Value("${keycloak.credentials.secret}")
+    public String clientSecret;
+    
+    @Value("${keycloak.realm}")
+    public String keycloakTestRealm;
+    
     @Test
     void givenCreateClassGroupDtoAndCoach_whenPostingToBackend_thenStatusCodeCreatedIsReturned() {
         //GIVEN
@@ -32,17 +42,19 @@ public class ClassGroupControllerTest {
                 LocalDate.now(),
                 LocalDate.now().plusDays(1)
         );
-
+        
+        System.out.println(keycloakTestRealm);
+        
         String accessToken = RestAssured
                 .given()
                 .contentType("application/x-www-form-urlencoded; charset=utf-8")
-                .formParam("client_id", "switchfully-lms")
-                .formParam("client_secret", "rcb6nKkHvjxqqWsBIVrelsN6SysGEXD3")
+                .formParam("client_id", keycloakResource)
+                .formParam("client_secret", clientSecret)
                 .formParam("grant_type", "password")
                 .formParam("username", "coach@lms.com")
                 .formParam("password", "coach")
                 .when()
-                .post("https://keycloak.switchfully.com/realms/switchfully-lms-test/protocol/openid-connect/token")
+                .post("https://keycloak.switchfully.com/realms/" + keycloakTestRealm + "/protocol/openid-connect/token")
                 .then()
                 .extract().body().jsonPath().get("access_token");
 
@@ -80,13 +92,13 @@ public class ClassGroupControllerTest {
         String accessToken = RestAssured
                 .given()
                 .contentType("application/x-www-form-urlencoded; charset=utf-8")
-                .formParam("client_id", "keycloak-example")
-                .formParam("client_secret", "Z8kzdqRzPcfWZENlvPebAo3UCjeiQ0UZ")
+                .formParam("client_id", keycloakResource)
+                .formParam("client_secret", clientSecret)
                 .formParam("grant_type", "password")
                 .formParam("username", "student@lms.com")
                 .formParam("password", "student")
                 .when()
-                .post("https://keycloak.switchfully.com/realms/java-2023-10/protocol/openid-connect/token")
+                .post("https://keycloak.switchfully.com/realms/switchfully-lms-test/protocol/openid-connect/token")
                 .then()
                 .extract().body().jsonPath().get("access_token");
 
@@ -104,6 +116,40 @@ public class ClassGroupControllerTest {
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.FORBIDDEN.value());
+    }
+    
+    @Test
+    void whenGetClassGroupsByUser_thenReturnListOfClassGroupsAndStatusCodeOK() {
+        String accessToken = RestAssured
+                .given()
+                .contentType("application/x-www-form-urlencoded; charset=utf-8")
+                .formParam("client_id", keycloakResource)
+                .formParam("client_secret", clientSecret)
+                .formParam("grant_type", "password")
+                .formParam("username", "student@lms.com")
+                .formParam("password", "student")
+                .when()
+                .post("https://keycloak.switchfully.com/realms/" + keycloakTestRealm + "/protocol/openid-connect/token")
+                .then()
+                .extract().body().jsonPath().get("access_token");
+        
+        ClassGroupDto[] classGroups =
+                RestAssured
+                        .given()
+                        .auth()
+                        .oauth2(accessToken)
+                        .port(port)
+                        .contentType(ContentType.JSON)
+                        .param("userId", 1)
+                        .when()
+                        .get("/class-group")
+                        .then()
+                        .assertThat()
+                        .statusCode(HttpStatus.OK.value())
+                        .extract()
+                        .as(ClassGroupDto[].class);
+        
+        assertThat(classGroups).hasOnlyElementsOfType(ClassGroupDto.class);
     }
 
 }
