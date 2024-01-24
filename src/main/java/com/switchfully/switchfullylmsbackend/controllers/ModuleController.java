@@ -32,15 +32,12 @@ public class ModuleController {
    }
 
    @GetMapping()
-   @PreAuthorize("hasAuthority('coach')")
+   @PreAuthorize("hasAuthority('student')")
    @ResponseStatus(HttpStatus.OK)
    public List<ModuleDto> getModules(@RequestHeader("Authorization") String bearerToken) {
       AbstractUser abstractUser = userService.getUserByToken(bearerToken);
       return moduleService.getModules(abstractUser);
    }
-
-
-
 }
 
 
