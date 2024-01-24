@@ -13,13 +13,16 @@ import org.springframework.transaction.annotation.Transactional;
 public class CodelabService {
     private final CodelabRepository codelabRepository;
     private final CodelabMapper codelabMapper;
+    private final UserService userService;
 
-    public CodelabService(CodelabRepository codelabRepository, CodelabMapper codelabMapper) {
+    public CodelabService(CodelabRepository codelabRepository, CodelabMapper codelabMapper, UserService userService) {
         this.codelabRepository = codelabRepository;
         this.codelabMapper = codelabMapper;
+        this.userService = userService;
     }
 
     public CodelabDto createCodelab(CreateCodelabDto createCodelabDto) {
+
         Codelab codelab = codelabMapper.mapCreateCodelabDtoToCodelab(createCodelabDto);
         Codelab addedCodelab = codelabRepository.save(codelab);
         return codelabMapper.mapCodelabToCodelabDto(addedCodelab);

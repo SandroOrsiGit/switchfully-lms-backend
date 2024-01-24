@@ -72,8 +72,32 @@ public class CodelabControllerTest {
 
         assertThat(codelabDto).isInstanceOf(CodelabDto.class);
         assertThat(codelabDto.getName()).isEqualTo(createCodelabDto.getName());
-
     }
+
+    @Test
+    void givenCreateCodelabAndStudent_whenPostingToBackend_thenStatusCodeIsForbidden() {
+        // given
+        CreateCodelabDto createCodelabDto = new CreateCodelabDto("Name");
+
+        String accessToken = getAccessToken("student@lms.com", "student");
+
+        // when
+        RestAssured
+                .given()
+                .auth()
+                .oauth2(accessToken)
+                .body(createCodelabDto)
+                .accept(ContentType.JSON)
+                .contentType(ContentType.JSON)
+                .port(port)
+                .when()
+                .post("/codelab")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.FORBIDDEN.value());
+    }
+
+
 
 
 }
