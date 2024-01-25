@@ -14,4 +14,16 @@ public class CodelabProgress {
     @ManyToOne
     @JoinColumn(name = "progress_id")
     private Progress progress;
+
+    public Long getId() {
+        return id;
+    }
+
+    public Codelab getCodelab() {
+        return codelab;
+    }
+
+    public Progress getProgress() {
+        return progress;
+    }
 }

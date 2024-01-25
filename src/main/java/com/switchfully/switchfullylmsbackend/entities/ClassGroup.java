@@ -3,6 +3,7 @@ package com.switchfully.switchfullylmsbackend.entities;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -42,6 +43,8 @@ public class ClassGroup {
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.coaches = new ArrayList<>();
+        this.students = new ArrayList<>();
     }
 
 //---Getters------------------
@@ -73,4 +76,5 @@ public class ClassGroup {
     public List<Student> getStudents() {
         return students;
     }
+
 }

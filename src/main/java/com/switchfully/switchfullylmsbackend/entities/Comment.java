@@ -13,4 +13,16 @@ public class Comment {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private Student student;
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public Student getStudent() {
+        return student;
+    }
 }

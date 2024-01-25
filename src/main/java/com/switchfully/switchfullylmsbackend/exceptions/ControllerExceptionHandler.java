@@ -16,6 +16,12 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         return responseEntityBuilder(e, HttpStatus.UNAUTHORIZED);
     }
 
+    @ExceptionHandler(StudentDoesntExistException.class)
+    @ResponseBody
+    private ResponseEntity<Object> studentDoesntExist(StudentDoesntExistException e) {
+        return responseEntityBuilder(e, HttpStatus.NOT_FOUND);
+    }
+
     private ResponseEntity<Object> responseEntityBuilder(Exception e, HttpStatus status) {
         ApiError apiError = new ApiError(status, e.getMessage(), e);
         return new ResponseEntity<>(apiError, apiError.getStatus());
