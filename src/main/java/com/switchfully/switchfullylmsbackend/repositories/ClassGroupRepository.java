@@ -8,4 +8,5 @@ import java.util.List;
 @Repository
 public interface ClassGroupRepository extends JpaRepository<ClassGroup, Long> {
 	List<ClassGroup> findByStudentsId(Long userId);
+	List<ClassGroup> findByCoachesId(Long userId);
 }

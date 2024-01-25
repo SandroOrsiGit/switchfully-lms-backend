@@ -16,7 +16,6 @@ public class CreateClassGroupDto {
         this.endDate = endDate;
     }
 
-    // --- Getters ---------------------
     public String getName() {
         return name;
     }

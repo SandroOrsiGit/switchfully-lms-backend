@@ -11,14 +11,19 @@ public class Student extends AbstractUser {
     private List<CodelabProgress> codelabProgresses;
 
     public Student(
-                   String email,
-                   String displayName
-                ) {
+            String email,
+            String displayName
+    ) {
         super(email, displayName);
+
 
     }
 
     public Student() {
 
+    }
+
+    public List<CodelabProgress> getCodelabProgresses() {
+        return codelabProgresses;
     }
 }
