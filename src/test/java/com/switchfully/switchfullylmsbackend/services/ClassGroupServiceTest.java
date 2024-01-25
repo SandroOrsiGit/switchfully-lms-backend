@@ -42,11 +42,13 @@ class ClassGroupServiceTest {
                 LocalDate.now().plusDays(1), 1L);
         ClassGroup classGroupToAdd = new ClassGroup("TestingService",
                 LocalDate.now(),
-                LocalDate.now().plusDays(1));
+                LocalDate.now().plusDays(1),
+                null);
 
         ClassGroup addedClassGroup = new ClassGroup("TestingService",
                 LocalDate.now(),
-                LocalDate.now().plusDays(1));
+                LocalDate.now().plusDays(1),
+                null);
         ClassGroupDto expectedClassGroupDto = new ClassGroupDto(1L, "TestingService",
                 LocalDate.now(),
                 LocalDate.now().plusDays(1),
