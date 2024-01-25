@@ -40,8 +40,8 @@ public class ClassGroupControllerTest {
         CreateClassGroupDto createClassGroupDto = new CreateClassGroupDto(
                 "TestName",
                 LocalDate.now(),
-                LocalDate.now().plusDays(1)
-        );
+                LocalDate.now().plusDays(1),
+                1L);
         
         System.out.println(keycloakTestRealm);
         
@@ -86,8 +86,8 @@ public class ClassGroupControllerTest {
         CreateClassGroupDto createClassGroupDto = new CreateClassGroupDto(
                 "TestName",
                 LocalDate.now(),
-                LocalDate.now().plusDays(1)
-        );
+                LocalDate.now().plusDays(1),
+                1L);
 
         String accessToken = RestAssured
                 .given()

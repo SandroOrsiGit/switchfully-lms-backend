@@ -6,6 +6,7 @@ import com.switchfully.switchfullylmsbackend.dtos.courses.CourseDto;
 import com.switchfully.switchfullylmsbackend.dtos.users.CoachDto;
 import com.switchfully.switchfullylmsbackend.dtos.users.StudentNoCodelabProgressDto;
 import com.switchfully.switchfullylmsbackend.entities.ClassGroup;
+import com.switchfully.switchfullylmsbackend.entities.Coach;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -24,11 +25,12 @@ public class ClassGroupMapper {
         this.studentMapper = studentMapper;
     }
 
-    public ClassGroup mapCreateClassGroupDtoToClassGroup(CreateClassGroupDto createClassGroupDto) {
+    public ClassGroup mapCreateClassGroupDtoToClassGroup(CreateClassGroupDto createClassGroupDto, List<Coach> coachList) {
         return new ClassGroup(
                 createClassGroupDto.getName(),
                 createClassGroupDto.getStartDate(),
-                createClassGroupDto.getEndDate()
+                createClassGroupDto.getEndDate(),
+                coachList
         );
     }
 
@@ -39,27 +41,9 @@ public class ClassGroupMapper {
                     addedClassGroup.getStartDate(),
                     addedClassGroup.getEndDate(),
                     mapCourseToCourseDto(addedClassGroup),
-                    //TODO implement coach always existing
                     mapCoachListToCoachDtoList(addedClassGroup),
                     mapStudentListToStudentNoCodelabProgressDtoList(addedClassGroup)
             );
-
-//        return new ClassGroupDto(
-//                addedClassGroup.getId(),
-//                addedClassGroup.getName(),
-//                addedClassGroup.getStartDate(),
-//                addedClassGroup.getEndDate(),
-//                null,
-//                new ArrayList<>(),
-//                new ArrayList<>()
-//                courseMapper.mapCourseToCourseDto(addedClassGroup.getCourse()),
-//                addedClassGroup.getCoaches().stream()
-//                        .map(coachMapper::mapCoachToCoachDto)
-//                        .toList(),
-//                addedClassGroup.getStudents().stream()
-//                        .map(studentMapper::mapStudentToStudentDto)
-//                        .toList()
-//        );
     }
 
     private CourseDto mapCourseToCourseDto (ClassGroup classGroup) {

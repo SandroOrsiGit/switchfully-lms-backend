@@ -6,7 +6,6 @@ import com.switchfully.switchfullylmsbackend.entities.ClassGroup;
 import com.switchfully.switchfullylmsbackend.exceptions.StudentDoesntExistException;
 import com.switchfully.switchfullylmsbackend.mappers.ClassGroupMapper;
 import com.switchfully.switchfullylmsbackend.repositories.ClassGroupRepository;
-import net.bytebuddy.asm.Advice;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -40,7 +39,7 @@ class ClassGroupServiceTest {
         // given
         CreateClassGroupDto createClassGroupDto = new CreateClassGroupDto("TestingService",
                 LocalDate.now(),
-                LocalDate.now().plusDays(1));
+                LocalDate.now().plusDays(1), 1L);
         ClassGroup classGroupToAdd = new ClassGroup("TestingService",
                 LocalDate.now(),
                 LocalDate.now().plusDays(1));
@@ -57,7 +56,7 @@ class ClassGroupServiceTest {
 
 
         // when
-        when(classGroupMapper.mapCreateClassGroupDtoToClassGroup(createClassGroupDto)).thenReturn(classGroupToAdd);
+        when(classGroupMapper.mapCreateClassGroupDtoToClassGroup(createClassGroupDto,null)).thenReturn(classGroupToAdd);
         when(classGroupRepository.save(any(ClassGroup.class))).thenReturn(addedClassGroup);
         when(classGroupMapper.mapClassGroupToClassGroupDto(addedClassGroup)).thenReturn(expectedClassGroupDto);
          ClassGroupDto resultClassGroupDto = classGroupService.addClassGroup(createClassGroupDto);
