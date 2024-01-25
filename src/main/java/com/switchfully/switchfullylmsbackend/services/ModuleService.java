@@ -3,7 +3,6 @@ package com.switchfully.switchfullylmsbackend.services;
 import com.switchfully.switchfullylmsbackend.dtos.modules.CreateModuleDto;
 import com.switchfully.switchfullylmsbackend.dtos.modules.ModuleDto;
 
-import com.switchfully.switchfullylmsbackend.entities.AbstractUser;
 import com.switchfully.switchfullylmsbackend.entities.ClassGroup;
 import com.switchfully.switchfullylmsbackend.entities.Course;
 import com.switchfully.switchfullylmsbackend.entities.Student;
@@ -44,21 +43,22 @@ public class ModuleService {
         );
     }
 
-    public List<ModuleDto> getModules(AbstractUser abstractUser) {
-        if (abstractUser instanceof Student) {
-            List<ClassGroup> classGroupList = classGroupRepository.findByStudentsId(abstractUser.getId() );
-            List<Course> courseList = classGroupList.stream()
-                    .map(courseRepository::findByClassGroups)
-                    .flatMap(List::stream)
-                    .toList();
-            List<Module> moduleList = courseList.stream()
-                    .map(moduleRepository::findByCourses)
-                    .flatMap(List::stream)
-                    .toList();
-            return moduleList.stream()
-                    .map(moduleMapper::mapModuleToModuleDto)
-                    .toList();
-        }
-        return null;
+    public List<ModuleDto> getModulesAsStudent(Student student) {
+        List<ClassGroup> classGroupList = classGroupRepository.findByStudentsId(student.getId());
+        List<Course> courseList = classGroupList.stream()
+                .map(courseRepository::findByClassGroups)
+                .flatMap(List::stream)
+                .toList();
+        List<Module> moduleList = courseList.stream()
+                .map(moduleRepository::findByCourses)
+                .flatMap(List::stream)
+                .toList();
+        return moduleList.stream()
+                .map(moduleMapper::mapModuleToModuleDto)
+                .toList();
+    }
+
+    public List<ModuleDto> getModulesByCourse(Course course) {
+        return moduleRepository.findByCourses(course).stream().map(moduleMapper::mapModuleToModuleDto).toList();
     }
 }

@@ -22,6 +22,25 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         return responseEntityBuilder(e, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(CourseNotFoundException.class)
+    @ResponseBody
+    private ResponseEntity<Object> courseNotFoundException(CourseNotFoundException e) {
+        return responseEntityBuilder(e, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(NotACoachException.class)
+    @ResponseBody
+    private ResponseEntity<Object> notACoachException(NotAStudentException e) {
+        return responseEntityBuilder(e, HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(NotAStudentException.class)
+    @ResponseBody
+    private ResponseEntity<Object> notAStudentException(NotAStudentException e) {
+        return responseEntityBuilder(e, HttpStatus.FORBIDDEN);
+    }
+
+
     private ResponseEntity<Object> responseEntityBuilder(Exception e, HttpStatus status) {
         ApiError apiError = new ApiError(status, e.getMessage(), e);
         return new ResponseEntity<>(apiError, apiError.getStatus());

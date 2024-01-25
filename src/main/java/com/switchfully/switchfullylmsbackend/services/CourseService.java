@@ -1,6 +1,8 @@
 package com.switchfully.switchfullylmsbackend.services;
 
 import com.switchfully.switchfullylmsbackend.dtos.courses.*;
+import com.switchfully.switchfullylmsbackend.entities.Course;
+import com.switchfully.switchfullylmsbackend.exceptions.CourseNotFoundException;
 import com.switchfully.switchfullylmsbackend.mappers.*;
 import com.switchfully.switchfullylmsbackend.repositories.*;
 import org.springframework.stereotype.*;
@@ -25,5 +27,9 @@ public class CourseService {
                         courseMapper.mapCreateCourseDtoToCourse(createCourseDto)
                 )
         );
+    }
+
+    public Course getCourse(Long id) {
+        return courseRepository.findById(id).orElseThrow(CourseNotFoundException::new);
     }
 }

@@ -8,6 +8,8 @@ import com.switchfully.switchfullylmsbackend.entities.Coach;
 import com.switchfully.switchfullylmsbackend.entities.Student;
 import com.switchfully.switchfullylmsbackend.exceptions.IdNotFoundException;
 import com.switchfully.switchfullylmsbackend.exceptions.InvalidRoleException;
+import com.switchfully.switchfullylmsbackend.exceptions.NotACoachException;
+import com.switchfully.switchfullylmsbackend.exceptions.NotAStudentException;
 import com.switchfully.switchfullylmsbackend.mappers.StudentMapper;
 import com.switchfully.switchfullylmsbackend.mappers.UserMapper;
 import com.switchfully.switchfullylmsbackend.repositories.UserRepository;
@@ -86,6 +88,24 @@ public class UserService {
                 .map(GrantedAuthority::getAuthority).toList();
 
         return userMapper.mapAbstractUserToUserDto(user, roles.get(0));
+    }
+
+    public Student getStudentByToken(String bearerToken) {
+        AbstractUser abstractUser = this.getUserByToken(bearerToken);
+        if (abstractUser instanceof Student) {
+            return (Student) abstractUser;
+        } else {
+            throw new NotAStudentException();
+        }
+    }
+
+    public Coach getCoachByToken(String bearerToken) {
+        AbstractUser abstractUser = this.getUserByToken(bearerToken);
+        if (abstractUser instanceof Coach) {
+            return (Coach) abstractUser;
+        } else {
+            throw new NotACoachException();
+        }
     }
 
     private static String decode(String encodedString) {
