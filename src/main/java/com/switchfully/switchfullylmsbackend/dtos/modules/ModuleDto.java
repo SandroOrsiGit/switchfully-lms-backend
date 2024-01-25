@@ -17,8 +17,7 @@ public class ModuleDto {
       this.codelabs = codelabs;
       this.subModules = subModules;
    }
-   
-   //    ---Getters---------------
+
    public String getName() {
       return name;
    }

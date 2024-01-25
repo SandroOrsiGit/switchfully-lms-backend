@@ -36,7 +36,7 @@ public class ModuleService {
         this.courseRepository = courseRepository;
     }
 
-    public ModuleDto saveModule(CreateModuleDto createModuleDto) {
+    public ModuleDto createModule(CreateModuleDto createModuleDto) {
         return moduleMapper.mapModuleToModuleDto(
                 moduleRepository.save(
                         moduleMapper.mapCreateModuleDtoToModule(createModuleDto)

@@ -28,7 +28,7 @@ public class ModuleController {
    @PreAuthorize("hasAuthority('coach')")
    @ResponseStatus(HttpStatus.CREATED)
    public ModuleDto createModule(@RequestBody CreateModuleDto createModuleDto) {
-      return moduleService.saveModule(createModuleDto);
+      return moduleService.createModule(createModuleDto);
    }
 
    @GetMapping()

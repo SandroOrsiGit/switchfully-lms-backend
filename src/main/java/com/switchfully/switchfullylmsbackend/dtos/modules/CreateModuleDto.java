@@ -4,7 +4,13 @@ public class CreateModuleDto {
    
    private String name;
 
-   //    ---Getters---------------
+   public CreateModuleDto(String name) {
+      this.name = name;
+   }
+
+   public CreateModuleDto() {
+   }
+
    public String getName() {
       return name;
    }
