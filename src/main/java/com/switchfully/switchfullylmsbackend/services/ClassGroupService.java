@@ -4,7 +4,6 @@ import com.switchfully.switchfullylmsbackend.dtos.classgroups.ClassGroupDto;
 import com.switchfully.switchfullylmsbackend.dtos.classgroups.CreateClassGroupDto;
 import com.switchfully.switchfullylmsbackend.entities.ClassGroup;
 import com.switchfully.switchfullylmsbackend.exceptions.InvalidRoleException;
-import com.switchfully.switchfullylmsbackend.exceptions.StudentDoesntExistException;
 import com.switchfully.switchfullylmsbackend.mappers.ClassGroupMapper;
 import com.switchfully.switchfullylmsbackend.repositories.ClassGroupRepository;
 import jakarta.transaction.Transactional;
@@ -31,7 +30,7 @@ public class ClassGroupService {
         ClassGroup addedClassGroup = classGroupRepository.save(classGroup);
         return classGroupMapper.mapClassGroupToClassGroupDto(addedClassGroup);
     }
-    
+
     public List<ClassGroupDto> getClassGroupsByUserId(Long userId) {
         String role = userService.getRoleByUserId(userId);
         List<ClassGroup> classGroups;

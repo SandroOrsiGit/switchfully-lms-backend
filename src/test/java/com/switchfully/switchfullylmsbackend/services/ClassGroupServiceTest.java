@@ -6,7 +6,6 @@ import com.switchfully.switchfullylmsbackend.entities.ClassGroup;
 import com.switchfully.switchfullylmsbackend.exceptions.StudentDoesntExistException;
 import com.switchfully.switchfullylmsbackend.mappers.ClassGroupMapper;
 import com.switchfully.switchfullylmsbackend.repositories.ClassGroupRepository;
-import net.bytebuddy.asm.Advice;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
