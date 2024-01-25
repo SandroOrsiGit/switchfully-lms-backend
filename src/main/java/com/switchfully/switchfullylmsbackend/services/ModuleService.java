@@ -3,10 +3,8 @@ package com.switchfully.switchfullylmsbackend.services;
 import com.switchfully.switchfullylmsbackend.dtos.modules.CreateModuleDto;
 import com.switchfully.switchfullylmsbackend.dtos.modules.ModuleDto;
 
-import com.switchfully.switchfullylmsbackend.entities.ClassGroup;
-import com.switchfully.switchfullylmsbackend.entities.Course;
-import com.switchfully.switchfullylmsbackend.entities.Student;
-import com.switchfully.switchfullylmsbackend.entities.Module;
+import com.switchfully.switchfullylmsbackend.entities.*;
+import com.switchfully.switchfullylmsbackend.exceptions.NotAPartOfThisCourseException;
 import com.switchfully.switchfullylmsbackend.mappers.ModuleMapper;
 import com.switchfully.switchfullylmsbackend.repositories.ClassGroupRepository;
 import com.switchfully.switchfullylmsbackend.repositories.CourseRepository;
@@ -43,22 +41,21 @@ public class ModuleService {
         );
     }
 
-    public List<ModuleDto> getModulesAsStudent(Student student) {
+    public List<ModuleDto> getModulesByCourse(AbstractUser abstractUser, Course course) {
+        if (abstractUser instanceof Student student) {
+            checkIfStudentIsPartOfCourse(student, course);
+        }
+        return moduleRepository.findByCourses(course).stream().map(moduleMapper::mapModuleToModuleDto).toList();
+    }
+
+    private void checkIfStudentIsPartOfCourse(Student student, Course course) {
         List<ClassGroup> classGroupList = classGroupRepository.findByStudentsId(student.getId());
         List<Course> courseList = classGroupList.stream()
                 .map(courseRepository::findByClassGroups)
                 .flatMap(List::stream)
                 .toList();
-        List<Module> moduleList = courseList.stream()
-                .map(moduleRepository::findByCourses)
-                .flatMap(List::stream)
-                .toList();
-        return moduleList.stream()
-                .map(moduleMapper::mapModuleToModuleDto)
-                .toList();
-    }
-
-    public List<ModuleDto> getModulesByCourse(Course course) {
-        return moduleRepository.findByCourses(course).stream().map(moduleMapper::mapModuleToModuleDto).toList();
+        if (!courseList.contains(course)) {
+            throw new NotAPartOfThisCourseException();
+        }
     }
 }

@@ -2,8 +2,8 @@ package com.switchfully.switchfullylmsbackend.controllers;
 
 import com.switchfully.switchfullylmsbackend.dtos.modules.CreateModuleDto;
 import com.switchfully.switchfullylmsbackend.dtos.modules.ModuleDto;
+import com.switchfully.switchfullylmsbackend.entities.AbstractUser;
 import com.switchfully.switchfullylmsbackend.entities.Course;
-import com.switchfully.switchfullylmsbackend.entities.Student;
 import com.switchfully.switchfullylmsbackend.services.CourseService;
 import com.switchfully.switchfullylmsbackend.services.ModuleService;
 import com.switchfully.switchfullylmsbackend.services.UserService;
@@ -35,21 +35,13 @@ public class ModuleController {
       return moduleService.createModule(createModuleDto);
    }
 
-   @GetMapping()
-   @PreAuthorize("hasAuthority('student')")
-   @ResponseStatus(HttpStatus.OK)
-   public List<ModuleDto> getModulesAsStudent(@RequestHeader("Authorization") String bearerToken) {
-      Student student = userService.getStudentByToken(bearerToken);
-      return moduleService.getModulesAsStudent(student);
-   }
 
    @GetMapping(path = "/{courseId}")
-   @PreAuthorize("hasAuthority('coach')")
    @ResponseStatus(HttpStatus.OK)
-   public List<ModuleDto> getModulesByCourse(@RequestHeader("Authorization") String bearerToken, Long courseId) {
-      userService.getCoachByToken(bearerToken);
+   public List<ModuleDto> getModulesByCourse(@RequestHeader("Authorization") String bearerToken, @PathVariable Long courseId) {
+      AbstractUser abstractUser = userService.getUserByToken(bearerToken);
       Course course = courseService.getCourse(courseId);
-      return moduleService.getModulesByCourse(course);
+      return moduleService.getModulesByCourse(abstractUser, course);
 
    }
 }

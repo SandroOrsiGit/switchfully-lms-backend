@@ -40,6 +40,12 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         return responseEntityBuilder(e, HttpStatus.FORBIDDEN);
     }
 
+    @ExceptionHandler(NotAPartOfThisCourseException.class)
+    @ResponseBody
+    private ResponseEntity<Object> notAPartOfThisCourseException(NotAPartOfThisCourseException e) {
+        return responseEntityBuilder(e, HttpStatus.FORBIDDEN);
+    }
+
 
     private ResponseEntity<Object> responseEntityBuilder(Exception e, HttpStatus status) {
         ApiError apiError = new ApiError(status, e.getMessage(), e);
