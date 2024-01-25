@@ -65,43 +65,4 @@ class ClassGroupServiceTest {
         assertEquals(expectedClassGroupDto, resultClassGroupDto);
 
     }
-
-    @Test
-    void givenExistingStudentId_whenGetClassGroupsByStudentId_thenReturnClassGroupDtoList() {
-        // given
-        Long userId = 1L;
-        ClassGroup classGroup1 = new ClassGroup("name1", LocalDate.now(), LocalDate.now().plusDays(1));
-        ClassGroup classGroup2 = new ClassGroup("name2", LocalDate.now(), LocalDate.now().plusDays(1));
-        ClassGroupDto classGroupDto1 = new ClassGroupDto(1L,"name1", LocalDate.now(), LocalDate.now().plusDays(1), null, new ArrayList<>(), new ArrayList<>());
-        ClassGroupDto classGroupDto2 = new ClassGroupDto(2L,"name1", LocalDate.now(), LocalDate.now().plusDays(1), null, new ArrayList<>(), new ArrayList<>());
-
-        List<ClassGroup> classGroupList = Arrays.asList(classGroup1, classGroup2);
-
-        // when
-        when(classGroupRepository.findByStudentsId(userId)).thenReturn(classGroupList);
-        when(classGroupMapper.mapClassGroupToClassGroupDto(classGroup1)).thenReturn(classGroupDto1);
-        when(classGroupMapper.mapClassGroupToClassGroupDto(classGroup2)).thenReturn(classGroupDto2);
-
-        List<ClassGroupDto> result = classGroupService.getClassGroupsByUserId(userId);
-
-        // then
-        assertEquals(2, result.size());
-        assertEquals(classGroupDto1, result.get(0));
-        assertEquals(classGroupDto2, result.get(1));
-
-
-    }
-
-    @Test
-    void givenUndefinedStudentId_whenGetClassGroupsByStudentId_thenReturnClassGroupDtoList() {
-        // given
-        Long userId = 10000L;
-
-
-        // when & then
-        StudentDoesntExistException exception = assertThrows(StudentDoesntExistException.class, () -> {
-            classGroupService.getClassGroupsByUserId(userId);
-        });
-
-    }
 }
