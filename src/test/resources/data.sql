@@ -11,7 +11,7 @@ VALUES
 
 INSERT INTO users (id, dtype, email, display_name)
 values
-    (1, 'Student', 'Balder@lms.com', 'Balder'),
+    (1, 'Coach', 'Balder@lms.com', 'Balder'),
     (2, 'Student', 'Dylan@lms.com', 'Dylan'),
     (3, 'Student', 'Karel@lms.com', 'Karel'),
     (4, 'Student', 'Jussi@lms.com', 'Jussi'),
