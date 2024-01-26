@@ -13,12 +13,6 @@ import java.io.IOException;
 @ControllerAdvice
 public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
-	@ExceptionHandler(NotACoachException.class)
-	@ResponseBody
-	private ResponseEntity<Object> notAnAdminException(NotACoachException e) {
-		return responseEntityBuilder(e, HttpStatus.UNAUTHORIZED);
-	}
-
     @ExceptionHandler(StudentDoesntExistException.class)
     @ResponseBody
     private ResponseEntity<Object> studentDoesntExist(StudentDoesntExistException e) {
@@ -33,7 +27,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(NotACoachException.class)
     @ResponseBody
-    private ResponseEntity<Object> notACoachException(NotAStudentException e) {
+    private ResponseEntity<Object> notACoachException(NotACoachException e) {
         return responseEntityBuilder(e, HttpStatus.FORBIDDEN);
     }
 

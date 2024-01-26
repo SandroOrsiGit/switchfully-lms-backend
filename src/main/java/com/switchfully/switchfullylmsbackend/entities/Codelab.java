@@ -16,6 +16,10 @@ public class Codelab {
     @JoinColumn(name = "codelab_id")
     private List<Comment> comments;
 
+    @Column(name = "module_id")
+    private Long moduleId;
+
+
     public Codelab() {
 
     }
@@ -37,6 +41,10 @@ public class Codelab {
         return comments;
     }
 
+    public Long getModuleId() {
+        return moduleId;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -47,5 +55,16 @@ public class Codelab {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Codelab{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", comments=" + comments +
+                ", moduleId=" + moduleId +
+                '}';
     }
 }
