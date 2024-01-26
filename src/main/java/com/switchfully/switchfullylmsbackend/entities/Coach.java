@@ -12,5 +12,13 @@ public class Coach extends AbstractUser {
 
     }
 
+    @Override
+    public String getRole() {
+        return "coach";
+    }
 
+    @Override
+    public String toString() {
+        return "Coach{} " + super.toString();
+    }
 }

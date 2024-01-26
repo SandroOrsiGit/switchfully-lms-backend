@@ -17,7 +17,6 @@ public class CodelabDto {
         this.commentDtoList = commentDtoList;
     }
 
-    //    ---Getters---------------
     public Long getId() {
         return id;
     }

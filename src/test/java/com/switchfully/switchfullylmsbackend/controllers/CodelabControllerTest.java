@@ -1,10 +1,11 @@
 package com.switchfully.switchfullylmsbackend.controllers;
 
-import com.switchfully.switchfullylmsbackend.dtos.modules.CreateModuleDto;
-import com.switchfully.switchfullylmsbackend.dtos.modules.ModuleDto;
+import com.switchfully.switchfullylmsbackend.dtos.codelabs.CodelabDto;
+import com.switchfully.switchfullylmsbackend.dtos.codelabs.CreateCodelabDto;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,16 +16,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase
-public class ModuleControllerTest {
+public class CodelabControllerTest {
+
     @LocalServerPort
     private int port;
 
+    @Autowired
+    private CodelabController codelabController;
+
     @Value ("${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/token")
     private String url;
-
     @Value("${keycloak.resource}")
     private String clientId;
-
     @Value("${keycloak.credentials.secret}")
     private String secret;
 
@@ -44,57 +47,57 @@ public class ModuleControllerTest {
     }
 
     @Test
-    void givenCreateModuleDtoAndCoach_whenPostingToBackend_thenStatusCodeCreatedIsReturned() {
-
-        //GIVEN
-        CreateModuleDto createModuleDto = new CreateModuleDto();
-        createModuleDto.setName("TestName");
+    void givenCreateCodelabAndCoach_whenPostingToBackend_thenCodelabIsCreatedAndSaved() {
+        // given
+        CreateCodelabDto createCodelabDto = new CreateCodelabDto("Name");
 
         String accessToken = getAccessToken("coach@lms.com", "coach");
 
-        //WHEN
-        ModuleDto moduleDto = RestAssured
+        // when
+        CodelabDto codelabDto = RestAssured
                 .given()
                 .auth()
                 .oauth2(accessToken)
-                .body(createModuleDto)
+                .body(createCodelabDto)
                 .accept(ContentType.JSON)
                 .contentType(ContentType.JSON)
                 .port(port)
                 .when()
-                .post("/modules")
+                .post("/codelab")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.CREATED.value())
                 .extract()
-                .as(ModuleDto.class);
+                .as(CodelabDto.class);
 
-        assertThat(moduleDto).isInstanceOf(ModuleDto.class);
-        assertThat(moduleDto.getName()).isEqualTo(createModuleDto.getName());
-
+        assertThat(codelabDto).isInstanceOf(CodelabDto.class);
+        assertThat(codelabDto.getName()).isEqualTo(createCodelabDto.getName());
     }
 
     @Test
-    void givenCreateModuleDtoAndStudent_whenPostingToBackend_thenStatusCodeForbiddenIsReturned() {
-        //GIVEN
-        CreateModuleDto createModuleDto = new CreateModuleDto();
-        createModuleDto.setName("TestName");
+    void givenCreateCodelabAndStudent_whenPostingToBackend_thenStatusCodeIsForbidden() {
+        // given
+        CreateCodelabDto createCodelabDto = new CreateCodelabDto("Name");
 
         String accessToken = getAccessToken("student@lms.com", "student");
 
-        //WHEN
+        // when
         RestAssured
                 .given()
                 .auth()
                 .oauth2(accessToken)
-                .body(createModuleDto)
+                .body(createCodelabDto)
                 .accept(ContentType.JSON)
                 .contentType(ContentType.JSON)
                 .port(port)
                 .when()
-                .post("/modules")
+                .post("/codelab")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.FORBIDDEN.value());
     }
+
+
+
+
 }

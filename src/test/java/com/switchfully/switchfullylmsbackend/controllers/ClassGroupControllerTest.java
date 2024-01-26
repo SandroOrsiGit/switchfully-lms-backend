@@ -151,5 +151,4 @@ public class ClassGroupControllerTest {
         
         assertThat(classGroups).hasOnlyElementsOfType(ClassGroupDto.class);
     }
-
 }

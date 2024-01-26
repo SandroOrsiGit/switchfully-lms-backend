@@ -43,7 +43,7 @@ public class ClassGroupService {
         ClassGroup addedClassGroup = classGroupRepository.save(classGroup);
         return classGroupMapper.mapClassGroupToClassGroupDto(addedClassGroup);
     }
-    
+
     public List<ClassGroupDto> getClassGroupsByUserId(Long userId) {
         String role = userService.getRoleByUserId(userId);
         List<ClassGroup> classGroups;

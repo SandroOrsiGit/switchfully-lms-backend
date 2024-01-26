@@ -11,9 +11,9 @@ public class Student extends AbstractUser {
     private List<CodelabProgress> codelabProgresses;
 
     public Student(
-                   String email,
-                   String displayName
-                ) {
+            String email,
+            String displayName
+    ) {
         super(email, displayName);
 
 
@@ -25,5 +25,17 @@ public class Student extends AbstractUser {
 
     public List<CodelabProgress> getCodelabProgresses() {
         return codelabProgresses;
+    }
+
+    @Override
+    public String getRole() {
+        return "student";
+    }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "codelabProgresses=" + codelabProgresses +
+                "} " + super.toString();
     }
 }

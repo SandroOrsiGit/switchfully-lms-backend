@@ -5,6 +5,7 @@ import com.switchfully.switchfullylmsbackend.dtos.users.StudentDto;
 public class CommentDto {
     private Long id;
     private String text;
+    //TODO should we rename studentDto to studentName? Check CommentMapper for info
     private String studentDto;
 
     public CommentDto() {

@@ -18,7 +18,6 @@ public class CreateClassGroupDto {
         this.coachId = coachId;
     }
 
-    // --- Getters ---------------------
     public String getName() {
         return name;
     }
