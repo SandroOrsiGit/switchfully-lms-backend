@@ -1,5 +1,6 @@
 package com.switchfully.switchfullylmsbackend.controllers;
 
+import com.switchfully.switchfullylmsbackend.dtos.codelabprogresses.CodelabProgressDto;
 import com.switchfully.switchfullylmsbackend.dtos.codelabs.CodelabDto;
 import com.switchfully.switchfullylmsbackend.dtos.codelabs.CodelabNoCommentDto;
 import com.switchfully.switchfullylmsbackend.dtos.codelabs.CreateCodelabDto;
@@ -32,5 +33,10 @@ public class CodelabController {
     @ResponseStatus(HttpStatus.OK)
     public List<CodelabNoCommentDto> getCodelabs(@RequestParam Long courseId) {
         return codelabService.getCodelabs(courseId);
+    }
+    @GetMapping(path="/progress", produces = "application/json")
+    @ResponseStatus(HttpStatus.OK)
+    public List<CodelabProgressDto> getCodelabsProgress(@RequestParam Long courseId) {
+        return codelabService.getCodelabsProgress(courseId);
     }
 }
