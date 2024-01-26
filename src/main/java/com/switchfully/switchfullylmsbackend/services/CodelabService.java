@@ -8,6 +8,7 @@ import com.switchfully.switchfullylmsbackend.entities.Codelab;
 import com.switchfully.switchfullylmsbackend.entities.CodelabProgress;
 import com.switchfully.switchfullylmsbackend.entities.Course;
 import com.switchfully.switchfullylmsbackend.entities.Module;
+import com.switchfully.switchfullylmsbackend.exceptions.CourseNotFoundException;
 import com.switchfully.switchfullylmsbackend.exceptions.IdNotFoundException;
 import com.switchfully.switchfullylmsbackend.mappers.CodelabMapper;
 import com.switchfully.switchfullylmsbackend.mappers.CodelabProgressMapper;
@@ -72,7 +73,7 @@ public class CodelabService {
 
     private List<Codelab> getCodelabList(Long courseId) {
         Course course = courseRepository.findById(courseId )
-                .orElseThrow( () -> new IdNotFoundException("Course Id not found.") );
+                .orElseThrow(CourseNotFoundException::new);
         List<Module> moduleList = moduleRepository.findByCourses(course);
         return moduleList.stream()
                 .map(module -> codelabRepository.findByModuleId(module.getId()))

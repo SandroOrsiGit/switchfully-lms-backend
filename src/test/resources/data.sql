@@ -9,7 +9,7 @@ VALUES ('DONE'),
 
 
 INSERT INTO users (dtype, email, display_name)
-values ('Student', 'Balder@lms.com', 'Balder'),
+values ('Student', 'balder@lms.com', 'Balder'),
        ('Student', 'Dylan@lms.com', 'Dylan'),
        ('Student', 'Karel@lms.com', 'Karel'),
        ('Student', 'Jussi@lms.com', 'Jussi'),
@@ -28,8 +28,8 @@ values
 
 INSERT INTO class_groups(name, course_id)
 values
-('Java 2023-10', 1),
-('.NET 2023-10', 3);
+    ('Java 2023-10', 1),
+    ('.NET 2023-10', 3);
 
 INSERT INTO modules(dtype, name, parent_module_id)
 values
@@ -49,6 +49,15 @@ values
 
 INSERT INTO class_groups_students(class_group_id, student_id)
 values
-(1, 1),
-(1, 2);
+    (1, 1),
+    (1, 2);
 
+INSERT INTO codelabs (name, module_id)
+values
+    ('codelab01', 1),
+    ('codelab02', 1);
+
+INSERT INTO codelab_progresses (codelab_id, progress_id, student_id)
+values
+    (1,1,1),
+    (2,3,1);
