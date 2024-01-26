@@ -5,6 +5,7 @@ import com.switchfully.switchfullylmsbackend.dtos.modules.ModuleDto;
 import com.switchfully.switchfullylmsbackend.entities.AbstractUser;
 import com.switchfully.switchfullylmsbackend.entities.Course;
 
+import com.switchfully.switchfullylmsbackend.exceptions.NotAPartOfThisCourseException;
 import com.switchfully.switchfullylmsbackend.repositories.CourseRepository;
 import com.switchfully.switchfullylmsbackend.repositories.UserRepository;
 import org.assertj.core.api.SoftAssertions;
@@ -17,6 +18,7 @@ import java.util.List;
 
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertThrows;
 
 
 @SpringBootTest
@@ -65,7 +67,6 @@ public class ModuleServiceTest {
         AbstractUser abstractUser = userRepository.findById(9L).get();
         Course course = courseRepository.findById(1L).get();
 
-
         // when
         List<ModuleDto> moduleDtoList = moduleService.getModulesByCourse(abstractUser, course);
 
@@ -75,5 +76,15 @@ public class ModuleServiceTest {
         softAssertions.assertThat(moduleDtoList.get(0).getName()).isEqualTo("Java basics");
 
         softAssertions.assertAll();
+    }
+
+    @Test
+    void givenStudentAndCourseTheyAreNotPartOf_whenGetModules_thenThrowException() {
+        // given
+        AbstractUser abstractUser = userRepository.findById(4L).get();
+        Course course = courseRepository.findById(1L).get();
+
+        // when & then
+        assertThrows(NotAPartOfThisCourseException.class, () -> moduleService.getModulesByCourse(abstractUser, course));
     }
 }

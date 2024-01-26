@@ -6,11 +6,14 @@ import com.switchfully.switchfullylmsbackend.entities.SubModule;
 import java.util.List;
 
 public class ModuleDto {
-   private final Long id;
-   private final String name;
-   private final List<Codelab> codelabs;
-   private final List<SubModule> subModules;
-   
+   private Long id;
+   private String name;
+   private List<Codelab> codelabs;
+   private List<SubModule> subModules;
+
+   public ModuleDto() {
+   }
+
    public ModuleDto(Long id, String name, List<Codelab> codelabs, List<SubModule> subModules) {
       this.id = id;
       this.name = name;
@@ -33,4 +36,5 @@ public class ModuleDto {
    public List<SubModule> getSubModules() {
       return subModules;
    }
+
 }

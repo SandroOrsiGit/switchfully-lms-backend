@@ -2,14 +2,19 @@ package com.switchfully.switchfullylmsbackend.controllers;
 
 import com.switchfully.switchfullylmsbackend.dtos.modules.CreateModuleDto;
 import com.switchfully.switchfullylmsbackend.dtos.modules.ModuleDto;
+import com.switchfully.switchfullylmsbackend.entities.Course;
+import com.switchfully.switchfullylmsbackend.repositories.CourseRepository;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -18,6 +23,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ModuleControllerTest {
     @LocalServerPort
     private int port;
+    @Autowired
+    private ModuleController moduleController;
+    @Autowired
+    private CourseRepository courseRepository;
 
     @Value ("${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/token")
     private String url;
@@ -97,4 +106,30 @@ public class ModuleControllerTest {
                 .assertThat()
                 .statusCode(HttpStatus.FORBIDDEN.value());
     }
+
+    @Test
+    void givenCoach_whenGetModulesByCourseTheyAreNotPartOf_thenReturnModuleDtoList() {
+        //GIVEN
+        String accessToken = getAccessToken("coach@lms.com", "coach");
+        Course course = courseRepository.findById(1L).get();
+
+        //WHEN
+        List<ModuleDto> moduleDtoList = RestAssured
+                .given()
+                .auth()
+                .oauth2(accessToken)
+                .contentType(ContentType.JSON)
+                .port(port)
+                .when()
+                .get("/modules/" + course.getId() )
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .jsonPath()
+                .getList(".", ModuleDto.class);
+
+        assertThat(moduleDtoList.get(0).getName()).isEqualTo("Java basics");
+    }
+
 }
