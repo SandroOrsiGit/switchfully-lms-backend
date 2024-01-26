@@ -55,10 +55,15 @@ public class CodelabService {
                 .toList();
     }
 
-    public List<CodelabProgressDto> getCodelabsProgress(Long courseId) {
+    public List<CodelabProgressDto> getCodelabsProgress(Long courseId, Long studentId) {
+        // get all codelabs in a course
         List<Codelab> codelabList = getCodelabList(courseId);
+        // get all progresses of those codelabs
         List<CodelabProgress> codelabProgressList = codelabList.stream()
-                .map( codelab -> codelabProgressRepository.findByCodelabId( codelab.getId() ))
+                .map(codelab -> codelabProgressRepository.findByCodelabId(codelab.getId()))
+                .flatMap(List::stream)
+        // filter progresses for specific student
+                .filter(codelabProgress -> codelabProgress.getStudentId().equals(studentId))
                 .toList();
         return codelabProgressList.stream()
                 .map(codelabProgressMapper::mapCodelabProgressToCodelabProgressDto)

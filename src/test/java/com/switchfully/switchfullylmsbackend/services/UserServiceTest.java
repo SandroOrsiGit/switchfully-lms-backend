@@ -3,6 +3,7 @@ package com.switchfully.switchfullylmsbackend.services;
 import com.switchfully.switchfullylmsbackend.dtos.users.CreateUserDto;
 import com.switchfully.switchfullylmsbackend.dtos.users.UpdateUserDto;
 import com.switchfully.switchfullylmsbackend.dtos.users.UserDto;
+import com.switchfully.switchfullylmsbackend.entities.AbstractUser;
 import com.switchfully.switchfullylmsbackend.entities.Coach;
 import com.switchfully.switchfullylmsbackend.entities.Student;
 import com.switchfully.switchfullylmsbackend.exceptions.IdNotFoundException;
@@ -161,7 +162,7 @@ class UserServiceTest {
 		when(userMapper.mapAbstractUserToUserDto(student, "student")).thenReturn(new UserDto(student.getId(), student.getEmail(), student.getDisplayName(), student.getRole()));
 
 		//WHEN
-		UserDto actual = userService.getUserByToken(accessToken);
+		AbstractUser actual = userService.getUserByToken(accessToken);
 
 		verify(userRepository).findByEmail("test@lms.com");
 		verify(authentication).getAuthorities();

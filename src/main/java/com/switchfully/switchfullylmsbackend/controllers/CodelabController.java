@@ -4,8 +4,8 @@ import com.switchfully.switchfullylmsbackend.dtos.codelabprogresses.CodelabProgr
 import com.switchfully.switchfullylmsbackend.dtos.codelabs.CodelabDto;
 import com.switchfully.switchfullylmsbackend.dtos.codelabs.CodelabNoCommentDto;
 import com.switchfully.switchfullylmsbackend.dtos.codelabs.CreateCodelabDto;
-import com.switchfully.switchfullylmsbackend.dtos.courses.CourseDto;
 import com.switchfully.switchfullylmsbackend.services.CodelabService;
+import com.switchfully.switchfullylmsbackend.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -17,9 +17,11 @@ import java.util.List;
 @RequestMapping(path="/codelab")
 public class CodelabController {
     private final CodelabService codelabService;
+    private final UserService userService;
 
-    public CodelabController (CodelabService codelabService) {
+    public CodelabController (CodelabService codelabService, UserService userService) {
         this.codelabService = codelabService;
+        this.userService = userService;
     }
 
     @ResponseStatus(HttpStatus.CREATED)
@@ -36,7 +38,10 @@ public class CodelabController {
     }
     @GetMapping(path="/progress", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public List<CodelabProgressDto> getCodelabsProgress(@RequestParam Long courseId) {
-        return codelabService.getCodelabsProgress(courseId);
+    public List<CodelabProgressDto> getCodelabsProgress(@RequestParam Long courseId,
+                                @RequestHeader("Authorization") String bearerToken) {
+        Long studentId = userService.getUserByToken(bearerToken).getId();
+        System.out.println(studentId);
+        return codelabService.getCodelabsProgress(courseId,studentId);
     }
 }

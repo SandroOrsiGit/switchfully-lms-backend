@@ -108,7 +108,7 @@ public class UserService {
         }
     }
 
-    private static String decode(String encodedString) {
+    public static String decode(String encodedString) {
         return new String(Base64.getUrlDecoder().decode(encodedString));
     }
 
