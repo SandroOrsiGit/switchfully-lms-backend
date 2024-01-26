@@ -26,11 +26,17 @@ public class ClassGroupController {
     }
     
     @GetMapping(produces = "application/json")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAnyAuthority('coach', 'student')")
+    public ClassGroupDto getClassGroupById( @RequestParam Long id ) {
+        return classgroupService.getClassGroupById(id);
+    }
+    
+    @GetMapping(path = "/classGroup",produces = "application/json")
     @PreAuthorize("hasAnyAuthority('coach', 'student')")
     public List<ClassGroupDto> getClassGroupsByUser(@RequestParam Long userId) {
         return classgroupService.getClassGroupsByUserId(userId);
     }
-    
 }
 
 
