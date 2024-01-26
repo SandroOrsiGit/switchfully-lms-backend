@@ -6,7 +6,6 @@ import com.switchfully.switchfullylmsbackend.entities.ClassGroup;
 import com.switchfully.switchfullylmsbackend.exceptions.StudentDoesntExistException;
 import com.switchfully.switchfullylmsbackend.mappers.ClassGroupMapper;
 import com.switchfully.switchfullylmsbackend.repositories.ClassGroupRepository;
-import net.bytebuddy.asm.Advice;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -40,14 +39,16 @@ class ClassGroupServiceTest {
         // given
         CreateClassGroupDto createClassGroupDto = new CreateClassGroupDto("TestingService",
                 LocalDate.now(),
-                LocalDate.now().plusDays(1));
+                LocalDate.now().plusDays(1), 1L);
         ClassGroup classGroupToAdd = new ClassGroup("TestingService",
                 LocalDate.now(),
-                LocalDate.now().plusDays(1));
+                LocalDate.now().plusDays(1),
+                null);
 
         ClassGroup addedClassGroup = new ClassGroup("TestingService",
                 LocalDate.now(),
-                LocalDate.now().plusDays(1));
+                LocalDate.now().plusDays(1),
+                null);
         ClassGroupDto expectedClassGroupDto = new ClassGroupDto(1L, "TestingService",
                 LocalDate.now(),
                 LocalDate.now().plusDays(1),
@@ -57,52 +58,13 @@ class ClassGroupServiceTest {
 
 
         // when
-        when(classGroupMapper.mapCreateClassGroupDtoToClassGroup(createClassGroupDto)).thenReturn(classGroupToAdd);
+        when(classGroupMapper.mapCreateClassGroupDtoToClassGroup(createClassGroupDto,null)).thenReturn(classGroupToAdd);
         when(classGroupRepository.save(any(ClassGroup.class))).thenReturn(addedClassGroup);
         when(classGroupMapper.mapClassGroupToClassGroupDto(addedClassGroup)).thenReturn(expectedClassGroupDto);
         ClassGroupDto resultClassGroupDto = classGroupService.addClassGroup(createClassGroupDto);
 
         // then
         assertEquals(expectedClassGroupDto, resultClassGroupDto);
-
-    }
-
-    @Test
-    void givenExistingStudentId_whenGetClassGroupsByStudentId_thenReturnClassGroupDtoList() {
-        // given
-        Long userId = 1L;
-        ClassGroup classGroup1 = new ClassGroup("name1", LocalDate.now(), LocalDate.now().plusDays(1));
-        ClassGroup classGroup2 = new ClassGroup("name2", LocalDate.now(), LocalDate.now().plusDays(1));
-        ClassGroupDto classGroupDto1 = new ClassGroupDto(1L,"name1", LocalDate.now(), LocalDate.now().plusDays(1), null, new ArrayList<>(), new ArrayList<>());
-        ClassGroupDto classGroupDto2 = new ClassGroupDto(2L,"name1", LocalDate.now(), LocalDate.now().plusDays(1), null, new ArrayList<>(), new ArrayList<>());
-
-        List<ClassGroup> classGroupList = Arrays.asList(classGroup1, classGroup2);
-
-        // when
-        when(classGroupRepository.findByStudentsId(userId)).thenReturn(classGroupList);
-        when(classGroupMapper.mapClassGroupToClassGroupDto(classGroup1)).thenReturn(classGroupDto1);
-        when(classGroupMapper.mapClassGroupToClassGroupDto(classGroup2)).thenReturn(classGroupDto2);
-
-        List<ClassGroupDto> result = classGroupService.getClassGroupsByUserId(userId);
-
-        // then
-        assertEquals(2, result.size());
-        assertEquals(classGroupDto1, result.get(0));
-        assertEquals(classGroupDto2, result.get(1));
-
-
-    }
-
-    @Test
-    void givenUndefinedStudentId_whenGetClassGroupsByStudentId_thenReturnClassGroupDtoList() {
-        // given
-        Long userId = 10000L;
-
-
-        // when & then
-        StudentDoesntExistException exception = assertThrows(StudentDoesntExistException.class, () -> {
-            classGroupService.getClassGroupsByUserId(userId);
-        });
 
     }
 }

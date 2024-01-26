@@ -2,7 +2,6 @@ package com.switchfully.switchfullylmsbackend.mappers;
 
 import com.switchfully.switchfullylmsbackend.dtos.courses.*;
 import com.switchfully.switchfullylmsbackend.entities.Course;
-import com.switchfully.switchfullylmsbackend.entities.Module;
 import org.springframework.stereotype.Component;
 
 @Component

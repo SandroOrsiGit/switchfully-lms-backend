@@ -51,3 +51,4 @@ INSERT INTO class_groups_students(class_group_id, student_id)
 values
 (1, 1),
 (1, 2);
+

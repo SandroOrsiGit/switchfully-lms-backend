@@ -39,11 +39,11 @@ public class ClassGroup {
     public ClassGroup() {
     }
 
-    public ClassGroup(String name, LocalDate startDate, LocalDate endDate) {
+    public ClassGroup(String name, LocalDate startDate, LocalDate endDate, List<Coach> coachList) {
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.coaches = new ArrayList<>();
+        this.coaches = coachList;
         this.students = new ArrayList<>();
     }
 

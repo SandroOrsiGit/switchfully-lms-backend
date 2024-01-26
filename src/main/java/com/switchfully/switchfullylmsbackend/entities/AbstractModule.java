@@ -35,6 +35,13 @@ public abstract class AbstractModule {
     public List<Codelab> getCodelabs() {
         return codelabs;
     }
-    
-    
+
+    @Override
+    public String toString() {
+        return "AbstractModule{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", codelabs=" + codelabs +
+                '}';
+    }
 }

@@ -26,4 +26,16 @@ public class Student extends AbstractUser {
     public List<CodelabProgress> getCodelabProgresses() {
         return codelabProgresses;
     }
+
+    @Override
+    public String getRole() {
+        return "student";
+    }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "codelabProgresses=" + codelabProgresses +
+                "} " + super.toString();
+    }
 }
