@@ -26,10 +26,10 @@ public class ClassGroupController {
     }
     
     @GetMapping(produces = "application/json")
+    @PreAuthorize("hasAnyAuthority('coach', 'student')")
     public List<ClassGroupDto> getClassGroupsByUser(@RequestParam Long userId) {
         return classgroupService.getClassGroupsByUserId(userId);
     }
-    
     
 }
 

@@ -4,6 +4,7 @@ import com.switchfully.switchfullylmsbackend.dtos.users.CreateUserDto;
 import com.switchfully.switchfullylmsbackend.dtos.users.UpdateUserDto;
 import com.switchfully.switchfullylmsbackend.entities.AbstractUser;
 import com.switchfully.switchfullylmsbackend.dtos.users.UserDto;
+import com.switchfully.switchfullylmsbackend.entities.Coach;
 import com.switchfully.switchfullylmsbackend.entities.Student;
 import com.switchfully.switchfullylmsbackend.exceptions.IdNotFoundException;
 
@@ -107,7 +108,7 @@ public class UserService {
         }
     }
 
-    private static String decode(String encodedString) {
+    static String decode(String encodedString) {
         return new String(Base64.getUrlDecoder().decode(encodedString));
     }
 
