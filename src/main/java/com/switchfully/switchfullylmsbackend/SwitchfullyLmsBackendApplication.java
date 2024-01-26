@@ -14,26 +14,27 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 public class SwitchfullyLmsBackendApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(SwitchfullyLmsBackendApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(SwitchfullyLmsBackendApplication.class, args);
+    }
 
 
-	@Bean
-	public Keycloak keycloak(@Value("${master.keycloak.username}") String adminUsername, @Value("${master.keycloak.password}") String adminPassword) {
-		return KeycloakBuilder.builder()
-				.serverUrl("https://keycloak.switchfully.com")
-				.grantType(OAuth2Constants.PASSWORD)
-				.realm("master")
-				.clientId("admin-cli")
-				.username(adminUsername)
-				.password(adminPassword)
-				.resteasyClient(ResteasyClientBuilder.newBuilder().build())
-				.build();
-	}
-	@Bean
-	public KeycloakConfigResolver KeycloakConfigResolver() {
-		return new KeycloakSpringBootConfigResolver();
-	}
+    @Bean
+    public Keycloak keycloak(@Value("${master.keycloak.username}") String adminUsername, @Value("${master.keycloak.password}") String adminPassword) {
+        return KeycloakBuilder.builder()
+                .serverUrl("https://keycloak.switchfully.com")
+                .grantType(OAuth2Constants.PASSWORD)
+                .realm("master")
+                .clientId("admin-cli")
+                .username(adminUsername)
+                .password(adminPassword)
+                .resteasyClient(ResteasyClientBuilder.newBuilder().build())
+                .build();
+    }
+
+    @Bean
+    public KeycloakConfigResolver KeycloakConfigResolver() {
+        return new KeycloakSpringBootConfigResolver();
+    }
 }
 
