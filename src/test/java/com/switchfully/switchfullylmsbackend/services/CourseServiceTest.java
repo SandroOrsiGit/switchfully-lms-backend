@@ -3,6 +3,7 @@ package com.switchfully.switchfullylmsbackend.services;
 import com.switchfully.switchfullylmsbackend.dtos.courses.CreateCourseDto;
 import com.switchfully.switchfullylmsbackend.dtos.courses.CourseDto;
 import com.switchfully.switchfullylmsbackend.entities.AbstractUser;
+import com.switchfully.switchfullylmsbackend.entities.Course;
 import com.switchfully.switchfullylmsbackend.repositories.UserRepository;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
@@ -32,6 +33,17 @@ public class CourseServiceTest {
 
         // then
         assertThat(createCourseDto.getName()).isEqualTo(resultCourseDto.getName());
+    }
+
+    @Test
+    void whenGetCourse_thenReturnCourseDto() {
+        // when
+        Course course = courseService.getCourse(1L);
+
+        // then
+        assertThat(course.getId()).isEqualTo(1L);
+        assertThat(course.getName()).isEqualTo("Java");
+
     }
 
     @Test
