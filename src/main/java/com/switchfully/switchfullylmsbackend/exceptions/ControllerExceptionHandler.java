@@ -31,12 +31,6 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         return responseEntityBuilder(e, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(NotACoachException.class)
-    @ResponseBody
-    private ResponseEntity<Object> notACoachException(NotAStudentException e) {
-        return responseEntityBuilder(e, HttpStatus.FORBIDDEN);
-    }
-
     @ExceptionHandler(NotAStudentException.class)
     @ResponseBody
     private ResponseEntity<Object> notAStudentException(NotAStudentException e) {
