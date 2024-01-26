@@ -13,4 +13,16 @@ public class StudentNoCodelabProgressDto {
         this.email = email;
         this.displayName = displayName;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
 }
