@@ -26,9 +26,6 @@ public class CodelabControllerTest {
     @LocalServerPort
     private int port;
 
-    @Autowired
-    private CodelabController codelabController;
-
     @Value ("${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/token")
     private String url;
     @Value("${keycloak.resource}")

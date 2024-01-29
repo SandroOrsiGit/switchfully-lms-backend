@@ -54,6 +54,7 @@ public class ModuleService {
                 .map(courseRepository::findByClassGroups)
                 .flatMap(List::stream)
                 .toList();
+
         if (!courseList.contains(course)) {
             throw new NotAPartOfThisCourseException();
         }

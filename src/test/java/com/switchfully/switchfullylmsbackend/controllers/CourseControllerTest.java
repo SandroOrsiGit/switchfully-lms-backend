@@ -18,27 +18,33 @@ public class CourseControllerTest {
     @LocalServerPort
     private int port;
 
-    @Autowired
-    private CourseController courseController;
+    @Value ("${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/token")
+    private String url;
+    @Value("${keycloak.resource}")
+    private String clientId;
+    @Value("${keycloak.credentials.secret}")
+    private String secret;
+
+    private String getAccessToken(String username, String password) {
+        return RestAssured
+                .given()
+                .contentType("application/x-www-form-urlencoded; charset=utf-8")
+                .formParam("client_id", clientId)
+                .formParam("client_secret", secret)
+                .formParam("grant_type", "password")
+                .formParam("username", username)
+                .formParam("password", password)
+                .when()
+                .post(url)
+                .then()
+                .extract().body().jsonPath().get("access_token");
+    }
 
     @Test
     void givenCreateCourseDtoAndCoach_whenPostingToBackend_thenStatusCodeCreatedIsReturned() {
         //GIVEN
-        CreateCourseDto createCourseDto = new CreateCourseDto();
-        createCourseDto.setName("TestName");
-
-        String accessToken = RestAssured
-                .given()
-                .contentType("application/x-www-form-urlencoded; charset=utf-8")
-                .formParam("client_id", "keycloak-example")
-                .formParam("client_secret", "Z8kzdqRzPcfWZENlvPebAo3UCjeiQ0UZ")
-                .formParam("grant_type", "password")
-                .formParam("username", "coach@lms.com")
-                .formParam("password", "coach")
-                .when()
-                .post("https://keycloak.switchfully.com/realms/java-2023-10/protocol/openid-connect/token")
-                .then()
-                .extract().body().jsonPath().get("access_token");
+        CreateCourseDto createCourseDto = new CreateCourseDto("TestName");
+        String accessToken = getAccessToken("coach@lms.com", "coach");
 
         //WHEN
         CourseDto courseDto = RestAssured
@@ -65,21 +71,8 @@ public class CourseControllerTest {
     @Test
     void givenCreateCourseDtoAndStudent_whenPostingToBackend_thenStatusCodeForbiddenIsReturned() {
         //GIVEN
-        CreateCourseDto createCourseDto = new CreateCourseDto();
-        createCourseDto.setName("TestName");
-
-        String accessToken = RestAssured
-                .given()
-                .contentType("application/x-www-form-urlencoded; charset=utf-8")
-                .formParam("client_id", "keycloak-example")
-                .formParam("client_secret", "Z8kzdqRzPcfWZENlvPebAo3UCjeiQ0UZ")
-                .formParam("grant_type", "password")
-                .formParam("username", "student@lms.com")
-                .formParam("password", "student")
-                .when()
-                .post("https://keycloak.switchfully.com/realms/java-2023-10/protocol/openid-connect/token")
-                .then()
-                .extract().body().jsonPath().get("access_token");
+        CreateCourseDto createCourseDto = new CreateCourseDto("TestName");
+        String accessToken = getAccessToken("student@lms.com", "student");
 
         //WHEN
         RestAssured

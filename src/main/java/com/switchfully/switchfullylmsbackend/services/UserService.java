@@ -73,7 +73,6 @@ public class UserService {
 
 
     public AbstractUser getUserByToken(String bearerToken) {
-        System.out.println("UserService getuserByToken: "+bearerToken);
         String[] chunks = bearerToken.split("\\.");
         JSONObject payload = new JSONObject(decode(chunks[1]));
 

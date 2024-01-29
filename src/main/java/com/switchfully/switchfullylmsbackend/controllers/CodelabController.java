@@ -41,7 +41,7 @@ public class CodelabController {
     public List<CodelabProgressDto> getCodelabsProgress(@RequestParam Long courseId,
                                 @RequestHeader("Authorization") String bearerToken) {
         Long studentId = userService.getUserByToken(bearerToken).getId();
-        System.out.println(studentId);
+
         return codelabService.getCodelabsProgress(courseId,studentId);
     }
 }

@@ -162,24 +162,13 @@ class UserServiceTest {
 		when(userMapper.mapAbstractUserToUserDto(student, "student")).thenReturn(new UserDto(student.getId(), student.getEmail(), student.getDisplayName(), student.getRole()));
 
 		//WHEN
-		AbstractUser actual = userService.getUserByToken(accessToken);
+		UserDto actual = userService.getUserDtoByToken(accessToken);
 
+		//THEN
 		verify(userRepository).findByEmail("test@lms.com");
 		verify(authentication).getAuthorities();
 		verify(userMapper).mapAbstractUserToUserDto(student, "student");
 		assertThat(actual.getId()).isEqualTo(student.getId());
 		assertThat(actual.getRole()).isEqualTo("student");
 	}
-
-	@Test
-	void givenEncodedString_whenDecode_thenReturnDecodedString() {
-		String encodedString = "SU5lZWRUb1Jlc3RBbmRTdG9wV3JpdGluZ1Rlc3Rz";
-
-		String actual = UserService.decode(encodedString);
-
-		assertThat(actual).isEqualTo("INeedToRestAndStopWritingTests");
-	}
-
-
-
 }

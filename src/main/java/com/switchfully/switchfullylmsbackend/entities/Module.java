@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "modules")
 public class Module extends AbstractModule {
    
    @OneToMany
