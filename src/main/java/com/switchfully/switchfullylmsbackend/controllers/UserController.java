@@ -39,6 +39,8 @@ public class UserController {
     @PutMapping(consumes = "application/json", produces = "application/json")
     @PreAuthorize("hasAnyAuthority('coach', 'student')")
     public void updateUser(@RequestHeader("Authorization") String bearerToken, @RequestBody UpdateUserDto updateUserDto) {
+        // TODO check if user is the authenticated user
+        // TODO return UserDto so the front end can update it's user data
         userService.updateUser(updateUserDto);
     }
 
