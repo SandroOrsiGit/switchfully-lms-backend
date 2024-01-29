@@ -42,7 +42,7 @@ public class ClassGroupControllerTest {
                 "TestName",
                 LocalDate.now(),
                 LocalDate.now(),
-                1L);
+                9L);
         
         String accessToken = RestAssured
                 .given()

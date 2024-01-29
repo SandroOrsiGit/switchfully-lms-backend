@@ -43,19 +43,21 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         return responseEntityBuilder(e, HttpStatus.FORBIDDEN);
     }
 
+    @ExceptionHandler(IdNotFoundException.class)
+    @ResponseBody
+    private ResponseEntity<Object> idNotFoundException(IdNotFoundException e) {
+        return responseEntityBuilder(e, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(InvalidRoleException.class)
+    @ResponseBody
+    private ResponseEntity<Object> invalidRoleException(InvalidRoleException e) {
+        return responseEntityBuilder(e, HttpStatus.FORBIDDEN);
+    }
 
     private ResponseEntity<Object> responseEntityBuilder(Exception e, HttpStatus status) {
         ApiError apiError = new ApiError(status, e.getMessage(), e);
         return new ResponseEntity<>(apiError, apiError.getStatus());
     }
-
-	@ExceptionHandler(IdNotFoundException.class)
-	protected void idNotFoundException(IdNotFoundException ex, HttpServletResponse response) throws IOException {
-		response.sendError(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
-	}
-	@ExceptionHandler(InvalidRoleException.class)
-	protected void invalidRoleException(InvalidRoleException ex, HttpServletResponse response) throws IOException {
-		response.sendError(HttpStatus.UNPROCESSABLE_ENTITY.value(), ex.getMessage());
-	}
 
 }
