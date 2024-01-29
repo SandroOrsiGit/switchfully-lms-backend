@@ -1,6 +1,6 @@
 package com.switchfully.switchfullylmsbackend.controllers;
 
-import com.switchfully.switchfullylmsbackend.dtos.users.CreateUserDto;
+import com.switchfully.switchfullylmsbackend.dtos.users.CreateStudentDto;
 import com.switchfully.switchfullylmsbackend.dtos.users.UserDto;
 import com.switchfully.switchfullylmsbackend.dtos.users.UpdateUserDto;
 import com.switchfully.switchfullylmsbackend.entities.AbstractUser;
@@ -21,8 +21,8 @@ public class UserController {
 
     @ResponseStatus(HttpStatus.CREATED)
 	@PostMapping(consumes = "application/json", produces = "application/json", path = "/register")
-    public AbstractUser registerUser(@RequestBody CreateUserDto createUserDto) {
-        return userService.addUser(createUserDto);
+    public AbstractUser registerUser(@RequestBody CreateStudentDto createStudentDto) {
+        return userService.addUser(createStudentDto);
     }
 
     @GetMapping()

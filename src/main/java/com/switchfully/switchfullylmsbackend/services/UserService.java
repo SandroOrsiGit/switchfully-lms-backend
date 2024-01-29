@@ -1,6 +1,6 @@
 package com.switchfully.switchfullylmsbackend.services;
 
-import com.switchfully.switchfullylmsbackend.dtos.users.CreateUserDto;
+import com.switchfully.switchfullylmsbackend.dtos.users.CreateStudentDto;
 import com.switchfully.switchfullylmsbackend.dtos.users.UpdateUserDto;
 import com.switchfully.switchfullylmsbackend.entities.AbstractUser;
 import com.switchfully.switchfullylmsbackend.dtos.users.UserDto;
@@ -8,12 +8,12 @@ import com.switchfully.switchfullylmsbackend.entities.Coach;
 import com.switchfully.switchfullylmsbackend.entities.Student;
 import com.switchfully.switchfullylmsbackend.exceptions.IdNotFoundException;
 
-import com.switchfully.switchfullylmsbackend.exceptions.InvalidRoleException;
 import com.switchfully.switchfullylmsbackend.exceptions.NotACoachException;
 import com.switchfully.switchfullylmsbackend.exceptions.NotAStudentException;
 
 import com.switchfully.switchfullylmsbackend.mappers.StudentMapper;
 import com.switchfully.switchfullylmsbackend.mappers.UserMapper;
+import com.switchfully.switchfullylmsbackend.repositories.StudentRepository;
 import com.switchfully.switchfullylmsbackend.repositories.UserRepository;
 import com.switchfully.switchfullylmsbackend.security.KeycloakService;
 import org.json.JSONObject;
@@ -30,20 +30,29 @@ import java.util.List;
 public class UserService {
 
     private final StudentMapper studentMapper;
+    private final StudentRepository studentRepository;
     private final UserRepository userRepository;
     private final KeycloakService keycloakService;
     private final UserMapper userMapper;
 
-    public UserService(StudentMapper studentMapper, UserRepository userRepository, KeycloakService keycloakService, UserMapper userMapper) {
+    public UserService(StudentMapper studentMapper, StudentRepository studentRepository, UserRepository userRepository, KeycloakService keycloakService, UserMapper userMapper) {
         this.studentMapper = studentMapper;
+        this.studentRepository = studentRepository;
         this.userRepository = userRepository;
         this.keycloakService = keycloakService;
         this.userMapper = userMapper;
     }
 
-    public AbstractUser addUser(CreateUserDto createUserDto) {
-        Student student = studentMapper.mapCreateUserDtoToStudent(createUserDto);
-        keycloakService.addUser(createUserDto);
+    public Student createStudent(CreateStudentDto createStudentDto) {
+        Student student = studentMapper.mapCreateUserDtoToStudent(createStudentDto);
+        keycloakService.addUser(createStudentDto);
+        studentRepository.save(student);
+        return st
+    }
+
+    public AbstractUser addUser(CreateStudentDto createStudentDto) {
+        Student student = studentMapper.mapCreateUserDtoToStudent(createStudentDto);
+        keycloakService.addUser(createStudentDto);
         userRepository.save(student);
         return userRepository.findById(student.getId()).get();
     }

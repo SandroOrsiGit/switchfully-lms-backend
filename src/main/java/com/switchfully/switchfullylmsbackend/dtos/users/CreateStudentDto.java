@@ -1,12 +1,12 @@
 package com.switchfully.switchfullylmsbackend.dtos.users;
 
-public class CreateUserDto {
+public class CreateStudentDto {
     private final String displayName;
     private final String email;
 
     private final String password;
 
-    public CreateUserDto(String displayName, String email, String password) {
+    public CreateStudentDto(String displayName, String email, String password) {
         this.displayName = displayName;
         this.email = email;
         this.password = password;

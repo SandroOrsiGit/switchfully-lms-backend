@@ -1,6 +1,6 @@
 package com.switchfully.switchfullylmsbackend.security;
 
-import com.switchfully.switchfullylmsbackend.dtos.users.CreateUserDto;
+import com.switchfully.switchfullylmsbackend.dtos.users.CreateStudentDto;
 import com.switchfully.switchfullylmsbackend.exceptions.UserAlreadyExistsException;
 import org.keycloak.admin.client.CreatedResponseUtil;
 import org.keycloak.admin.client.Keycloak;
@@ -30,19 +30,19 @@ public class DefaultKeycloakService implements KeycloakService {
         this.realmResource = keycloak.realm(realmName);
     }
 
-    public void addUser(CreateUserDto createUserDto) {
-        String createdUserId = createUser(createUserDto);                                       // create user in keycloak to get Id
+    public void addUser(CreateStudentDto createStudentDto) {
+        String createdUserId = createUser(createStudentDto);                                       // create user in keycloak to get Id
         UserResource userResource = realmResource.users().get(createdUserId);                   // get user form keycloak
-        userResource.resetPassword(createCredentialRepresentation(createUserDto.getPassword()));// set user password
+        userResource.resetPassword(createCredentialRepresentation(createStudentDto.getPassword()));// set user password
         addRole( userResource, "student");
     }
 
-    private String createUser(CreateUserDto createUserDto) {
+    private String createUser(CreateStudentDto createStudentDto) {
         try {
             return CreatedResponseUtil.getCreatedId( realmResource
-                    .users().create( createUserRepresentation(createUserDto.getEmail()) ));
+                    .users().create( createUserRepresentation(createStudentDto.getEmail()) ));
         } catch (WebApplicationException exception) {
-            throw new UserAlreadyExistsException(createUserDto.getEmail());
+            throw new UserAlreadyExistsException(createStudentDto.getEmail());
         }
     }
 

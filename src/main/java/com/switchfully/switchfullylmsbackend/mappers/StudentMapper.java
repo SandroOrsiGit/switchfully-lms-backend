@@ -2,7 +2,7 @@ package com.switchfully.switchfullylmsbackend.mappers;
 
 import com.switchfully.switchfullylmsbackend.dtos.codelabprogresses.CodelabProgressDto;
 import com.switchfully.switchfullylmsbackend.dtos.users.StudentDto;
-import com.switchfully.switchfullylmsbackend.dtos.users.CreateUserDto;
+import com.switchfully.switchfullylmsbackend.dtos.users.CreateStudentDto;
 import com.switchfully.switchfullylmsbackend.dtos.users.StudentNoCodelabProgressDto;
 import com.switchfully.switchfullylmsbackend.entities.Student;
 import org.springframework.stereotype.Component;
@@ -35,10 +35,10 @@ public class StudentMapper {
         );
     }
 
-    public Student mapCreateUserDtoToStudent(CreateUserDto createUserDto) {
+    public Student mapCreateUserDtoToStudent(CreateStudentDto createStudentDto) {
         return new Student(
-                createUserDto.getEmail(),
-                createUserDto.getDisplayName()
+                createStudentDto.getEmail(),
+                createStudentDto.getDisplayName()
         );
     }
 
