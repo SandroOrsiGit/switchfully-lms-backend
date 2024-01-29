@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path="/class-group")
+@RequestMapping(path="/class-groups")
 @CrossOrigin(origins = "http://localhost:4200")
 public class ClassGroupController {
     private final ClassGroupService classgroupService;

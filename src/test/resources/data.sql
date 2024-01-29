@@ -10,15 +10,15 @@ VALUES ('DONE'),
 
 INSERT INTO users (dtype, email, display_name)
 values ('Student', 'balder@lms.com', 'Balder'),
-       ('Student', 'Dylan@lms.com', 'Dylan'),
-       ('Student', 'Karel@lms.com', 'Karel'),
-       ('Student', 'Jussi@lms.com', 'Jussi'),
-       ('Student', 'Thomas@lms.com', 'Thomas'),
-       ('Student', 'Manon@lms.com', 'Manon'),
-       ('Student', 'Sandro@lms.com', 'Sandro'),
-       ('Student', 'Wietse@lms.com', 'Wietse'),
-       ('Coach', 'Rudy@lms.com', 'Rudy'),
-       ('Coach', 'Christoph@lms.com', 'Christoph');
+       ('Student', 'dylan@lms.com', 'Dylan'),
+       ('Student', 'karel@lms.com', 'Karel'),
+       ('Student', 'jussi@lms.com', 'Jussi'),
+       ('Student', 'thomas@lms.com', 'Thomas'),
+       ('Student', 'manon@lms.com', 'Manon'),
+       ('Student', 'sandro@lms.com', 'Sandro'),
+       ('Student', 'wietse@lms.com', 'Wietse'),
+       ('Coach', 'rudy@lms.com', 'Rudy'),
+       ('Coach', 'christoph@lms.com', 'Christoph');
 
 INSERT INTO courses(name)
 values

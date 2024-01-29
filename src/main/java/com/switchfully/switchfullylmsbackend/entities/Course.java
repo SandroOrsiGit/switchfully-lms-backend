@@ -63,11 +63,11 @@ public class Course {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Course course = (Course) o;
-        return Objects.equals(id, course.id) && Objects.equals(name, course.name) && Objects.equals(modules, course.modules) && Objects.equals(classGroups, course.classGroups);
+        return Objects.equals(id, course.id) && Objects.equals(name, course.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, modules, classGroups);
+        return Objects.hash(id, name);
     }
 }

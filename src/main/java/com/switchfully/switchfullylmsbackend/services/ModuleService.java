@@ -50,6 +50,7 @@ public class ModuleService {
 
     private void checkIfStudentIsPartOfCourse(Student student, Course course) {
         List<ClassGroup> classGroupList = classGroupRepository.findByStudentsId(student.getId());
+
         List<Course> courseList = classGroupList.stream()
                 .map(courseRepository::findByClassGroups)
                 .flatMap(List::stream)
