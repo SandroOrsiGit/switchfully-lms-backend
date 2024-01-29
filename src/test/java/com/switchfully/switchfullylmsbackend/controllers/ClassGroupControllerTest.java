@@ -2,6 +2,7 @@ package com.switchfully.switchfullylmsbackend.controllers;
 
 import com.switchfully.switchfullylmsbackend.dtos.classgroups.ClassGroupDto;
 import com.switchfully.switchfullylmsbackend.dtos.classgroups.CreateClassGroupDto;
+import com.switchfully.switchfullylmsbackend.dtos.codelabs.CodelabDto;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Test;
@@ -40,7 +41,7 @@ public class ClassGroupControllerTest {
         CreateClassGroupDto createClassGroupDto = new CreateClassGroupDto(
                 "TestName",
                 LocalDate.now(),
-                LocalDate.now().plusDays(1),
+                LocalDate.now(),
                 1L);
         
         String accessToken = RestAssured

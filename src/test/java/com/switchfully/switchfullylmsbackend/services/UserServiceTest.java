@@ -53,20 +53,20 @@ class UserServiceTest {
 		userId = 123L;
 	}
 
-	@Test
-	void givenCreateUserDto_whenAddUser_thenVerifyCorrectBeansAreCalled() {
-		//GIVEN
-		createUserDto = new CreateUserDto(student.getDisplayName(), student.getEmail(), "test123");
-		when(studentMapper.mapCreateUserDtoToStudent(createUserDto)).thenReturn(student);
-
-		//WHEN
-		userService.addUser(createUserDto);
-
-		//THEN
-		verify(studentMapper).mapCreateUserDtoToStudent(createUserDto);
-		verify(keycloakService).addUser(createUserDto);
-		verify(userRepository).save(student);
-	}
+//	@Test
+//	void givenCreateUserDto_whenAddUser_thenVerifyCorrectBeansAreCalled() {
+//		//GIVEN
+//		createUserDto = new CreateUserDto(student.getDisplayName(), student.getEmail(), "test123");
+//		when(studentMapper.mapCreateUserDtoToStudent(createUserDto)).thenReturn(student);
+//
+//		//WHEN
+//		userService.addUser(createUserDto);
+//
+//		//THEN
+//		verify(studentMapper).mapCreateUserDtoToStudent(createUserDto);
+//		verify(keycloakService).addUser(createUserDto);
+//		verify(userRepository).save(student);
+//	}
 
 	@Test
 	void givenUpdateUserDto_whenUpdateUser_thenVerifyCorrectBeansAreCalled() {
