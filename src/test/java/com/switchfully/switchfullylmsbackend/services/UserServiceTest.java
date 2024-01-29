@@ -34,6 +34,17 @@ public class UserServiceTest {
         assertThat(createStudentDto.getEmail()).isEqualTo(studentDto.getEmail());
     }
 
+    @Test
+    void givenUserId_whenGetUserById_thenGetUserDto() {
+        // given
+        Long userId = 1L;
+
+        // when
+        UserDto userDto = userService.getUserById(userId);
+
+        // then
+        assertThat(userDto.getId()).isEqualTo(userId);
+    }
 
 //	AbstractAuthenticationToken authentication;
 //	StudentMapper studentMapper;

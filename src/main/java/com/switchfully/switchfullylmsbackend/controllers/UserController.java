@@ -7,6 +7,7 @@ import com.switchfully.switchfullylmsbackend.dtos.users.UpdateUserDto;
 import com.switchfully.switchfullylmsbackend.security.KeycloakService;
 import com.switchfully.switchfullylmsbackend.services.UserService;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -30,13 +31,14 @@ public class UserController {
     }
 
     @GetMapping()
-    public UserDto getUserByToken(@RequestHeader("Authorization") String bearerToken){
+    public UserDto getUserByToken(@RequestHeader("Authorization") String bearerToken) {
         return userService.getUserDtoByToken(bearerToken);
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PutMapping(consumes = "application/json", produces = "application/json", path = "/update")
-    public void updateUser(@RequestBody UpdateUserDto updateUserDto) {
+    @PutMapping(consumes = "application/json", produces = "application/json")
+    @PreAuthorize("hasAnyAuthority('coach', 'student')")
+    public void updateUser(@RequestHeader("Authorization") String bearerToken, @RequestBody UpdateUserDto updateUserDto) {
         userService.updateUser(updateUserDto);
     }
 
