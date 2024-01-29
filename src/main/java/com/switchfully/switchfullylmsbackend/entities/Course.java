@@ -37,12 +37,25 @@ public class Course {
         this.name = name;
     }
 
+    public Course(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public Long getId() {
         return id;
     }
 
     public String getName() {
         return name;
+    }
+
+    public List<Module> getModules() {
+        return modules;
+    }
+
+    public List<ClassGroup> getClassGroups() {
+        return classGroups;
     }
 
     @Override

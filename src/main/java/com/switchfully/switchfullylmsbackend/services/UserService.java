@@ -73,7 +73,7 @@ public class UserService {
 
 
     public AbstractUser getUserByToken(String bearerToken) {
-
+        System.out.println("UserService getuserByToken: "+bearerToken);
         String[] chunks = bearerToken.split("\\.");
         JSONObject payload = new JSONObject(decode(chunks[1]));
 
@@ -108,7 +108,7 @@ public class UserService {
         }
     }
 
-    private static String decode(String encodedString) {
+    public static String decode(String encodedString) {
         return new String(Base64.getUrlDecoder().decode(encodedString));
     }
 

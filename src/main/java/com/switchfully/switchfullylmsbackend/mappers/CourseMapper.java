@@ -20,4 +20,10 @@ public class CourseMapper {
     }
 
 
+    public Course mapCourseDtoToCourse(CourseDto courseDto) {
+        return new Course(
+                courseDto.getId(),
+                courseDto.getName()
+        );
+    }
 }
