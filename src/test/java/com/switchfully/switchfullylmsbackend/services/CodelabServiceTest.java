@@ -18,7 +18,7 @@ public class CodelabServiceTest {
     @Test
     void whenCreateCodelab_thenCodelabIsCreatedAndSavedToRepository() {
         // given
-        CreateCodelabDto createCodelabDto = new CreateCodelabDto("TestingName");
+        CreateCodelabDto createCodelabDto = new CreateCodelabDto("createCodelabDto");
 
         // when
         CodelabDto resultCodelabDto = codelabService.createCodelab(createCodelabDto);

@@ -5,6 +5,7 @@ import com.switchfully.switchfullylmsbackend.dtos.classgroups.CreateClassGroupDt
 import com.switchfully.switchfullylmsbackend.entities.AbstractUser;
 import com.switchfully.switchfullylmsbackend.entities.ClassGroup;
 import com.switchfully.switchfullylmsbackend.entities.Coach;
+import com.switchfully.switchfullylmsbackend.exceptions.ClassGroupNotFoundException;
 import com.switchfully.switchfullylmsbackend.exceptions.IdNotFoundException;
 import com.switchfully.switchfullylmsbackend.exceptions.InvalidRoleException;
 import com.switchfully.switchfullylmsbackend.mappers.ClassGroupMapper;
@@ -58,5 +59,10 @@ public class ClassGroupService {
                 .stream()
                 .map(classGroupMapper::mapClassGroupToClassGroupDto)
                 .collect(Collectors.toList());
+    }
+    
+    public ClassGroupDto getClassGroupById(Long classGroupId) {
+       return classGroupMapper.mapClassGroupToClassGroupDto(classGroupRepository
+               .findById(classGroupId).orElseThrow(ClassGroupNotFoundException::new));
     }
 }

@@ -7,6 +7,7 @@ import com.switchfully.switchfullylmsbackend.dtos.users.StudentNoCodelabProgress
 import com.switchfully.switchfullylmsbackend.entities.Student;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,18 +21,18 @@ public class StudentMapper {
     }
     public StudentDto mapStudentToStudentDto(Student student) {
         return new StudentDto(
-                student.getId(),
-                student.getEmail(),
-                student.getDisplayName(),
-                mapCodelabProgressListToCodelabProgressListDto(student)
+            student.getId(),
+            student.getEmail(),
+            student.getDisplayName(),
+            mapCodelabProgressListToCodelabProgressListDto(student)
         );
     }
 
     public StudentNoCodelabProgressDto mapStudentToStudentNoCodelabProgressDto(Student student) {
         return new StudentNoCodelabProgressDto(
-        student.getId(),
-        student.getEmail(),
-        student.getDisplayName()
+            student.getId(),
+            student.getEmail(),
+            student.getDisplayName()
         );
     }
 
@@ -43,8 +44,12 @@ public class StudentMapper {
     }
 
     private List<CodelabProgressDto> mapCodelabProgressListToCodelabProgressListDto(Student student) {
-        return student.getCodelabProgresses().stream()
-                .map(codelabProgressMapper::mapCodelabProgressToCodelabProgressDto)
-                .collect(Collectors.toList());
+        if (student.getCodelabProgresses() != null) {
+            return student.getCodelabProgresses().stream()
+                    .map(codelabProgressMapper::mapCodelabProgressToCodelabProgressDto)
+                    .collect(Collectors.toList());
+        }
+
+        return new ArrayList<>();
     }
 }

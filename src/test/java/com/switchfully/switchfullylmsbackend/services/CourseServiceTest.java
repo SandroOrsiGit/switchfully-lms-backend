@@ -26,7 +26,7 @@ public class CourseServiceTest {
     @Test
     void whenCreateCourse_thenCourseIsCreatedAndSavedToRepository() {
         // given
-        CreateCourseDto createCourseDto = new CreateCourseDto("testName");
+        CreateCourseDto createCourseDto = new CreateCourseDto("createCourseDto");
 
         // when
         CourseDto resultCourseDto = courseService.createCourse(createCourseDto);
