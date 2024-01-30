@@ -10,9 +10,17 @@ public class Module extends AbstractModule {
    @OneToMany
    @JoinColumn(name = "parent_module_id")
    private List<SubModule> subModules;
+   @ManyToMany
+   @JoinTable(
+           name = "courses_modules",
+           joinColumns = @JoinColumn(name = "module_id"),
+           inverseJoinColumns = @JoinColumn(name = "course_id")
+   )
+   private List<Course> courses;
 
-   public Module(String name) {
+   public Module(String name, List<Course> courses) {
       super(name);
+      this.courses = courses;
    }
 
    public Module() {
@@ -22,13 +30,5 @@ public class Module extends AbstractModule {
    public List<SubModule> getSubModules() {
       return subModules;
    }
-
-   @ManyToMany
-   @JoinTable(
-           name = "courses_modules",
-           joinColumns = @JoinColumn(name = "module_id"),
-           inverseJoinColumns = @JoinColumn(name = "course_id")
-   )
-   private List<Course> courses;
 
 }

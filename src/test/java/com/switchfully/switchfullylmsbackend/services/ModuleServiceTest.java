@@ -34,7 +34,7 @@ public class ModuleServiceTest {
     @Test
     void whenCreateModule_thenModuleIsCreatedAndSavedToRepository() {
         // given
-        CreateModuleDto createModuleDto = new CreateModuleDto("testName");
+        CreateModuleDto createModuleDto = new CreateModuleDto("testName", List.of(1L));
 
         // when
         ModuleDto resultModuleDto = moduleService.createModule(createModuleDto);
