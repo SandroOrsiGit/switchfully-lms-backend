@@ -2,6 +2,7 @@ package com.switchfully.switchfullylmsbackend.entities;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -14,7 +15,7 @@ public abstract class AbstractModule {
     private String name;
     @OneToMany
     @JoinColumn(name = "module_id")
-    private List<Codelab> codelabs;
+    private List<Codelab> codelabs = new ArrayList<>();
 
     public AbstractModule(String name) {
         this.name = name;

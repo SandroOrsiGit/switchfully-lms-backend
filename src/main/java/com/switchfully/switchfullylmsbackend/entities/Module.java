@@ -2,6 +2,7 @@ package com.switchfully.switchfullylmsbackend.entities;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -9,7 +10,7 @@ public class Module extends AbstractModule {
    
    @OneToMany
    @JoinColumn(name = "parent_module_id")
-   private List<SubModule> subModules;
+   private List<SubModule> subModules = new ArrayList<>();
    @ManyToMany
    @JoinTable(
            name = "courses_modules",
@@ -31,4 +32,7 @@ public class Module extends AbstractModule {
       return subModules;
    }
 
+   public List<Course> getCourses() {
+      return courses;
+   }
 }
