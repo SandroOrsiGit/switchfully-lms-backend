@@ -74,6 +74,7 @@ public class CodelabControllerTest {
 
         assertThat(codelabDto).isInstanceOf(CodelabDto.class);
         assertThat(codelabDto.getName()).isEqualTo(createCodelabDto.getName());
+
     }
 
     @Test

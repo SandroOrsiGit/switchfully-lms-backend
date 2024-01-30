@@ -1,8 +1,10 @@
 package com.switchfully.switchfullylmsbackend.mappers;
 
+import com.switchfully.switchfullylmsbackend.dtos.modules.AbstractModuleDto;
 import com.switchfully.switchfullylmsbackend.dtos.modules.CreateModuleDto;
 import com.switchfully.switchfullylmsbackend.dtos.modules.ModuleDto;
 import com.switchfully.switchfullylmsbackend.dtos.modules.SubModuleDto;
+import com.switchfully.switchfullylmsbackend.entities.AbstractModule;
 import com.switchfully.switchfullylmsbackend.entities.Course;
 import com.switchfully.switchfullylmsbackend.entities.Module;
 import com.switchfully.switchfullylmsbackend.entities.SubModule;
@@ -44,6 +46,10 @@ public class ModuleMapper {
               subModule.getName(),
               subModule.getCodelabs().stream().map(codelabMapper::mapCodelabToCodelabNoCommentDto).collect(Collectors.toList())
       );
+   }
+
+   public AbstractModuleDto mapAbstractModuleToAbstractModuleDto(AbstractModule abstractModule) {
+      return new AbstractModuleDto(abstractModule.getId(), abstractModule.getName());
    }
 
 
