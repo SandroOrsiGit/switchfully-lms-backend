@@ -2,16 +2,17 @@ package com.switchfully.switchfullylmsbackend.dtos.users;
 
 import com.switchfully.switchfullylmsbackend.dtos.codelabprogresses.CodelabProgressDto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class StudentDto {
     private Long id;
     private String email;
     private String displayName;
-    private List<CodelabProgressDto> codelabProgressDtoList;
+    private List<CodelabProgressDto> codelabProgressDtoList = new ArrayList<>();
 
-    public StudentDto() {
-    }
+    public StudentDto() {}
+
     public StudentDto(Long id, String email, String displayName, List<CodelabProgressDto> codelabProgressDtoList) {
         this.id = id;
         this.email = email;

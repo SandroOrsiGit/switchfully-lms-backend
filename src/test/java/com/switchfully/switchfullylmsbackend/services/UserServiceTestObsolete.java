@@ -1,58 +1,37 @@
 package com.switchfully.switchfullylmsbackend.services;
 
 import com.switchfully.switchfullylmsbackend.dtos.users.CreateStudentDto;
-import com.switchfully.switchfullylmsbackend.dtos.users.StudentDto;
+import com.switchfully.switchfullylmsbackend.dtos.users.UpdateUserDto;
 import com.switchfully.switchfullylmsbackend.dtos.users.UserDto;
-import com.switchfully.switchfullylmsbackend.repositories.StudentRepository;
+import com.switchfully.switchfullylmsbackend.entities.Coach;
+import com.switchfully.switchfullylmsbackend.entities.Student;
+import com.switchfully.switchfullylmsbackend.exceptions.IdNotFoundException;
+import com.switchfully.switchfullylmsbackend.mappers.StudentMapper;
+import com.switchfully.switchfullylmsbackend.mappers.UserMapper;
+import com.switchfully.switchfullylmsbackend.repositories.UserRepository;
+import com.switchfully.switchfullylmsbackend.security.KeycloakService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.security.authentication.AbstractAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+
+import java.util.Collections;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-@SpringBootTest
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-public class UserServiceTest {
-    @Autowired
-    private UserService userService;
-
-    @Test
-    void whenCreateUser_thenUserIsCreatedAndSavedToRepository() {
-        // given
-        CreateStudentDto createStudentDto = new CreateStudentDto(
-                "testDisplayName",
-                "test@mail.com",
-                "password"
-        );
-
-        // when
-        StudentDto studentDto = userService.createStudent(createStudentDto);
-
-        // then
-        assertThat(createStudentDto.getDisplayName()).isEqualTo(studentDto.getDisplayName());
-        assertThat(createStudentDto.getEmail()).isEqualTo(studentDto.getEmail());
-    }
-
-    @Test
-    void givenUserId_whenGetUserById_thenGetUserDto() {
-        // given
-        Long userId = 1L;
-
-        // when
-        UserDto userDto = userService.getUserById(userId);
-
-        // then
-        assertThat(userDto.getId()).isEqualTo(userId);
-    }
-
+class UserServiceTestObsolete {
 //	AbstractAuthenticationToken authentication;
 //	StudentMapper studentMapper;
 //	KeycloakService keycloakService;
 //	UserRepository userRepository;
 //	UserMapper userMapper;
 //	UserService userService;
-//	CreateUserDto createUserDto;
+//	CreateStudentDto createStudentDto;
 //	Student student;
 //	Coach coach;
 //	Long userId;
@@ -66,27 +45,27 @@ public class UserServiceTest {
 //		userRepository = mock(UserRepository.class);
 //		userMapper = mock(UserMapper.class);
 //
-//		userService = new UserService(studentMapper, userRepository, keycloakService, userMapper);
+//		userService = new UserService(studentMapper, studentRepository, userRepository, keycloakService, userMapper);
 //
 //		student = new Student();
 //		coach = new Coach();
 //		userId = 123L;
 //	}
+
+//	@Test
+//	void givenCreateUserDto_whenAddUser_thenVerifyCorrectBeansAreCalled() {
+//		//GIVEN
+//		createUserDto = new CreateUserDto(student.getDisplayName(), student.getEmail(), "test123");
+//		when(studentMapper.mapCreateUserDtoToStudent(createUserDto)).thenReturn(student);
 //
-////	@Test
-////	void givenCreateUserDto_whenAddUser_thenVerifyCorrectBeansAreCalled() {
-////		//GIVEN
-////		createUserDto = new CreateUserDto(student.getDisplayName(), student.getEmail(), "test123");
-////		when(studentMapper.mapCreateUserDtoToStudent(createUserDto)).thenReturn(student);
-////
-////		//WHEN
-////		userService.addUser(createUserDto);
-////
-////		//THEN
-////		verify(studentMapper).mapCreateUserDtoToStudent(createUserDto);
-////		verify(keycloakService).addUser(createUserDto);
-////		verify(userRepository).save(student);
-////	}
+//		//WHEN
+//		userService.addUser(createUserDto);
+//
+//		//THEN
+//		verify(studentMapper).mapCreateUserDtoToStudent(createUserDto);
+//		verify(keycloakService).addUser(createUserDto);
+//		verify(userRepository).save(student);
+//	}
 //
 //	@Test
 //	void givenUpdateUserDto_whenUpdateUser_thenVerifyCorrectBeansAreCalled() {
@@ -182,11 +161,7 @@ public class UserServiceTest {
 //		when(userMapper.mapAbstractUserToUserDto(student, "student")).thenReturn(new UserDto(student.getId(), student.getEmail(), student.getDisplayName(), student.getRole()));
 //
 //		//WHEN
-//<<<<<<< HEAD
 //		UserDto actual = userService.getUserDtoByToken(accessToken);
-//=======
-//		AbstractUser actual = userService.getUserByToken(accessToken);
-//>>>>>>> 1a2509743b601c8c75ba91c44064f5150f6c4e15
 //
 //		//THEN
 //		verify(userRepository).findByEmail("test@lms.com");

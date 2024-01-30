@@ -1,38 +1,46 @@
 package com.switchfully.switchfullylmsbackend.controllers;
 
-import com.switchfully.switchfullylmsbackend.dtos.users.CreateUserDto;
+import com.switchfully.switchfullylmsbackend.dtos.users.CreateStudentDto;
+import com.switchfully.switchfullylmsbackend.dtos.users.StudentDto;
 import com.switchfully.switchfullylmsbackend.dtos.users.UserDto;
 import com.switchfully.switchfullylmsbackend.dtos.users.UpdateUserDto;
-import com.switchfully.switchfullylmsbackend.entities.AbstractUser;
+import com.switchfully.switchfullylmsbackend.security.KeycloakService;
 import com.switchfully.switchfullylmsbackend.services.UserService;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/user")
 @CrossOrigin(origins = "http://localhost:4200")
 public class UserController {
-
+    private final KeycloakService keycloakService;
     private final UserService userService;
 
-    public UserController(UserService userService) {
+    public UserController(KeycloakService keycloakService, UserService userService) {
+        this.keycloakService = keycloakService;
         this.userService = userService;
     }
 
     @ResponseStatus(HttpStatus.CREATED)
 	@PostMapping(consumes = "application/json", produces = "application/json", path = "/register")
-    public AbstractUser registerUser(@RequestBody CreateUserDto createUserDto) {
-        return userService.addUser(createUserDto);
+    public StudentDto createStudent(@RequestBody CreateStudentDto createStudentDto) {
+        keycloakService.addUser(createStudentDto);
+
+        return userService.createStudent(createStudentDto);
     }
 
     @GetMapping()
-    public UserDto getUserByToken(@RequestHeader("Authorization") String bearerToken){
+    public UserDto getUserByToken(@RequestHeader("Authorization") String bearerToken) {
         return userService.getUserDtoByToken(bearerToken);
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PutMapping(consumes = "application/json", produces = "application/json", path = "/update")
-    public void updateUser(@RequestBody UpdateUserDto updateUserDto) {
+    @PutMapping(consumes = "application/json", produces = "application/json")
+    @PreAuthorize("hasAnyAuthority('coach', 'student')")
+    public void updateUser(@RequestHeader("Authorization") String bearerToken, @RequestBody UpdateUserDto updateUserDto) {
+        // TODO check if user is the authenticated user
+        // TODO return UserDto so the front end can update it's user data
         userService.updateUser(updateUserDto);
     }
 

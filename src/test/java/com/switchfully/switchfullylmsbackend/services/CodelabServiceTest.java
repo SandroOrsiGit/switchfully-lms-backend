@@ -2,47 +2,29 @@ package com.switchfully.switchfullylmsbackend.services;
 
 import com.switchfully.switchfullylmsbackend.dtos.codelabs.CodelabDto;
 import com.switchfully.switchfullylmsbackend.dtos.codelabs.CreateCodelabDto;
-import com.switchfully.switchfullylmsbackend.entities.Codelab;
-import com.switchfully.switchfullylmsbackend.mappers.CodelabMapper;
-import com.switchfully.switchfullylmsbackend.repositories.CodelabRepository;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 
-import java.util.ArrayList;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class CodelabServiceTest {
-    @Mock
-    private CodelabRepository codelabRepository;
-    @Mock
-    private CodelabMapper codelabMapper;
-    @InjectMocks
+    @Autowired
     private CodelabService codelabService;
 
     @Test
     void whenCreateCodelab_thenCodelabIsCreatedAndSavedToRepository() {
         // given
-        CreateCodelabDto createCodelabDto = new CreateCodelabDto("TestingName");
-        Codelab codelabToAdd = new Codelab("TestingName");
-        Codelab addedCodelab = new Codelab("TestingName");
-        CodelabDto expectedCodelabDto = new CodelabDto(1L, "TestingName", new ArrayList<>());
+        CreateCodelabDto createCodelabDto = new CreateCodelabDto("createCodelabDto");
 
         // when
-        when(codelabMapper.mapCreateCodelabDtoToCodelab(createCodelabDto)).thenReturn(codelabToAdd);
-        when(codelabRepository.save(any(Codelab.class))).thenReturn(addedCodelab);
-        when(codelabMapper.mapCodelabToCodelabDto(addedCodelab)).thenReturn(expectedCodelabDto);
         CodelabDto resultCodelabDto = codelabService.createCodelab(createCodelabDto);
 
         // then
-        assertEquals(expectedCodelabDto, resultCodelabDto);
+        assertThat(resultCodelabDto.getName()).isEqualTo(createCodelabDto.getName());
     }
-
-
 
 }
