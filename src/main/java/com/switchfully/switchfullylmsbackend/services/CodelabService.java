@@ -63,20 +63,20 @@ public class CodelabService {
         return codelabRepository.findByModuleId(moduleId).stream().map(codelabMapper::mapCodelabToCodelabDto).toList();
     }
 
-    public List<CodelabProgressDto> getCodelabsProgressesByCourseId(Long courseId, Long studentId) {
-        // get all codelabs in a course
-        List<Codelab> codelabList = getCodelabList(courseId);
-        // get all progresses of those codelabs
-        List<CodelabProgress> codelabProgressList = codelabList.stream()
-                .map(codelab -> codelabProgressRepository.findByCodelabId(codelab.getId()))
-                .flatMap(List::stream)
-        // filter progresses for specific student
-                .filter(codelabProgress -> codelabProgress.getStudentId().equals(studentId))
-                .toList();
-        return codelabProgressList.stream()
-                .map(codelabProgressMapper::mapCodelabProgressToCodelabProgressDto)
-                .toList();
-    }
+//    public List<CodelabProgressDto> getCodelabsProgressesByCourseId(Long courseId, Long studentId) {
+//        // get all codelabs in a course
+//        List<Codelab> codelabList = getCodelabList(courseId);
+//        // get all progresses of those codelabs
+//        List<CodelabProgress> codelabProgressList = codelabList.stream()
+//                .map(codelab -> codelabProgressRepository.findByCodelabId(codelab.getId()))
+//                .flatMap(List::stream)
+//        // filter progresses for specific student
+//                .filter(codelabProgress -> codelabProgress.getStudentId().equals(studentId))
+//                .toList();
+//        return codelabProgressList.stream()
+//                .map(codelabProgressMapper::mapCodelabProgressToCodelabProgressDto)
+//                .toList();
+//    }
 
     private List<Codelab> getCodelabList(Long courseId) {
         Course course = courseRepository.findById(courseId )
@@ -94,4 +94,17 @@ public class CodelabService {
         // TODO
     }
 
+    public List<CodelabProgressDto> getCodelabsProgressesByModuleId(Long moduleId, Student student) {
+        Module module = moduleRepository.findById(moduleId).orElseThrow(ModuleNotFoundException::new);
+        List<Codelab> codelabs = codelabRepository.findByModule(module);
+
+        return codelabs.stream()
+                .map(
+                        codelab -> codelabProgressRepository.findByCodelabAndStudent(codelab, student).stream()
+                                .map(codelabProgressMapper::mapCodelabProgressToCodelabProgressDto)
+                                .toList()
+                )
+                .flatMap(List::stream)
+                .toList();
+    }
 }

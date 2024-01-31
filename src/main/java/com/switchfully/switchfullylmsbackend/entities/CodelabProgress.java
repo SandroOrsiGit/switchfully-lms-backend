@@ -14,8 +14,9 @@ public class CodelabProgress {
     @ManyToOne
     @JoinColumn(name = "progress_id")
     private Progress progress;
-    @Column(name = "student_id")
-    private Long studentId;
+    @ManyToOne
+    @JoinColumn(name = "student_id")
+    private Student student;
 
 
     public Long getId() {
@@ -30,7 +31,7 @@ public class CodelabProgress {
         return progress;
     }
 
-    public Long getStudentId() {
-        return studentId;
+    public Student getStudent() {
+        return student;
     }
 }

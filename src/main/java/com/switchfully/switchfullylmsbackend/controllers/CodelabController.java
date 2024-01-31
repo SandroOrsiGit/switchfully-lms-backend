@@ -46,10 +46,10 @@ public class CodelabController {
 
     @GetMapping(path="/progress", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public List<CodelabProgressDto> getCodelabsProgress(@RequestHeader("Authorization") String bearerToken, @RequestParam Long courseId) {
-        Long studentId = userService.getUserByToken(bearerToken).getId();
+    public List<CodelabProgressDto> getCodelabsProgress(@RequestHeader("Authorization") String bearerToken, @RequestParam Long moduleId) {
+        Student student = userService.getStudentByToken(bearerToken);
 
-        return codelabService.getCodelabsProgressesByCourseId(courseId, studentId);
+        return codelabService.getCodelabsProgressesByModuleId(moduleId, student);
     }
 
     @PostMapping(path="/progress", produces = "application/json")
