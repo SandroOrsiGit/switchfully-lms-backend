@@ -1,10 +1,7 @@
 package com.switchfully.switchfullylmsbackend.services;
 
 import com.switchfully.switchfullylmsbackend.dtos.codelabprogresses.CodelabProgressDto;
-import com.switchfully.switchfullylmsbackend.dtos.codelabs.CodelabDto;
-import com.switchfully.switchfullylmsbackend.dtos.codelabs.CodelabNoCommentDto;
-import com.switchfully.switchfullylmsbackend.dtos.codelabs.CreateCodelabDto;
-import com.switchfully.switchfullylmsbackend.dtos.codelabs.UpdateCodelabProgressDto;
+import com.switchfully.switchfullylmsbackend.dtos.codelabs.*;
 import com.switchfully.switchfullylmsbackend.entities.*;
 import com.switchfully.switchfullylmsbackend.entities.Module;
 import com.switchfully.switchfullylmsbackend.exceptions.CodelabNotFoundException;
@@ -62,14 +59,11 @@ public class CodelabService {
         return codelabMapper.mapCodelabToCodelabDto(codelabRepository.findById(codelabId).orElseThrow(CodelabNotFoundException::new));
     }
 
-    public List<CodelabNoCommentDto> getCodelabs(Long courseId) {
-        List<Codelab> codelabList = getCodelabList(courseId);
-        return codelabList.stream()
-                .map( codelabMapper::mapCodelabToCodelabNoCommentDto)
-                .toList();
+    public List<CodelabDto> getCodelabsByModuleId(Long moduleId) {
+        return codelabRepository.findByModuleId(moduleId).stream().map(codelabMapper::mapCodelabToCodelabDto).toList();
     }
 
-    public List<CodelabProgressDto> getCodelabsProgress(Long courseId, Long studentId) {
+    public List<CodelabProgressDto> getCodelabsProgressesByCourseId(Long courseId, Long studentId) {
         // get all codelabs in a course
         List<Codelab> codelabList = getCodelabList(courseId);
         // get all progresses of those codelabs
@@ -94,10 +88,10 @@ public class CodelabService {
                 .toList();
     }
 
-    private void updateCodelabProgress(UpdateCodelabProgressDto updateCodelabProgressDto, Student student) {
+    public void updateCodelabProgress(UpdateCodelabProgressDto updateCodelabProgressDto, Student student) {
         Codelab codelab = codelabRepository.findById(updateCodelabProgressDto.getCodelabId()).orElseThrow(CodelabNotFoundException::new);
         Progress progress = progressRepository.findById(updateCodelabProgressDto.getProgressId()).orElseThrow(ProgressNotFoundException::new);
-
+        // TODO
     }
 
 }

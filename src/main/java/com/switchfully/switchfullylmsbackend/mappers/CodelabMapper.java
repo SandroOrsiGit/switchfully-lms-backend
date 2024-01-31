@@ -16,10 +16,10 @@ import java.util.stream.Collectors;
 public class CodelabMapper {
     private CommentMapper commentMapper;
 
-
     public CodelabMapper(CommentMapper commentMapper) {
         this.commentMapper = commentMapper;
     }
+
     public CodelabDto mapCodelabToCodelabDto(Codelab codelab) {
         return new CodelabDto(
                 codelab.getId(),
