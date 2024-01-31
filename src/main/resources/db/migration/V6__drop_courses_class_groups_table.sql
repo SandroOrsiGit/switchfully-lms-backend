@@ -1,1 +1,1 @@
--- DROP TABLE courses_class_groups;
+DROP TABLE courses_class_groups;
