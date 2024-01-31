@@ -17,6 +17,9 @@ import com.switchfully.switchfullylmsbackend.mappers.UserMapper;
 import com.switchfully.switchfullylmsbackend.repositories.StudentRepository;
 import com.switchfully.switchfullylmsbackend.repositories.UserRepository;
 import org.json.JSONObject;
+import org.keycloak.TokenVerifier;
+import org.keycloak.common.VerificationException;
+import org.keycloak.representations.AccessToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -88,8 +91,7 @@ public class UserService {
 
         return userMapper.mapAbstractUserToUserDto(user, roles.get(0));
     }
-
-
+    
     public Student getStudentByToken(String bearerToken) {
         AbstractUser abstractUser = this.getUserByToken(bearerToken);
         if (abstractUser instanceof Student) {
@@ -110,6 +112,15 @@ public class UserService {
 
     public static String decode(String encodedString) {
         return new String(Base64.getUrlDecoder().decode(encodedString));
+    }
+    
+    public boolean validateToken(String token) {
+        try {
+            AccessToken accessToken = TokenVerifier.create(token, AccessToken.class).getToken();
+            return true;
+        } catch (VerificationException e) {
+            return false;
+        }
     }
 
 

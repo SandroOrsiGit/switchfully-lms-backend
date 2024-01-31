@@ -34,7 +34,14 @@ public class UserController {
     public UserDto getUserByToken(@RequestHeader("Authorization") String bearerToken) {
         return userService.getUserDtoByToken(bearerToken);
     }
-
+    
+    @PostMapping(path = "/validate-token")
+    @ResponseStatus(HttpStatus.OK)
+    public Boolean validateToken(@RequestHeader("Authorization") String authHeader) {
+        String token = authHeader.replace("Bearer ", "");
+        return userService.validateToken(token);
+    }
+    
     @ResponseStatus(HttpStatus.OK)
     @PutMapping(consumes = "application/json", produces = "application/json")
     @PreAuthorize("hasAnyAuthority('coach', 'student')")
