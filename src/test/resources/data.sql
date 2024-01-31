@@ -18,7 +18,9 @@ values ('Student', 'balder@lms.com', 'Balder'),
        ('Student', 'sandro@lms.com', 'Sandro'),
        ('Student', 'wietse@lms.com', 'Wietse'),
        ('Coach', 'rudy@lms.com', 'Rudy'),
-       ('Coach', 'christoph@lms.com', 'Christoph');
+       ('Coach', 'christoph@lms.com', 'Christoph'),
+       ('Coach', 'coach@lms.com', 'Coach');
+
 
 INSERT INTO courses(name)
 values
