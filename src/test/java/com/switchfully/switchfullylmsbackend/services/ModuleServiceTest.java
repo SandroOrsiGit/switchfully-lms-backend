@@ -34,13 +34,15 @@ public class ModuleServiceTest {
     @Test
     void whenCreateModule_thenModuleIsCreatedAndSavedToRepository() {
         // given
-        CreateModuleDto createModuleDto = new CreateModuleDto("testName");
+        CreateModuleDto createModuleDto = new CreateModuleDto("testName", List.of(1L));
 
         // when
         ModuleDto resultModuleDto = moduleService.createModule(createModuleDto);
 
         // then
-        assertThat(createModuleDto.getName()).isEqualTo(resultModuleDto.getName());
+        assertThat(resultModuleDto.getName()).isEqualTo(createModuleDto.getName());
+        assertThat(resultModuleDto.getCourses().getFirst().getId()).isEqualTo(createModuleDto.getCourseIds().getFirst());
+        assertThat(resultModuleDto.getCourses()).hasSize(1);
     }
 
     @Test
