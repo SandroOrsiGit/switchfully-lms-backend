@@ -51,7 +51,7 @@ public class CodelabControllerTest {
     @Test
     void givenCreateCodelabAndCoach_whenPostingToBackend_thenCodelabIsCreatedAndSaved() {
         // given
-        CreateCodelabDto createCodelabDto = new CreateCodelabDto("Name");
+        CreateCodelabDto createCodelabDto = new CreateCodelabDto("Name", 1L);
 
         String accessToken = getAccessToken("coach@lms.com", "coach");
 
@@ -74,12 +74,13 @@ public class CodelabControllerTest {
 
         assertThat(codelabDto).isInstanceOf(CodelabDto.class);
         assertThat(codelabDto.getName()).isEqualTo(createCodelabDto.getName());
+
     }
 
     @Test
     void givenCreateCodelabAndStudent_whenPostingToBackend_thenStatusCodeIsForbidden() {
         // given
-        CreateCodelabDto createCodelabDto = new CreateCodelabDto("Name");
+        CreateCodelabDto createCodelabDto = new CreateCodelabDto("Name", 1L);
 
         String accessToken = getAccessToken("student@lms.com", "student");
 

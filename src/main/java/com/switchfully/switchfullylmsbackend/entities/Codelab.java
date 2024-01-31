@@ -16,16 +16,18 @@ public class Codelab {
     @JoinColumn(name = "codelab_id")
     private List<Comment> comments;
 
-    @Column(name = "module_id")
-    private Long moduleId;
+    @ManyToOne
+    @JoinColumn(name = "module_id")
+    private AbstractModule module;
 
 
     public Codelab() {
 
     }
 
-    public Codelab(String name) {
+    public Codelab(String name, AbstractModule module) {
         this.name = name;
+        this.module = module;
     }
 
 
@@ -41,8 +43,8 @@ public class Codelab {
         return comments;
     }
 
-    public Long getModuleId() {
-        return moduleId;
+    public AbstractModule getModule() {
+        return module;
     }
 
     public void setId(Long id) {
@@ -64,7 +66,7 @@ public class Codelab {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", comments=" + comments +
-                ", moduleId=" + moduleId +
+                ", module=" + module +
                 '}';
     }
 }
