@@ -2,7 +2,9 @@ package com.switchfully.switchfullylmsbackend.controllers;
 
 import com.switchfully.switchfullylmsbackend.dtos.classgroups.ClassGroupDto;
 import com.switchfully.switchfullylmsbackend.dtos.classgroups.CreateClassGroupDto;
+import com.switchfully.switchfullylmsbackend.entities.Coach;
 import com.switchfully.switchfullylmsbackend.services.ClassGroupService;
+import com.switchfully.switchfullylmsbackend.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -13,16 +15,20 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:4200")
 public class ClassGroupController {
     private final ClassGroupService classgroupService;
+    private final UserService userService;
 
-    public ClassGroupController(ClassGroupService classgroupService) {
+    public ClassGroupController(ClassGroupService classgroupService, UserService userService) {
         this.classgroupService = classgroupService;
+        this.userService = userService;
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(consumes = "application/json", produces = "application/json")
     @PreAuthorize("hasAuthority('coach')")
-    public ClassGroupDto addClassGroup(@RequestBody CreateClassGroupDto createClassgroupDto) {
-        return classgroupService.addClassGroup(createClassgroupDto);
+    public ClassGroupDto createClassGroup(@RequestHeader("Authorization") String bearerToken, @RequestBody CreateClassGroupDto createClassgroupDto) {
+        System.out.println(createClassgroupDto);
+        Coach coach = userService.getCoachByToken(bearerToken);
+        return classgroupService.createClassGroup(createClassgroupDto, coach);
     }
     
     @GetMapping(path = "/{id}", produces = "application/json")

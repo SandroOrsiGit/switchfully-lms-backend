@@ -22,12 +22,7 @@ public class Course {
     )
     private List<Module> modules;
 
-    @ManyToMany
-    @JoinTable(
-            name = "courses_class_groups",
-            joinColumns = @JoinColumn(name = "course_id"),
-            inverseJoinColumns = @JoinColumn(name = "class_group_id")
-    )
+    @OneToMany(mappedBy = "course")
     private List<ClassGroup> classGroups;
 
     public Course() {
@@ -52,10 +47,6 @@ public class Course {
 
     public List<Module> getModules() {
         return modules;
-    }
-
-    public List<ClassGroup> getClassGroups() {
-        return classGroups;
     }
 
     @Override

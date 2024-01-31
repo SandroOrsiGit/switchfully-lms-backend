@@ -59,7 +59,6 @@ public class ModuleService {
 
         List<Course> courseList = classGroupList.stream()
                 .map(courseRepository::findByClassGroups)
-                .flatMap(List::stream)
                 .toList();
 
         if (!courseList.contains(course)) {
