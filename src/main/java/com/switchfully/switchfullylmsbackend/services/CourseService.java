@@ -47,7 +47,6 @@ public class CourseService {
             List<ClassGroup> classGroupList = classGroupRepository.findByStudentsId(student.getId());
             List<Course> courseList = classGroupList.stream()
                     .map(courseRepository::findByClassGroups)
-                    .flatMap(List::stream)
                     .toList();
 
             return courseList.stream().map(courseMapper::mapCourseToCourseDto).toList();

@@ -1,5 +1,6 @@
 package com.switchfully.switchfullylmsbackend.controllers;
 
+import com.switchfully.switchfullylmsbackend.dtos.codelabprogresses.*;
 import com.switchfully.switchfullylmsbackend.dtos.modules.CreateModuleDto;
 import com.switchfully.switchfullylmsbackend.dtos.modules.ModuleDto;
 import io.restassured.RestAssured;
@@ -10,6 +11,8 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
+
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -96,5 +99,33 @@ public class ModuleControllerTest {
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.FORBIDDEN.value());
+    }
+
+    @Test
+    void whenGetAllModules_thenReturnListOfModules() {
+
+        String accessToken = getAccessToken("coach@lms.com", "coach");
+
+        //WHEN
+        List<ModuleDto> moduleDtos = RestAssured
+                .given()
+                .auth()
+                .oauth2(accessToken)
+                .contentType(ContentType.JSON)
+                .port(port)
+                .when()
+                .get("/modules")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .jsonPath()
+                .getList(".", ModuleDto.class);
+
+        //THEN
+        assertThat(moduleDtos).hasSize(2);
+        assertThat(moduleDtos.get(0).getName()).isEqualTo("Java basics");
+        assertThat(moduleDtos.get(1).getName()).isEqualTo(".NET basics");
+
     }
 }
