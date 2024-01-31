@@ -18,7 +18,9 @@ values ('Student', 'balder@lms.com', 'Balder'),
        ('Student', 'sandro@lms.com', 'Sandro'),
        ('Student', 'wietse@lms.com', 'Wietse'),
        ('Coach', 'rudy@lms.com', 'Rudy'),
-       ('Coach', 'christoph@lms.com', 'Christoph');
+       ('Coach', 'christoph@lms.com', 'Christoph'),
+       ('Student', 'student@lms.com', 'Student'),
+       ('Coach', 'coach@lms.com', 'Coach');
 
 INSERT INTO courses(name)
 values
@@ -36,11 +38,6 @@ values
     ('Module', 'Java basics', null),
     ('Module', '.NET basics', null),
     ('SubModule', 'Loops', 1);
-
-INSERT INTO courses_class_groups(course_id, class_group_id)
-values
-    (1, 1),
-    (3, 2);
 
 INSERT INTO courses_modules(course_id, module_id)
 values
