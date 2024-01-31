@@ -4,12 +4,11 @@ import com.switchfully.switchfullylmsbackend.dtos.codelabprogresses.CodelabProgr
 import com.switchfully.switchfullylmsbackend.dtos.codelabs.CodelabDto;
 import com.switchfully.switchfullylmsbackend.dtos.codelabs.CodelabNoCommentDto;
 import com.switchfully.switchfullylmsbackend.dtos.codelabs.CreateCodelabDto;
-import com.switchfully.switchfullylmsbackend.entities.Codelab;
-import com.switchfully.switchfullylmsbackend.entities.CodelabProgress;
-import com.switchfully.switchfullylmsbackend.entities.Course;
+import com.switchfully.switchfullylmsbackend.entities.*;
 import com.switchfully.switchfullylmsbackend.entities.Module;
 import com.switchfully.switchfullylmsbackend.exceptions.CourseNotFoundException;
 import com.switchfully.switchfullylmsbackend.exceptions.IdNotFoundException;
+import com.switchfully.switchfullylmsbackend.exceptions.ModuleNotFoundException;
 import com.switchfully.switchfullylmsbackend.mappers.CodelabMapper;
 import com.switchfully.switchfullylmsbackend.mappers.CodelabProgressMapper;
 import com.switchfully.switchfullylmsbackend.repositories.CodelabProgressRepository;
@@ -43,10 +42,13 @@ public class CodelabService {
 
     public CodelabDto createCodelab(CreateCodelabDto createCodelabDto) {
 
-        Codelab codelab = codelabMapper.mapCreateCodelabDtoToCodelab(createCodelabDto);
-        Codelab addedCodelab = codelabRepository.save(codelab);
-        return codelabMapper.mapCodelabToCodelabDto(addedCodelab);
+        AbstractModule module = moduleRepository.findById(createCodelabDto.getModuleId()).orElseThrow(ModuleNotFoundException::new);
 
+        return codelabMapper.mapCodelabToCodelabDto(
+                codelabRepository.save(
+                        codelabMapper.mapCreateCodelabDtoToCodelab(createCodelabDto, module)
+                )
+        );
     }
 
     public List<CodelabNoCommentDto> getCodelabs(Long courseId) {
