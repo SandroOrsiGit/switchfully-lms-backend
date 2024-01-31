@@ -4,6 +4,9 @@ import com.switchfully.switchfullylmsbackend.dtos.codelabprogresses.CodelabProgr
 import com.switchfully.switchfullylmsbackend.dtos.codelabs.CodelabDto;
 import com.switchfully.switchfullylmsbackend.dtos.codelabs.CodelabNoCommentDto;
 import com.switchfully.switchfullylmsbackend.dtos.codelabs.CreateCodelabDto;
+import com.switchfully.switchfullylmsbackend.dtos.codelabs.UpdateCodelabProgressDto;
+import com.switchfully.switchfullylmsbackend.dtos.progresses.ProgressDto;
+import com.switchfully.switchfullylmsbackend.entities.Student;
 import com.switchfully.switchfullylmsbackend.services.CodelabService;
 import com.switchfully.switchfullylmsbackend.services.UserService;
 import org.springframework.http.HttpStatus;
@@ -36,12 +39,31 @@ public class CodelabController {
     public List<CodelabNoCommentDto> getCodelabs(@RequestParam Long courseId) {
         return codelabService.getCodelabs(courseId);
     }
+
+    @GetMapping(path = "/{codelabId}", produces = "application/json")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAuthority('student')")
+    public CodelabDto getCodelab(@RequestParam Long codelabId) {
+        return codelabService.getCodelab(codelabId);
+    }
+
     @GetMapping(path="/progress", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     public List<CodelabProgressDto> getCodelabsProgress(@RequestParam Long courseId,
                                 @RequestHeader("Authorization") String bearerToken) {
         Long studentId = userService.getUserByToken(bearerToken).getId();
 
-        return codelabService.getCodelabsProgress(courseId,studentId);
+        return codelabService.getCodelabsProgress(courseId, studentId);
     }
+
+    @PostMapping(path="/progress", produces = "application/json")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAuthority('student')")
+    public void updateCodelabProgress(UpdateCodelabProgressDto updateCodelabProgressDto,
+                                    @RequestHeader("Authorization") String bearerToken) {
+        Student student = userService.getStudentByToken(bearerToken);
+
+        return codelabService.updateCodelabProgress(updateCodelabProgressDto, student);
+    }
+
 }
