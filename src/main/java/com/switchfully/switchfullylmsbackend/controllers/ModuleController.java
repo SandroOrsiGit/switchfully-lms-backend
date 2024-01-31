@@ -3,6 +3,7 @@ package com.switchfully.switchfullylmsbackend.controllers;
 import com.switchfully.switchfullylmsbackend.dtos.modules.CreateModuleDto;
 import com.switchfully.switchfullylmsbackend.dtos.modules.ModuleDto;
 import com.switchfully.switchfullylmsbackend.entities.AbstractUser;
+import com.switchfully.switchfullylmsbackend.entities.Coach;
 import com.switchfully.switchfullylmsbackend.entities.Course;
 import com.switchfully.switchfullylmsbackend.services.CourseService;
 import com.switchfully.switchfullylmsbackend.services.ModuleService;
@@ -43,6 +44,13 @@ public class ModuleController {
       Course course = courseService.getCourse(courseId);
       return moduleService.getModulesByCourse(abstractUser, course);
 
+   }
+
+   @GetMapping
+   @ResponseStatus(HttpStatus.OK)
+   public List<ModuleDto> getAllModules(@RequestHeader("Authorization") String bearerToken) {
+      Coach coach = userService.getCoachByToken(bearerToken);
+      return moduleService.getAllModules();
    }
 }
 

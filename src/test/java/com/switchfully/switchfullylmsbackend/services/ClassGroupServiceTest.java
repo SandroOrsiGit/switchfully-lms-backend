@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -27,13 +28,13 @@ class ClassGroupServiceTest {
         Coach coach = coachRepository.findById(9L).get();
         CreateClassGroupDto createClassGroupDto = new CreateClassGroupDto(
                 "TestingService",
+                1L,
                 LocalDate.now(),
-                LocalDate.now().plusDays(1),
-                coach.getId()
+                LocalDate.now().plusDays(1)
         );
 
         // when
-        ClassGroupDto classGroupDto = classGroupService.addClassGroup(createClassGroupDto);
+        ClassGroupDto classGroupDto = classGroupService.createClassGroup(createClassGroupDto, coach);
 
         // then
         assertThat(createClassGroupDto.getName()).isEqualTo(classGroupDto.getName());

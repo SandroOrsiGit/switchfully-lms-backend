@@ -14,37 +14,37 @@ public class ClassGroup {
     private Long id;
     @Column(name = "name")
     private String name;
+    @ManyToOne
+    @JoinColumn(name = "course_id")
+    private Course course;
     @Column(name = "start_date")
     private LocalDate startDate;
     @Column(name = "end_date")
     private LocalDate endDate;
-    @ManyToOne
-    @JoinColumn(name = "course_id")
-    private Course course;
     @ManyToMany
     @JoinTable(
             name = "class_groups_coaches",
             joinColumns = @JoinColumn(name = "class_group_id"),
             inverseJoinColumns = @JoinColumn(name = "coach_id")
     )
-    private List<Coach> coaches;
+    private List<Coach> coaches = new ArrayList<>();
     @ManyToMany
     @JoinTable(
             name = "class_groups_students",
             joinColumns = @JoinColumn(name = "class_group_id"),
             inverseJoinColumns = @JoinColumn(name = "student_id")
     )
-    private List<Student> students;
+    private List<Student> students =  new ArrayList<>();
 
     public ClassGroup() {
     }
 
-    public ClassGroup(String name, LocalDate startDate, LocalDate endDate, List<Coach> coachList) {
+    public ClassGroup(String name, Course course, LocalDate endDate, LocalDate startDate, List<Coach> coachList) {
         this.name = name;
+        this.course = course;
         this.startDate = startDate;
         this.endDate = endDate;
         this.coaches = coachList;
-        this.students = new ArrayList<>();
     }
 
 //---Getters------------------

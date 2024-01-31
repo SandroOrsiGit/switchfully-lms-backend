@@ -7,6 +7,7 @@ import com.switchfully.switchfullylmsbackend.dtos.users.CoachDto;
 import com.switchfully.switchfullylmsbackend.dtos.users.StudentNoCodelabProgressDto;
 import com.switchfully.switchfullylmsbackend.entities.ClassGroup;
 import com.switchfully.switchfullylmsbackend.entities.Coach;
+import com.switchfully.switchfullylmsbackend.entities.Course;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -25,12 +26,13 @@ public class ClassGroupMapper {
         this.studentMapper = studentMapper;
     }
 
-    public ClassGroup mapCreateClassGroupDtoToClassGroup(CreateClassGroupDto createClassGroupDto, List<Coach> coachList) {
+    public ClassGroup mapCreateClassGroupDtoToClassGroup(CreateClassGroupDto createClassGroupDto, Course course, Coach coach) {
         return new ClassGroup(
                 createClassGroupDto.getName(),
-                createClassGroupDto.getStartDate(),
+                course,
                 createClassGroupDto.getEndDate(),
-                coachList
+                createClassGroupDto.getStartDate(),
+                List.of(coach)
         );
     }
 

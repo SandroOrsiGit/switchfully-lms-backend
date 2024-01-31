@@ -14,6 +14,7 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -23,39 +24,39 @@ public class ClassGroupControllerTest {
     @LocalServerPort
     private int port;
 
-    @Autowired
-    private ClassGroupController classGroupController;
-    
+    @Value ("${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/token")
+    private String url;
     @Value("${keycloak.resource}")
-    public String keycloakResource;
-    
+    private String clientId;
     @Value("${keycloak.credentials.secret}")
-    public String clientSecret;
-    
-    @Value("${keycloak.realm}")
-    public String keycloakTestRealm;
-    
+    private String secret;
+
+    private String getAccessToken(String username, String password) {
+        return RestAssured
+                .given()
+                .contentType("application/x-www-form-urlencoded; charset=utf-8")
+                .formParam("client_id", clientId)
+                .formParam("client_secret", secret)
+                .formParam("grant_type", "password")
+                .formParam("username", username)
+                .formParam("password", password)
+                .when()
+                .post(url)
+                .then()
+                .extract().body().jsonPath().get("access_token");
+    }
+
     @Test
     void givenCreateClassGroupDtoAndCoach_whenPostingToBackend_thenStatusCodeCreatedIsReturned() {
         //GIVEN
         CreateClassGroupDto createClassGroupDto = new CreateClassGroupDto(
                 "TestName",
+                1L,
                 LocalDate.now(),
-                LocalDate.now(),
-                9L);
-        
-        String accessToken = RestAssured
-                .given()
-                .contentType("application/x-www-form-urlencoded; charset=utf-8")
-                .formParam("client_id", keycloakResource)
-                .formParam("client_secret", clientSecret)
-                .formParam("grant_type", "password")
-                .formParam("username", "coach@lms.com")
-                .formParam("password", "coach")
-                .when()
-                .post("https://keycloak.switchfully.com/realms/" + keycloakTestRealm + "/protocol/openid-connect/token")
-                .then()
-                .extract().body().jsonPath().get("access_token");
+                LocalDate.now()
+        );
+
+        String accessToken = getAccessToken("coach@lms.com", "coach");
 
         //WHEN
         ClassGroupDto classGroupDto = RestAssured
@@ -84,22 +85,12 @@ public class ClassGroupControllerTest {
         //GIVEN
         CreateClassGroupDto createClassGroupDto = new CreateClassGroupDto(
                 "TestName",
+                1L,
                 LocalDate.now(),
-                LocalDate.now().plusDays(1),
-                1L);
+                LocalDate.now().plusDays(1)
+        );
 
-        String accessToken = RestAssured
-                .given()
-                .contentType("application/x-www-form-urlencoded; charset=utf-8")
-                .formParam("client_id", keycloakResource)
-                .formParam("client_secret", clientSecret)
-                .formParam("grant_type", "password")
-                .formParam("username", "student@lms.com")
-                .formParam("password", "student")
-                .when()
-                .post("https://keycloak.switchfully.com/realms/switchfully-lms-test/protocol/openid-connect/token")
-                .then()
-                .extract().body().jsonPath().get("access_token");
+        String accessToken = getAccessToken("student@lms.com", "student");
 
         //WHEN
         RestAssured
@@ -119,18 +110,7 @@ public class ClassGroupControllerTest {
     
     @Test
     void whenGetClassGroupsByUser_thenReturnListOfClassGroupsAndStatusCodeOK() {
-        String accessToken = RestAssured
-                .given()
-                .contentType("application/x-www-form-urlencoded; charset=utf-8")
-                .formParam("client_id", keycloakResource)
-                .formParam("client_secret", clientSecret)
-                .formParam("grant_type", "password")
-                .formParam("username", "student@lms.com")
-                .formParam("password", "student")
-                .when()
-                .post("https://keycloak.switchfully.com/realms/" + keycloakTestRealm + "/protocol/openid-connect/token")
-                .then()
-                .extract().body().jsonPath().get("access_token");
+        String accessToken = getAccessToken("coach@lms.com", "coach");
         
         ClassGroupDto[] classGroups =
                 RestAssured

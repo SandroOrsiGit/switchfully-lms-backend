@@ -2,19 +2,19 @@ package com.switchfully.switchfullylmsbackend.services;
 
 import com.switchfully.switchfullylmsbackend.dtos.classgroups.ClassGroupDto;
 import com.switchfully.switchfullylmsbackend.dtos.classgroups.CreateClassGroupDto;
-import com.switchfully.switchfullylmsbackend.entities.AbstractUser;
 import com.switchfully.switchfullylmsbackend.entities.ClassGroup;
 import com.switchfully.switchfullylmsbackend.entities.Coach;
+import com.switchfully.switchfullylmsbackend.entities.Course;
 import com.switchfully.switchfullylmsbackend.exceptions.ClassGroupNotFoundException;
-import com.switchfully.switchfullylmsbackend.exceptions.IdNotFoundException;
+import com.switchfully.switchfullylmsbackend.exceptions.CourseNotFoundException;
 import com.switchfully.switchfullylmsbackend.exceptions.InvalidRoleException;
 import com.switchfully.switchfullylmsbackend.mappers.ClassGroupMapper;
 import com.switchfully.switchfullylmsbackend.repositories.ClassGroupRepository;
+import com.switchfully.switchfullylmsbackend.repositories.CourseRepository;
 import com.switchfully.switchfullylmsbackend.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,26 +23,26 @@ import java.util.stream.Collectors;
 public class ClassGroupService {
     private final ClassGroupRepository classGroupRepository;
     private final ClassGroupMapper classGroupMapper;
+    private final CourseRepository courseRepository;
     private final UserService userService;
     private final UserRepository userRepository;
 
-    public ClassGroupService(ClassGroupRepository classGroupRepository, ClassGroupMapper classGroupMapper, UserService userService, UserRepository userRepository) {
+    public ClassGroupService(ClassGroupRepository classGroupRepository, ClassGroupMapper classGroupMapper, CourseRepository courseRepository, UserService userService, UserRepository userRepository) {
         this.classGroupRepository = classGroupRepository;
         this.classGroupMapper = classGroupMapper;
+        this.courseRepository = courseRepository;
         this.userService = userService;
         this.userRepository = userRepository;
     }
 
-    public ClassGroupDto addClassGroup(CreateClassGroupDto createClassGroupDto) {
-        List<Coach> coachList = new ArrayList<>();
-        AbstractUser user = userRepository.findById( createClassGroupDto.getCoachId() )
-                .orElseThrow( () -> new IdNotFoundException("Coach Id not found."));
-        if( user instanceof Coach) coachList.add( (Coach) user );
-        else  throw new InvalidRoleException("Passed id is not a coach.");
+    public ClassGroupDto createClassGroup(CreateClassGroupDto createClassGroupDto, Coach coach) {
+        Course course = courseRepository.findById(createClassGroupDto.getCourseId()).orElseThrow(CourseNotFoundException::new);
 
-        ClassGroup classGroup = classGroupMapper.mapCreateClassGroupDtoToClassGroup(createClassGroupDto,coachList);
-        ClassGroup addedClassGroup = classGroupRepository.save(classGroup);
-        return classGroupMapper.mapClassGroupToClassGroupDto(addedClassGroup);
+        return classGroupMapper.mapClassGroupToClassGroupDto(
+                classGroupRepository.save(
+                        classGroupMapper.mapCreateClassGroupDtoToClassGroup(createClassGroupDto, course, coach)
+                )
+        );
     }
 
     public List<ClassGroupDto> getClassGroupsByUserId(Long userId) {
