@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -64,5 +65,11 @@ public class ModuleService {
         if (!courseList.contains(course)) {
             throw new NotAPartOfThisCourseException();
         }
+    }
+
+    public List<ModuleDto> getAllModules() {
+        return moduleRepository.findAll().stream()
+                .map(moduleMapper::mapModuleToModuleDto)
+                .collect(Collectors.toList());
     }
 }
