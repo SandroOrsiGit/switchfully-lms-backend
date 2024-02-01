@@ -63,4 +63,11 @@ public class CodelabController {
         codelabService.updateCodelabProgress(updateCodelabProgressDto, student);
     }
 
+    @GetMapping(path="/all", produces = "application/json")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAuthority('coach')")
+    public List<CodelabDto> getCodelabs() {
+        return codelabService.getCodelabs();
+    }
+
 }

@@ -102,6 +102,10 @@ public class CodelabService {
         }
     }
 
+    public List<CodelabDto> getCodelabs() {
+        return codelabRepository.findAll().stream().map(codelabMapper::mapCodelabToCodelabDto).toList();
+    }
+
 //    public List<CodelabProgressDto> getCodelabsProgressesByModuleId(Long moduleId, Student student) {
 //        Module module = moduleRepository.findById(moduleId).orElseThrow(ModuleNotFoundException::new);
 //        List<Codelab> codelabs = codelabRepository.findByModule(module);
