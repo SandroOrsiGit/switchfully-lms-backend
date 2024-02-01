@@ -10,5 +10,7 @@ import java.util.List;
 public interface CodelabProgressRepository extends JpaRepository<CodelabProgress, Long> {
     List<CodelabProgress> findByCodelabAndStudent(Codelab codelab, Student student);
 
+//    List<CodelabProgress> findByCodelabsAndStudent(List<Codelab> codelabs, Student student);
+
     List<CodelabProgress> findByCodelabId(Long id);
 }

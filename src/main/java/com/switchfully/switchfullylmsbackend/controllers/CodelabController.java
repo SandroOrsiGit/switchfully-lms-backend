@@ -33,8 +33,10 @@ public class CodelabController {
     @GetMapping(produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAuthority('student')")
-    public List<CodelabDto> getCodelabs(@RequestParam Long moduleId) {
-        return codelabService.getCodelabsByModuleId(moduleId);
+    public List<CodelabWithProgressDto> getCodelabsWithProgress(@RequestHeader("Authorization") String bearerToken, @RequestParam Long moduleId) {
+        Student student = userService.getStudentByToken(bearerToken);
+
+        return codelabService.getCodelabsWithProgress(moduleId, student);
     }
 
     @GetMapping(path = "/{codelabId}", produces = "application/json")
