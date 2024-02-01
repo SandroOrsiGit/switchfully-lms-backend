@@ -25,6 +25,12 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         return responseEntityBuilder(e, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(CodelabNotFoundException.class)
+    @ResponseBody
+    private ResponseEntity<Object> codelabNotFoundException(CodelabNotFoundException e) {
+        return responseEntityBuilder(e, HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler(NotACoachException.class)
     @ResponseBody
     private ResponseEntity<Object> notACoachException(NotACoachException e) {
@@ -46,6 +52,12 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(IdNotFoundException.class)
     @ResponseBody
     private ResponseEntity<Object> idNotFoundException(IdNotFoundException e) {
+        return responseEntityBuilder(e, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(ProgressNotFoundException.class)
+    @ResponseBody
+    private ResponseEntity<Object> progressNotFoundException(ProgressNotFoundException e) {
         return responseEntityBuilder(e, HttpStatus.NOT_FOUND);
     }
 

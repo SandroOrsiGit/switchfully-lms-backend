@@ -1,9 +1,8 @@
 package com.switchfully.switchfullylmsbackend.controllers;
 
 import com.switchfully.switchfullylmsbackend.dtos.codelabprogresses.CodelabProgressDto;
-import com.switchfully.switchfullylmsbackend.dtos.codelabs.CodelabDto;
-import com.switchfully.switchfullylmsbackend.dtos.codelabs.CodelabNoCommentDto;
-import com.switchfully.switchfullylmsbackend.dtos.codelabs.CreateCodelabDto;
+import com.switchfully.switchfullylmsbackend.dtos.codelabs.*;
+import com.switchfully.switchfullylmsbackend.entities.Student;
 import com.switchfully.switchfullylmsbackend.services.CodelabService;
 import com.switchfully.switchfullylmsbackend.services.UserService;
 import org.springframework.http.HttpStatus;
@@ -33,15 +32,35 @@ public class CodelabController {
 
     @GetMapping(produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public List<CodelabNoCommentDto> getCodelabs(@RequestParam Long courseId) {
-        return codelabService.getCodelabs(courseId);
-    }
-    @GetMapping(path="/progress", produces = "application/json")
-    @ResponseStatus(HttpStatus.OK)
-    public List<CodelabProgressDto> getCodelabsProgress(@RequestParam Long courseId,
-                                @RequestHeader("Authorization") String bearerToken) {
-        Long studentId = userService.getUserByToken(bearerToken).getId();
+    @PreAuthorize("hasAuthority('student')")
+    public List<CodelabWithProgressDto> getCodelabsWithProgress(@RequestHeader("Authorization") String bearerToken, @RequestParam Long moduleId) {
+        Student student = userService.getStudentByToken(bearerToken);
 
-        return codelabService.getCodelabsProgress(courseId,studentId);
+        return codelabService.getCodelabsWithProgress(moduleId, student);
     }
+
+    @GetMapping(path = "/{codelabId}", produces = "application/json")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAuthority('student')")
+    public CodelabDto getCodelab(@RequestParam Long codelabId) {
+        return codelabService.getCodelab(codelabId);
+    }
+
+//    @GetMapping(path="/progress", produces = "application/json")
+//    @ResponseStatus(HttpStatus.OK)
+//    public List<CodelabProgressDto> getCodelabsProgress(@RequestHeader("Authorization") String bearerToken, @RequestParam Long moduleId) {
+//        Student student = userService.getStudentByToken(bearerToken);
+//
+//        return codelabService.getCodelabsProgressesByModuleId(moduleId, student);
+//    }
+
+    @PostMapping(path="/progress", consumes = "application/json", produces = "application/json")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasAuthority('student')")
+    public void updateCodelabProgress(@RequestHeader("Authorization") String bearerToken, @RequestBody UpdateCodelabProgressDto updateCodelabProgressDto) {
+        Student student = userService.getStudentByToken(bearerToken);
+
+        codelabService.updateCodelabProgress(updateCodelabProgressDto, student);
+    }
+
 }
