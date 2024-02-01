@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @Transactional
@@ -41,24 +42,31 @@ public class CourseService {
         return courseRepository.findById(id).orElseThrow(CourseNotFoundException::new);
     }
 
+    public CourseDto getCourseDto(Long id) {
+        return courseMapper.mapCourseToCourseDto(getCourse(id));
+    }
+
     public List<CourseDto> getCourses(AbstractUser abstractUser) {
         Student student = studentRepository.findByEmail(abstractUser.getEmail());
         if (student != null) {
-            List<ClassGroup> classGroupList = classGroupRepository.findByStudentsId(student.getId());
-            List<Course> courseList = classGroupList.stream()
-                    .map(courseRepository::findByClassGroups)
+            return classGroupRepository.findByStudentsId(student.getId()).stream()
+                    .map(ClassGroup::getCourse)
+                    .filter(Objects::nonNull)
+                    .map(courseMapper::mapCourseToCourseDto)
                     .toList();
-
-            return courseList.stream().map(courseMapper::mapCourseToCourseDto).toList();
         }
 
         Coach coach = coachRepository.findByEmail(abstractUser.getEmail());
         if (coach != null) {
-            List<Course> courseList = courseRepository.findAll();
-
-            return courseList.stream().map(courseMapper::mapCourseToCourseDto).toList();
+            return courseRepository.findAll().stream().map(courseMapper::mapCourseToCourseDto).toList();
         }
 
         return new ArrayList<>();
+    }
+
+    public void updateCourse(Long courseId, UpdateCourseDto updateCourseDto) {
+        Course course = courseRepository.findById(courseId).orElseThrow(CourseNotFoundException::new);
+        course.setName(updateCourseDto.getName());
+        courseRepository.save(course);
     }
 }
