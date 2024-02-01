@@ -49,21 +49,16 @@ public class CourseService {
     public List<CourseDto> getCourses(AbstractUser abstractUser) {
         Student student = studentRepository.findByEmail(abstractUser.getEmail());
         if (student != null) {
-            List<ClassGroup> classGroupList = classGroupRepository.findByStudentsId(student.getId());
-
-            List<Course> courseList = classGroupList.stream()
+            return classGroupRepository.findByStudentsId(student.getId()).stream()
                     .map(ClassGroup::getCourse)
                     .filter(Objects::nonNull)
+                    .map(courseMapper::mapCourseToCourseDto)
                     .toList();
-
-            return courseList.stream().map(courseMapper::mapCourseToCourseDto).toList();
         }
 
         Coach coach = coachRepository.findByEmail(abstractUser.getEmail());
         if (coach != null) {
-            List<Course> courseList = courseRepository.findAll();
-
-            return courseList.stream().map(courseMapper::mapCourseToCourseDto).toList();
+            return courseRepository.findAll().stream().map(courseMapper::mapCourseToCourseDto).toList();
         }
 
         return new ArrayList<>();
