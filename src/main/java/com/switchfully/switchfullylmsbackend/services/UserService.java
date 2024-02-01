@@ -22,6 +22,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import org.keycloak.TokenVerifier;
+import org.keycloak.common.VerificationException;
+import org.keycloak.representations.AccessToken;
+
 import java.util.Objects;
 import java.util.Base64;
 import java.util.List;
@@ -111,6 +115,14 @@ public class UserService {
     public static String decode(String encodedString) {
         return new String(Base64.getUrlDecoder().decode(encodedString));
     }
-
+    
+    public boolean validateToken(String token) {
+        try {
+            AccessToken accessToken = TokenVerifier.create(token, AccessToken.class).getToken();
+            return true;
+        } catch (VerificationException e) {
+            return false;
+        }
+    }
 
 }
