@@ -18,6 +18,13 @@ public class CodelabProgress {
     @JoinColumn(name = "student_id")
     private Student student;
 
+    public CodelabProgress() {}
+
+    public CodelabProgress(Codelab codelab, Progress progress, Student student) {
+        this.codelab = codelab;
+        this.progress = progress;
+        this.student = student;
+    }
 
     public Long getId() {
         return id;
@@ -34,4 +41,9 @@ public class CodelabProgress {
     public Student getStudent() {
         return student;
     }
+
+    public void setProgress(Progress progress) {
+        this.progress = progress;
+    }
+
 }

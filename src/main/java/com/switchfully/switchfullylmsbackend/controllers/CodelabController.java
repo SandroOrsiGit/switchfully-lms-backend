@@ -46,18 +46,18 @@ public class CodelabController {
         return codelabService.getCodelab(codelabId);
     }
 
-    @GetMapping(path="/progress", produces = "application/json")
-    @ResponseStatus(HttpStatus.OK)
-    public List<CodelabProgressDto> getCodelabsProgress(@RequestHeader("Authorization") String bearerToken, @RequestParam Long moduleId) {
-        Student student = userService.getStudentByToken(bearerToken);
+//    @GetMapping(path="/progress", produces = "application/json")
+//    @ResponseStatus(HttpStatus.OK)
+//    public List<CodelabProgressDto> getCodelabsProgress(@RequestHeader("Authorization") String bearerToken, @RequestParam Long moduleId) {
+//        Student student = userService.getStudentByToken(bearerToken);
+//
+//        return codelabService.getCodelabsProgressesByModuleId(moduleId, student);
+//    }
 
-        return codelabService.getCodelabsProgressesByModuleId(moduleId, student);
-    }
-
-    @PostMapping(path="/progress", produces = "application/json")
-    @ResponseStatus(HttpStatus.OK)
+    @PostMapping(path="/progress", consumes = "application/json", produces = "application/json")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("hasAuthority('student')")
-    public void updateCodelabProgress(@RequestHeader("Authorization") String bearerToken, UpdateCodelabProgressDto updateCodelabProgressDto) {
+    public void updateCodelabProgress(@RequestHeader("Authorization") String bearerToken, @RequestBody UpdateCodelabProgressDto updateCodelabProgressDto) {
         Student student = userService.getStudentByToken(bearerToken);
 
         codelabService.updateCodelabProgress(updateCodelabProgressDto, student);

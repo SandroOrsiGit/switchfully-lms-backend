@@ -28,4 +28,12 @@ public class UpdateCodelabProgressDto {
         this.progressId = progressId;
     }
 
+    @Override
+    public String toString() {
+        return "UpdateCodelabProgressDto{" +
+                "codelabId=" + codelabId +
+                ", progressId=" + progressId +
+                '}';
+    }
+
 }
