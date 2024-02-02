@@ -1,6 +1,5 @@
 package com.switchfully.switchfullylmsbackend.controllers;
 
-import com.switchfully.switchfullylmsbackend.dtos.codelabprogresses.CodelabProgressDto;
 import com.switchfully.switchfullylmsbackend.dtos.codelabs.*;
 import com.switchfully.switchfullylmsbackend.entities.Student;
 import com.switchfully.switchfullylmsbackend.services.CodelabService;
@@ -46,13 +45,12 @@ public class CodelabController {
         return codelabService.getCodelab(codelabId);
     }
 
-//    @GetMapping(path="/progress", produces = "application/json")
-//    @ResponseStatus(HttpStatus.OK)
-//    public List<CodelabProgressDto> getCodelabsProgress(@RequestHeader("Authorization") String bearerToken, @RequestParam Long moduleId) {
-//        Student student = userService.getStudentByToken(bearerToken);
-//
-//        return codelabService.getCodelabsProgressesByModuleId(moduleId, student);
-//    }
+    @GetMapping(path = "/module/{moduleId}", produces = "application/json")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAnyAuthority('coach', 'student')")
+    public List<CodelabDto> getCodelabsByModuleId(@PathVariable Long moduleId) {
+        return codelabService.getCodelabsByModuleId(moduleId);
+    }
 
     @PostMapping(path ="/progress", consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.NO_CONTENT)
