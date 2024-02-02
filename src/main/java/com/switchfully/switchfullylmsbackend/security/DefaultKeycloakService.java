@@ -1,6 +1,7 @@
 package com.switchfully.switchfullylmsbackend.security;
 
-import com.switchfully.switchfullylmsbackend.dtos.users.CreateStudentDto;
+import com.switchfully.switchfullylmsbackend.dtos.users.*;
+import com.switchfully.switchfullylmsbackend.entities.*;
 import com.switchfully.switchfullylmsbackend.exceptions.UserAlreadyExistsException;
 import org.keycloak.admin.client.CreatedResponseUtil;
 import org.keycloak.admin.client.Keycloak;
@@ -30,12 +31,14 @@ public class DefaultKeycloakService implements KeycloakService {
         this.realmResource = keycloak.realm(realmName);
     }
 
-    public void addUser(CreateStudentDto createStudentDto) {
-        String createdUserId = createUser(createStudentDto);                                       // create user in keycloak to get Id
-        UserResource userResource = realmResource.users().get(createdUserId);                   // get user form keycloak
-        userResource.resetPassword(createCredentialRepresentation(createStudentDto.getPassword()));// set user password
+    public String addUser(CreateStudentDto createStudentDto) {
+        String createdUserId = createUser(createStudentDto);
+        UserResource userResource = realmResource.users().get(createdUserId);
+        userResource.resetPassword(createCredentialRepresentation(createStudentDto.getPassword()));
         addRole( userResource, "student");
+        return createdUserId;
     }
+
 
     private String createUser(CreateStudentDto createStudentDto) {
         try {
@@ -53,6 +56,7 @@ public class DefaultKeycloakService implements KeycloakService {
         passwordCredentials.setValue(password);
         return passwordCredentials;
     }
+
 
     private void addRole(UserResource userResource, String userRole) {
         ClientRepresentation clientRepresentation = realmResource

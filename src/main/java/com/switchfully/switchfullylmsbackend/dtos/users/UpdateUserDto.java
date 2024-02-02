@@ -5,13 +5,15 @@ public class UpdateUserDto {
     private Long id;
     private String email;
     private String displayName;
+    private String password;
 
     public UpdateUserDto() {}
 
-    public UpdateUserDto(Long id, String email, String displayName) {
+    public UpdateUserDto(Long id, String email, String displayName, String password) {
         this.id = id;
         this.email = email;
         this.displayName = displayName;
+        this.password = password;
     }
 
     public Long getId() {
@@ -38,13 +40,11 @@ public class UpdateUserDto {
         this.displayName = displayName;
     }
 
-    @Override
-    public String toString() {
-        return "UpdateUserDto{" +
-                "id=" + id +
-                ", email='" + email + '\'' +
-                ", displayName='" + displayName + '\'' +
-                '}';
+    public String getPassword() {
+        return password;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }
