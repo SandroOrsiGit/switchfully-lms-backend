@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @Transactional
@@ -49,7 +50,11 @@ public class CourseService {
                     .map(courseRepository::findByClassGroups)
                     .toList();
 
-            return courseList.stream().map(courseMapper::mapCourseToCourseDto).toList();
+            return courseList
+                    .stream()
+                    .filter(Objects::nonNull)
+                    .map(courseMapper::mapCourseToCourseDto)
+                    .toList();
         }
 
         Coach coach = coachRepository.findByEmail(abstractUser.getEmail());

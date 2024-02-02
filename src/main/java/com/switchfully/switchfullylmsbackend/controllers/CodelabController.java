@@ -41,8 +41,8 @@ public class CodelabController {
 
     @GetMapping(path = "/{codelabId}", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasAuthority('student')")
-    public CodelabDto getCodelab(@RequestParam Long codelabId) {
+    @PreAuthorize("hasAnyAuthority('coach', 'student')")
+    public CodelabDto getCodelab(@PathVariable Long codelabId) {
         return codelabService.getCodelab(codelabId);
     }
 
@@ -54,13 +54,20 @@ public class CodelabController {
 //        return codelabService.getCodelabsProgressesByModuleId(moduleId, student);
 //    }
 
-    @PostMapping(path="/progress", consumes = "application/json", produces = "application/json")
+    @PostMapping(path ="/progress", consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("hasAuthority('student')")
     public void updateCodelabProgress(@RequestHeader("Authorization") String bearerToken, @RequestBody UpdateCodelabProgressDto updateCodelabProgressDto) {
         Student student = userService.getStudentByToken(bearerToken);
 
         codelabService.updateCodelabProgress(updateCodelabProgressDto, student);
+    }
+
+    @PutMapping(path = "/update", consumes = "application/json", produces = "application/json")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasAuthority('coach')")
+    public void updateCodelab(@RequestBody UpdateCodelabDto updateCodelabDto) {
+        codelabService.updateCodelab(updateCodelabDto);
     }
 
     @GetMapping(path="/all", produces = "application/json")
