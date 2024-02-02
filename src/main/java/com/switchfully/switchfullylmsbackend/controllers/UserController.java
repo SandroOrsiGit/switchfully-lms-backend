@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(path = "/user")
 @CrossOrigin(origins = "http://localhost:4200")
@@ -49,6 +51,12 @@ public class UserController {
         // TODO check if user is the authenticated user
         // TODO return UserDto so the front end can update it's user data
         userService.updateUser(updateUserDto);
+    }
+
+    @GetMapping(path= "/students")
+    @PreAuthorize("hasAnyAuthority('coach')")
+    public List<StudentDto> getAllStudents() {
+        return userService.getAllStudents();
     }
 
 }

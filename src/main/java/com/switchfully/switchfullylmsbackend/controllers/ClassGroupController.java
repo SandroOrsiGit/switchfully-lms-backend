@@ -43,6 +43,13 @@ public class ClassGroupController {
     public List<ClassGroupDto> getClassGroupsByUser(@RequestParam Long userId) {
         return classgroupService.getClassGroupsByUserId(userId);
     }
+
+    @GetMapping(path= "/all", produces = "application/json")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAnyAuthority('coach')")
+    public List<ClassGroupDto> getAllClassGroups() {
+        return classgroupService.getAllClassGroups();
+    }
 }
 
 

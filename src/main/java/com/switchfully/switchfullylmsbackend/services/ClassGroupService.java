@@ -65,4 +65,8 @@ public class ClassGroupService {
        return classGroupMapper.mapClassGroupToClassGroupDto(classGroupRepository
                .findById(classGroupId).orElseThrow(ClassGroupNotFoundException::new));
     }
+
+    public List<ClassGroupDto> getAllClassGroups() {
+        return classGroupRepository.findAll().stream().map(classGroupMapper::mapClassGroupToClassGroupDto).collect(Collectors.toList());
+    }
 }
