@@ -1,11 +1,12 @@
 package com.switchfully.switchfullylmsbackend.security;
 
-import com.switchfully.switchfullylmsbackend.dtos.users.CreateStudentDto;
+import com.switchfully.switchfullylmsbackend.dtos.users.*;
+import com.switchfully.switchfullylmsbackend.entities.*;
 import org.springframework.stereotype.Service;
 
 @Service
 public interface KeycloakService {
 
-    void addUser(CreateStudentDto createStudentDto);
+    String addUser(CreateStudentDto createStudentDto);
 
 }

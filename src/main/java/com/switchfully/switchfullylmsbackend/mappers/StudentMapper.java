@@ -36,10 +36,11 @@ public class StudentMapper {
         );
     }
 
-    public Student mapCreateUserDtoToStudent(CreateStudentDto createStudentDto) {
+    public Student mapCreateUserDtoToStudent(CreateStudentDto createStudentDto, String createdUserId) {
         return new Student(
                 createStudentDto.getEmail(),
-                createStudentDto.getDisplayName()
+                createStudentDto.getDisplayName(),
+                createdUserId
         );
     }
 
