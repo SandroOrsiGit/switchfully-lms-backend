@@ -1,6 +1,7 @@
 package com.switchfully.switchfullylmsbackend.security;
 
-import com.switchfully.switchfullylmsbackend.dtos.users.CreateStudentDto;
+import com.switchfully.switchfullylmsbackend.dtos.users.*;
+import com.switchfully.switchfullylmsbackend.entities.*;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
@@ -9,8 +10,8 @@ import org.springframework.stereotype.Service;
 public class TestKeycloakService implements KeycloakService{
 
     @Override
-    public void addUser(CreateStudentDto createStudentDto) {
-
+    public String addUser(CreateStudentDto createStudentDto) {
+        return null;
     }
 
 }

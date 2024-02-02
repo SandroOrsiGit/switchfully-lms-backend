@@ -7,10 +7,7 @@ import com.switchfully.switchfullylmsbackend.entities.AbstractUser;
 import com.switchfully.switchfullylmsbackend.dtos.users.UserDto;
 import com.switchfully.switchfullylmsbackend.entities.Coach;
 import com.switchfully.switchfullylmsbackend.entities.Student;
-import com.switchfully.switchfullylmsbackend.exceptions.IdNotFoundException;
-
-import com.switchfully.switchfullylmsbackend.exceptions.NotACoachException;
-import com.switchfully.switchfullylmsbackend.exceptions.NotAStudentException;
+import com.switchfully.switchfullylmsbackend.exceptions.*;
 
 import com.switchfully.switchfullylmsbackend.mappers.StudentMapper;
 import com.switchfully.switchfullylmsbackend.mappers.UserMapper;
@@ -21,6 +18,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
+import org.keycloak.TokenVerifier;
+import org.keycloak.common.VerificationException;
+import org.keycloak.representations.AccessToken;
 
 import java.util.Objects;
 import java.util.Base64;
@@ -41,22 +42,22 @@ public class UserService {
         this.userMapper = userMapper;
     }
 
-    public StudentDto createStudent(CreateStudentDto createStudentDto) {
+    public StudentDto createStudent(CreateStudentDto createStudentDto, String createdUserId) {
         return studentMapper.mapStudentToStudentDto(
                 studentRepository.save(
-                        studentMapper.mapCreateUserDtoToStudent(createStudentDto)
+                        studentMapper.mapCreateUserDtoToStudent(createStudentDto, createdUserId)
                 )
         );
     }
 
-    public void updateUser(UpdateUserDto updateUserDto) {
+    public UserDto updateUser(AbstractUser abstractUser, UpdateUserDto updateUserDto) {
         AbstractUser emailUser = userRepository.findByEmail(updateUserDto.getEmail());
-        if (emailUser != null && !Objects.equals(emailUser.getId(), updateUserDto.getId())) {
-            throw new IllegalArgumentException("email already in use");
+        if (emailUser != null && !Objects.equals(emailUser.getId(), abstractUser.getId())) {
+            throw new EmailAlreadyExistsException();
         }
-        AbstractUser user = userRepository.findById(updateUserDto.getId()).orElseThrow(() -> new IllegalArgumentException("User not found"));
-        user.setDisplayName(updateUserDto.getDisplayName());
-        userRepository.save(user);
+        abstractUser.setDisplayName(updateUserDto.getDisplayName());
+
+        return userMapper.mapAbstractUserToUserDto(userRepository.save(abstractUser), abstractUser.getRole());
     }
 
     public UserDto getUserById(Long userId) {
@@ -89,7 +90,6 @@ public class UserService {
         return userMapper.mapAbstractUserToUserDto(user, roles.get(0));
     }
 
-
     public Student getStudentByToken(String bearerToken) {
         AbstractUser abstractUser = this.getUserByToken(bearerToken);
         if (abstractUser instanceof Student) {
@@ -111,6 +111,14 @@ public class UserService {
     public static String decode(String encodedString) {
         return new String(Base64.getUrlDecoder().decode(encodedString));
     }
-
+    
+    public boolean validateToken(String token) {
+        try {
+            AccessToken accessToken = TokenVerifier.create(token, AccessToken.class).getToken();
+            return true;
+        } catch (VerificationException e) {
+            return false;
+        }
+    }
 
 }

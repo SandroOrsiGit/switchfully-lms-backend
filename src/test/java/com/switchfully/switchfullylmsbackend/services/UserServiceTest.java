@@ -27,7 +27,7 @@ public class UserServiceTest {
         );
 
         // when
-        StudentDto studentDto = userService.createStudent(createStudentDto);
+        StudentDto studentDto = userService.createStudent(createStudentDto, "123");
 
         // then
         assertThat(createStudentDto.getDisplayName()).isEqualTo(studentDto.getDisplayName());
