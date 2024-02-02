@@ -1,20 +1,17 @@
 package com.switchfully.switchfullylmsbackend.dtos.comments;
 
-import com.switchfully.switchfullylmsbackend.dtos.users.StudentDto;
-
 public class CommentDto {
     private Long id;
     private String text;
-    //TODO should we rename studentDto to studentName? Check CommentMapper for info
-    private String studentDto;
+    private String studentName;
 
     public CommentDto() {
     }
 
-    public CommentDto(Long id, String text, String studentDto) {
+    public CommentDto(Long id, String text, String studentName) {
         this.id = id;
         this.text = text;
-        this.studentDto = studentDto;
+        this.studentName = studentName;
     }
 
     //    ---Getters---------------
@@ -24,7 +21,7 @@ public class CommentDto {
     public String getText() {
         return text;
     }
-    public String getStudentDto() {
-        return studentDto;
+    public String getStudentName() {
+        return studentName;
     }
 }
