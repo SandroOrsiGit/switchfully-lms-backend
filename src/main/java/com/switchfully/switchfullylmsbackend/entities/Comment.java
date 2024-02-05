@@ -18,13 +18,18 @@ public class Comment {
     @Column(name = "created_date")
     private LocalDate createdDate;
 
+    @ManyToOne
+    @JoinColumn(name = "codelab_id")
+    private Codelab codelab;
+
     public Comment() {
     }
 
-    public Comment(String text, Student student, LocalDate createdDate) {
+    public Comment(String text, Student student, LocalDate createdDate, Codelab codelab) {
         this.text = text;
         this.student = student;
         this.createdDate = createdDate;
+        this.codelab = codelab;
     }
 
     public Long getId() {
@@ -41,5 +46,9 @@ public class Comment {
 
     public LocalDate getCreatedDate() {
         return createdDate;
+    }
+
+    public Codelab getCodelab() {
+        return codelab;
     }
 }

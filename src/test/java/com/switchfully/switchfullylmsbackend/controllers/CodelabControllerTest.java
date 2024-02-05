@@ -1,7 +1,10 @@
 package com.switchfully.switchfullylmsbackend.controllers;
 
 import com.switchfully.switchfullylmsbackend.dtos.codelabs.CodelabDto;
+import com.switchfully.switchfullylmsbackend.dtos.codelabs.CodelabWithProgressDto;
 import com.switchfully.switchfullylmsbackend.dtos.codelabs.CreateCodelabDto;
+import com.switchfully.switchfullylmsbackend.dtos.codelabs.UpdateCodelabDto;
+import com.switchfully.switchfullylmsbackend.dtos.codelabs.UpdateCodelabProgressDto;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Test;
@@ -97,33 +100,118 @@ public class CodelabControllerTest {
     }
 
     @Test
-    void whenGetCodelabsByModuleId_thenReturnListOfCodelabs() {
+    void givenStudent_whenGetCodelabsWithProgressByModuleId_thenReturnCodelabs() {
+        //given
+        String accessToken = getAccessToken("student@lms.com", "student");
 
+        // when
+        List<CodelabWithProgressDto> actual = RestAssured
+                .given()
+                .auth()
+                .oauth2(accessToken)
+                .contentType(ContentType.JSON)
+                .port(port)
+                .queryParam("moduleId", 1L)
+                .when()
+                .get("/codelab/student")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .body()
+                .jsonPath()
+                .getList(".", CodelabWithProgressDto.class);
+
+        assertThat(actual).hasSize(2);
+    }
+    @Test
+    void givenCoach_whenGetCodelabsByModuleId_thenReturnCodelabs() {
+        //given
         String accessToken = getAccessToken("coach@lms.com", "coach");
 
-        Long moduleId = 1L;
+        // when
+        List<CodelabDto> actual = RestAssured
+                .given()
+                .auth()
+                .oauth2(accessToken)
+                .contentType(ContentType.JSON)
+                .port(port)
+                .queryParam("moduleId", 1L)
+                .when()
+                .get("/codelab/coach")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .body()
+                .jsonPath()
+                .getList(".", CodelabDto.class);
 
-        // WHEN
-        List<CodelabDto> codelabDtos = RestAssured
+        assertThat(actual).hasSize(2);
+    }
+    @Test
+    void givenCoachOrStudent_whenGetCodelab_thenReturnCodelab() {
+        //given
+        String accessToken = getAccessToken("coach@lms.com", "coach");
+
+        // when
+        CodelabDto actual = RestAssured
                 .given()
                 .auth()
                 .oauth2(accessToken)
                 .contentType(ContentType.JSON)
                 .port(port)
                 .when()
-                .get("/codelab/module/" + moduleId)
+                .get("/codelab/1")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.OK.value())
                 .extract()
-                .jsonPath()
-                .getList(".", CodelabDto.class);
+                .as(CodelabDto.class);
 
-        // THEN
-        assertThat(codelabDtos).isNotEmpty();
-        assertThat(codelabDtos.get(0).getName()).isEqualTo("codelab01");
-        assertThat(codelabDtos.get(1).getName()).isEqualTo("codelab02");
+        assertThat(actual.getId()).isEqualTo(1L);
+    }
+    @Test
+    void givenStudent_whenUpdateCodelabProgress_thenReturn202() {
+        //given
+        UpdateCodelabProgressDto updateCodelabProgressDto = new UpdateCodelabProgressDto(1L, 1L);
+        String accessToken = getAccessToken("student@lms.com", "student");
+
+        // when
+        RestAssured
+                .given()
+                .auth()
+                .oauth2(accessToken)
+                .accept(ContentType.JSON)
+                .contentType(ContentType.JSON)
+                .port(port)
+                .body(updateCodelabProgressDto)
+                .when()
+                .post("/codelab/progress")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.NO_CONTENT.value());
 
     }
+    @Test
+    void givenCoach_whenUpdateCodelab_thenReturn202() {
+        //given
+        UpdateCodelabDto updateCodelabDto = new UpdateCodelabDto("test", 1L);
+        String accessToken = getAccessToken("coach@lms.com", "coach");
 
+        // when
+        RestAssured
+                .given()
+                .auth()
+                .oauth2(accessToken)
+                .accept(ContentType.JSON)
+                .contentType(ContentType.JSON)
+                .port(port)
+                .body(updateCodelabDto)
+                .when()
+                .put("/codelab/1")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.NO_CONTENT.value());
+    }
 }
