@@ -77,4 +77,7 @@ public class ClassGroup {
         return students;
     }
 
+    public void addStudent(Student student) {
+        students.add(student);
+    }
 }
