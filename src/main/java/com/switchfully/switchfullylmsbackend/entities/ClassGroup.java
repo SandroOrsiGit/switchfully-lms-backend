@@ -80,4 +80,17 @@ public class ClassGroup {
     public void addStudent(Student student) {
         students.add(student);
     }
+
+    @Override
+    public String toString() {
+        return "ClassGroup{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", course=" + course +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", coaches=" + coaches +
+                ", students=" + students +
+                '}';
+    }
 }

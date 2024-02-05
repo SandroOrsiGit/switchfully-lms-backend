@@ -74,8 +74,11 @@ public class ClassGroupService {
     }
     
     public ClassGroupDto linkStudentToClassGroup(Long classGroupId, Long studentId) {
+
         ClassGroup classGroup = classGroupRepository.findClassGroupById(classGroupId).orElseThrow(ClassGroupNotFoundException::new);
+
         Student student = studentRepository.findStudentById(studentId).orElseThrow(StudentNotFoundException::new);
+
         if (classGroup.getStudents().contains(student)) {
             throw new StudentAlreadyExistsException();
         }

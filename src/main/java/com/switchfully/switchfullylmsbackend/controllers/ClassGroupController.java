@@ -1,5 +1,6 @@
 package com.switchfully.switchfullylmsbackend.controllers;
 
+import com.switchfully.switchfullylmsbackend.dtos.classgroups.AddStudentToClassGroupDto;
 import com.switchfully.switchfullylmsbackend.dtos.classgroups.ClassGroupDto;
 import com.switchfully.switchfullylmsbackend.dtos.classgroups.CreateClassGroupDto;
 import com.switchfully.switchfullylmsbackend.dtos.users.StudentDto;
@@ -53,11 +54,11 @@ public class ClassGroupController {
         return classgroupService.getAllClassGroups();
     }
     
-    @PostMapping(path = "/add-student", consumes = "application/json")
+    @PostMapping(path = "/add-student", consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAuthority('coach')")
-    public ClassGroupDto linkStudentToClassGroup(@RequestBody Long studentId, @RequestBody Long classGroupId) {
-        return classgroupService.linkStudentToClassGroup(studentId, classGroupId);
+    public ClassGroupDto linkStudentToClassGroup(@RequestBody AddStudentToClassGroupDto addStudentToClassGroupDto) {
+        return classgroupService.linkStudentToClassGroup(addStudentToClassGroupDto.getClassGroupId(), addStudentToClassGroupDto.getStudentId());
     }
     
 }
