@@ -1,6 +1,5 @@
 package com.switchfully.switchfullylmsbackend.controllers;
 
-import com.switchfully.switchfullylmsbackend.dtos.codelabprogresses.*;
 import com.switchfully.switchfullylmsbackend.dtos.modules.CreateModuleDto;
 import com.switchfully.switchfullylmsbackend.dtos.modules.ModuleDto;
 import io.restassured.RestAssured;
@@ -52,6 +51,8 @@ public class ModuleControllerTest {
         //GIVEN
         CreateModuleDto createModuleDto = new CreateModuleDto();
         createModuleDto.setName("TestName");
+
+        createModuleDto.setCourseIds(List.of(1L, 2L));
 
         String accessToken = getAccessToken("coach@lms.com", "coach");
 
