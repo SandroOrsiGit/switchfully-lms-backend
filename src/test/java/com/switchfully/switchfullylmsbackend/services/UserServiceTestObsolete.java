@@ -1,29 +1,5 @@
 package com.switchfully.switchfullylmsbackend.services;
 
-import com.switchfully.switchfullylmsbackend.dtos.users.CreateStudentDto;
-import com.switchfully.switchfullylmsbackend.dtos.users.UpdateUserDto;
-import com.switchfully.switchfullylmsbackend.dtos.users.UserDto;
-import com.switchfully.switchfullylmsbackend.entities.Coach;
-import com.switchfully.switchfullylmsbackend.entities.Student;
-import com.switchfully.switchfullylmsbackend.exceptions.IdNotFoundException;
-import com.switchfully.switchfullylmsbackend.mappers.StudentMapper;
-import com.switchfully.switchfullylmsbackend.mappers.UserMapper;
-import com.switchfully.switchfullylmsbackend.repositories.UserRepository;
-import com.switchfully.switchfullylmsbackend.security.KeycloakService;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.security.authentication.AbstractAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-
-import java.util.Collections;
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 class UserServiceTestObsolete {
 //	AbstractAuthenticationToken authentication;
 //	StudentMapper studentMapper;

@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 @Component
 public class CodelabMapper {
-    private CommentMapper commentMapper;
+    private final CommentMapper commentMapper;
 
     public CodelabMapper(CommentMapper commentMapper) {
         this.commentMapper = commentMapper;

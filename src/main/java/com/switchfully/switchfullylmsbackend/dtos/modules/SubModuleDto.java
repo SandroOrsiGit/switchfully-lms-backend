@@ -1,8 +1,6 @@
 package com.switchfully.switchfullylmsbackend.dtos.modules;
 
 import com.switchfully.switchfullylmsbackend.dtos.codelabs.CodelabNoCommentDto;
-import com.switchfully.switchfullylmsbackend.dtos.courses.CourseDto;
-import com.switchfully.switchfullylmsbackend.entities.SubModule;
 
 import java.util.List;
 

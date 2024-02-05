@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class CodelabProgressMapper {
 
-    private CodelabMapper codelabMapper;
-    private ProgressMapper progressMapper;
+    private final CodelabMapper codelabMapper;
+    private final ProgressMapper progressMapper;
 
     public CodelabProgressMapper (CodelabMapper codelabMapper, ProgressMapper progressMapper) {
         this.codelabMapper = codelabMapper;

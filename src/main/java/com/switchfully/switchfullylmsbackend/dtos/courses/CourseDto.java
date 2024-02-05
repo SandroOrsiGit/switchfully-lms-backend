@@ -1,8 +1,8 @@
 package com.switchfully.switchfullylmsbackend.dtos.courses;
 
 public class CourseDto {
-    private Long id;
-    private String name;
+    private final Long id;
+    private final String name;
 
     public CourseDto(Long id, String name) {
         this.id = id;

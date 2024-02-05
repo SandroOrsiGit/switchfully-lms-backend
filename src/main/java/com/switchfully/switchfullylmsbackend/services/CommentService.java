@@ -2,8 +2,9 @@ package com.switchfully.switchfullylmsbackend.services;
 
 import com.switchfully.switchfullylmsbackend.dtos.comments.CommentDto;
 import com.switchfully.switchfullylmsbackend.dtos.comments.CreateCommentDto;
-import com.switchfully.switchfullylmsbackend.entities.Comment;
+import com.switchfully.switchfullylmsbackend.entities.Codelab;
 import com.switchfully.switchfullylmsbackend.entities.Student;
+import com.switchfully.switchfullylmsbackend.exceptions.CodelabNotFoundException;
 import com.switchfully.switchfullylmsbackend.mappers.CommentMapper;
 import com.switchfully.switchfullylmsbackend.repositories.CodelabRepository;
 import com.switchfully.switchfullylmsbackend.repositories.CommentRepository;
@@ -22,8 +23,9 @@ public class CommentService {
 	}
 
 	public CommentDto createComment(CreateCommentDto createCommentDto, Student student) {
+		Codelab codelab = codelabRepository.findById(createCommentDto.getCodelabId()).orElseThrow(CodelabNotFoundException::new);
 		return commentMapper.mapCommentToCommentDto(
 				commentRepository.save(
-						commentMapper.mapCreateCommentDtoToComment(createCommentDto, student)));
+						commentMapper.mapCreateCommentDtoToComment(createCommentDto, student, codelab)));
 	}
 }

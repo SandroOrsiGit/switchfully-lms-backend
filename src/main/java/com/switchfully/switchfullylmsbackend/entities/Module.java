@@ -10,7 +10,7 @@ public class Module extends AbstractModule {
    
    @OneToMany
    @JoinColumn(name = "parent_module_id")
-   private List<SubModule> subModules = new ArrayList<>();
+   private final List<SubModule> subModules = new ArrayList<>();
    @ManyToMany
    @JoinTable(
            name = "courses_modules",

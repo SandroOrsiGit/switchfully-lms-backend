@@ -3,7 +3,6 @@ package com.switchfully.switchfullylmsbackend.services;
 import com.switchfully.switchfullylmsbackend.dtos.users.CreateStudentDto;
 import com.switchfully.switchfullylmsbackend.dtos.users.StudentDto;
 import com.switchfully.switchfullylmsbackend.dtos.users.UserDto;
-import com.switchfully.switchfullylmsbackend.repositories.StudentRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

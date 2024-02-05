@@ -24,7 +24,7 @@ public class UserController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-	@PostMapping(consumes = "application/json", produces = "application/json", path = "/register")
+	@PostMapping(consumes = "application/json", produces = "application/json")
     public StudentDto createStudent(@RequestBody CreateStudentDto createStudentDto) {
         String createdUserId = keycloakService.addUser(createStudentDto);
 
@@ -38,8 +38,8 @@ public class UserController {
     
     @GetMapping(path = "/validate-token")
     @ResponseStatus(HttpStatus.OK)
-    public Boolean validateToken(@RequestHeader("Authorization") String authHeader) {
-        String token = authHeader.replace("Bearer ", "");
+    public Boolean validateToken(@RequestHeader("Authorization") String bearerToken) {
+        String token = bearerToken.replace("Bearer ", "");
         return userService.validateToken(token);
     }
     

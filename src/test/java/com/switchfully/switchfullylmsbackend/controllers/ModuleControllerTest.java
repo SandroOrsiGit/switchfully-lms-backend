@@ -1,6 +1,5 @@
 package com.switchfully.switchfullylmsbackend.controllers;
 
-import com.switchfully.switchfullylmsbackend.dtos.codelabprogresses.*;
 import com.switchfully.switchfullylmsbackend.dtos.modules.CreateModuleDto;
 import com.switchfully.switchfullylmsbackend.dtos.modules.ModuleDto;
 import io.restassured.RestAssured;

@@ -1,7 +1,6 @@
 package com.switchfully.switchfullylmsbackend.security;
 
 import com.switchfully.switchfullylmsbackend.dtos.users.*;
-import com.switchfully.switchfullylmsbackend.entities.*;
 import com.switchfully.switchfullylmsbackend.exceptions.UserAlreadyExistsException;
 import org.keycloak.admin.client.CreatedResponseUtil;
 import org.keycloak.admin.client.Keycloak;
@@ -16,7 +15,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.WebApplicationException;
-import java.util.Arrays;
+import java.util.Collections;
 
 
 @Service
@@ -64,7 +63,7 @@ public class DefaultKeycloakService implements KeycloakService {
         RoleRepresentation roleRepresentation = realmResource
                 .clients().get( clientRepresentation.getId() )
                 .roles().get( userRole ).toRepresentation();
-        userResource.roles().clientLevel( clientRepresentation.getId() ).add( Arrays.asList(roleRepresentation) );
+        userResource.roles().clientLevel( clientRepresentation.getId() ).add(Collections.singletonList(roleRepresentation));
     }
 
     private UserRepresentation createUserRepresentation(String username) {
