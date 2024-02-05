@@ -27,4 +27,13 @@ public class AddStudentToClassGroupDto {
     public Long getClassGroupId() {
         return classGroupId;
     }
+
+    @Override
+    public String toString() {
+        return "AddStudentToClassGroupDto{" +
+                "studentId=" + studentId +
+                ", classGroupId=" + classGroupId +
+                '}';
+    }
+
 }

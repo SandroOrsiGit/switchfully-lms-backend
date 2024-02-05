@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @Transactional
@@ -45,7 +46,9 @@ public class CourseService {
         Student student = studentRepository.findByEmail(abstractUser.getEmail());
         if (student != null) {
             List<ClassGroup> classGroupList = classGroupRepository.findByStudentsId(student.getId());
-            List<Course> courseList = classGroupList.stream()
+            List<Course> courseList = classGroupList
+                    .stream()
+                    .filter(Objects::nonNull)
                     .map(courseRepository::findByClassGroups)
                     .toList();
 
