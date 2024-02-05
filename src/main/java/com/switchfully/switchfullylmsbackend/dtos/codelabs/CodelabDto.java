@@ -1,22 +1,21 @@
 package com.switchfully.switchfullylmsbackend.dtos.codelabs;
 
 import com.switchfully.switchfullylmsbackend.dtos.comments.CommentDto;
-import com.switchfully.switchfullylmsbackend.dtos.modules.AbstractModuleDto;
 
 import java.util.List;
 
 public class CodelabDto {
     private Long id;
     private String name;
-    private List<CommentDto> commentDtoList;
+    private List<CommentDto> comments;
 
     public CodelabDto() {
     }
 
-    public CodelabDto(Long id, String name, List<CommentDto> commentDtoList) {
+    public CodelabDto(Long id, String name, List<CommentDto> comments) {
         this.id = id;
         this.name = name;
-        this.commentDtoList = commentDtoList;
+        this.comments = comments;
     }
 
     public Long getId() {
@@ -25,7 +24,7 @@ public class CodelabDto {
     public String getName() {
         return name;
     }
-    public List<CommentDto> getCommentDtoList() {
-        return commentDtoList;
+    public List<CommentDto> getComments() {
+        return comments;
     }
 }

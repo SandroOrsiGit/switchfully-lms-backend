@@ -12,10 +12,10 @@ public class Student extends AbstractUser {
 
     public Student(
             String email,
-            String displayName
+            String displayName,
+            String keycloakId
     ) {
-        super(email, displayName);
-
+        super(email, displayName, keycloakId);
 
     }
 

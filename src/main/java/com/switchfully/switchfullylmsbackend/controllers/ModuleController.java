@@ -36,14 +36,12 @@ public class ModuleController {
       return moduleService.createModule(createModuleDto);
    }
 
-
    @GetMapping(path = "/{courseId}")
    @ResponseStatus(HttpStatus.OK)
    public List<ModuleDto> getModulesByCourse(@RequestHeader("Authorization") String bearerToken, @PathVariable Long courseId) {
       AbstractUser abstractUser = userService.getUserByToken(bearerToken);
       Course course = courseService.getCourse(courseId);
       return moduleService.getModulesByCourse(abstractUser, course);
-
    }
 
    @GetMapping
@@ -52,6 +50,11 @@ public class ModuleController {
       Coach coach = userService.getCoachByToken(bearerToken);
       return moduleService.getAllModules();
    }
+
+   @GetMapping(path = "/codelab/{codelabId}")
+   @ResponseStatus(HttpStatus.OK)
+   public ModuleDto getModuleByCodelab(@PathVariable Long codelabId) {
+      return moduleService.getModuleByCodelab(codelabId);
+   }
+
 }
-
-

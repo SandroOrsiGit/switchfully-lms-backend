@@ -102,6 +102,21 @@ public class CodelabService {
         }
     }
 
+    public List<CodelabDto> getCodelabs() {
+        return codelabRepository.findAll().stream().map(codelabMapper::mapCodelabToCodelabDto).toList();
+    }
+
+    public void updateCodelab(UpdateCodelabDto updateCodelabDto) {
+        Codelab codelab = codelabRepository.findById(updateCodelabDto.getCodelabId()).orElseThrow(CodelabNotFoundException::new);
+        if (updateCodelabDto.getName() != null && !updateCodelabDto.getName().trim().isEmpty()) {
+            codelab.setName(updateCodelabDto.getName());
+        }
+        if (updateCodelabDto.getModuleId() != null && !Objects.equals(updateCodelabDto.getModuleId(), codelab.getModule().getId())) {
+            Module module = moduleRepository.findById(updateCodelabDto.getModuleId()).orElseThrow(ModuleNotFoundException::new);
+            codelab.setModule(module);
+        }
+    }
+
 //    public List<CodelabProgressDto> getCodelabsProgressesByModuleId(Long moduleId, Student student) {
 //        Module module = moduleRepository.findById(moduleId).orElseThrow(ModuleNotFoundException::new);
 //        List<Codelab> codelabs = codelabRepository.findByModule(module);

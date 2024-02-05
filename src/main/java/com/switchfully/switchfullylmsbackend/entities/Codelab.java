@@ -20,7 +20,6 @@ public class Codelab {
     @JoinColumn(name = "module_id")
     private AbstractModule module;
 
-
     public Codelab() {
 
     }
@@ -59,6 +58,9 @@ public class Codelab {
         this.comments = comments;
     }
 
+    public void setModule(AbstractModule module) {
+        this.module = module;
+    }
 
     @Override
     public String toString() {

@@ -4,10 +4,12 @@ import com.switchfully.switchfullylmsbackend.dtos.modules.CreateModuleDto;
 import com.switchfully.switchfullylmsbackend.dtos.modules.ModuleDto;
 
 import com.switchfully.switchfullylmsbackend.entities.*;
+import com.switchfully.switchfullylmsbackend.exceptions.CodelabNotFoundException;
 import com.switchfully.switchfullylmsbackend.exceptions.CourseNotFoundException;
 import com.switchfully.switchfullylmsbackend.exceptions.NotAPartOfThisCourseException;
 import com.switchfully.switchfullylmsbackend.mappers.ModuleMapper;
 import com.switchfully.switchfullylmsbackend.repositories.ClassGroupRepository;
+import com.switchfully.switchfullylmsbackend.repositories.CodelabRepository;
 import com.switchfully.switchfullylmsbackend.repositories.CourseRepository;
 import com.switchfully.switchfullylmsbackend.repositories.ModuleRepository;
 import org.springframework.stereotype.Service;
@@ -24,15 +26,17 @@ public class ModuleService {
     private final ModuleMapper moduleMapper;
     private final ClassGroupRepository classGroupRepository;
     private final CourseRepository courseRepository;
+    private final CodelabRepository codelabRepository;
 
 
     public ModuleService(ModuleRepository moduleRepository, ModuleMapper moduleMapper,
                          ClassGroupRepository classGroupRepository,
-                         CourseRepository courseRepository) {
+                         CourseRepository courseRepository, CodelabRepository codelabRepository) {
         this.moduleRepository = moduleRepository;
         this.moduleMapper = moduleMapper;
         this.classGroupRepository = classGroupRepository;
         this.courseRepository = courseRepository;
+        this.codelabRepository = codelabRepository;
     }
 
     public ModuleDto createModule(CreateModuleDto createModuleDto) {
@@ -58,7 +62,7 @@ public class ModuleService {
         List<ClassGroup> classGroupList = classGroupRepository.findByStudentsId(student.getId());
 
         List<Course> courseList = classGroupList.stream()
-                .map(courseRepository::findByClassGroups)
+                .map(ClassGroup::getCourse)
                 .toList();
 
         if (!courseList.contains(course)) {
@@ -71,4 +75,10 @@ public class ModuleService {
                 .map(moduleMapper::mapModuleToModuleDto)
                 .collect(Collectors.toList());
     }
+
+    public ModuleDto getModuleByCodelab(Long codelabId) {
+        Codelab codelab = codelabRepository.findById(codelabId).orElseThrow(CodelabNotFoundException::new);
+        return moduleMapper.mapModuleToModuleDto(moduleRepository.findByCodelabs(codelab));
+    }
+
 }

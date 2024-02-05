@@ -1,6 +1,5 @@
 package com.switchfully.switchfullylmsbackend.controllers;
 
-import com.switchfully.switchfullylmsbackend.dtos.codelabprogresses.CodelabProgressDto;
 import com.switchfully.switchfullylmsbackend.dtos.codelabs.*;
 import com.switchfully.switchfullylmsbackend.entities.Student;
 import com.switchfully.switchfullylmsbackend.services.CodelabService;
@@ -41,26 +40,39 @@ public class CodelabController {
 
     @GetMapping(path = "/{codelabId}", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasAuthority('student')")
-    public CodelabDto getCodelab(@RequestParam Long codelabId) {
+    @PreAuthorize("hasAnyAuthority('coach', 'student')")
+    public CodelabDto getCodelab(@PathVariable Long codelabId) {
         return codelabService.getCodelab(codelabId);
     }
 
-//    @GetMapping(path="/progress", produces = "application/json")
-//    @ResponseStatus(HttpStatus.OK)
-//    public List<CodelabProgressDto> getCodelabsProgress(@RequestHeader("Authorization") String bearerToken, @RequestParam Long moduleId) {
-//        Student student = userService.getStudentByToken(bearerToken);
-//
-//        return codelabService.getCodelabsProgressesByModuleId(moduleId, student);
-//    }
+    @GetMapping(path = "/module/{moduleId}", produces = "application/json")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAnyAuthority('coach', 'student')")
+    public List<CodelabDto> getCodelabsByModuleId(@PathVariable Long moduleId) {
+        return codelabService.getCodelabsByModuleId(moduleId);
+    }
 
-    @PostMapping(path="/progress", consumes = "application/json", produces = "application/json")
+    @PostMapping(path ="/progress", consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("hasAuthority('student')")
     public void updateCodelabProgress(@RequestHeader("Authorization") String bearerToken, @RequestBody UpdateCodelabProgressDto updateCodelabProgressDto) {
         Student student = userService.getStudentByToken(bearerToken);
 
         codelabService.updateCodelabProgress(updateCodelabProgressDto, student);
+    }
+
+    @PutMapping(path = "/update", consumes = "application/json", produces = "application/json")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasAuthority('coach')")
+    public void updateCodelab(@RequestBody UpdateCodelabDto updateCodelabDto) {
+        codelabService.updateCodelab(updateCodelabDto);
+    }
+
+    @GetMapping(path="/all", produces = "application/json")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAuthority('coach')")
+    public List<CodelabDto> getCodelabs() {
+        return codelabService.getCodelabs();
     }
 
 }

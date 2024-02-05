@@ -42,26 +42,36 @@ public class CourseService {
         return courseRepository.findById(id).orElseThrow(CourseNotFoundException::new);
     }
 
-    public List<CourseDto> getCourses(AbstractUser abstractUser) {
-        Student student = studentRepository.findByEmail(abstractUser.getEmail());
-        if (student != null) {
-            List<ClassGroup> classGroupList = classGroupRepository.findByStudentsId(student.getId());
-            List<Course> courseList = classGroupList
-                    .stream()
-                    .filter(Objects::nonNull)
-                    .map(courseRepository::findByClassGroups)
-                    .toList();
+    public CourseDto getCourseDto(Long id) {
+        return courseMapper.mapCourseToCourseDto(getCourse(id));
+    }
 
-            return courseList.stream().map(courseMapper::mapCourseToCourseDto).toList();
-        }
+public List<CourseDto> getCourses(AbstractUser abstractUser) {
+    Student student = studentRepository.findByEmail(abstractUser.getEmail());
+    if (student != null) {
+        List<ClassGroup> classGroupList = classGroupRepository.findByStudentsId(student.getId());
+        List<Course> courseList = classGroupList
+                .stream()
+                .filter(Objects::nonNull)
+                .map(courseRepository::findByClassGroups)
+                .toList();
 
-        Coach coach = coachRepository.findByEmail(abstractUser.getEmail());
-        if (coach != null) {
-            List<Course> courseList = courseRepository.findAll();
+        return courseList.stream().map(courseMapper::mapCourseToCourseDto).toList();
+    }
 
-            return courseList.stream().map(courseMapper::mapCourseToCourseDto).toList();
-        }
+    Coach coach = coachRepository.findByEmail(abstractUser.getEmail());
+    if (coach != null) {
+        List<Course> courseList = courseRepository.findAll();
 
-        return new ArrayList<>();
+        return courseList.stream().map(courseMapper::mapCourseToCourseDto).toList();
+    }
+
+    return new ArrayList<>();
+}
+
+    public void updateCourse(Long courseId, UpdateCourseDto updateCourseDto) {
+        Course course = courseRepository.findById(courseId).orElseThrow(CourseNotFoundException::new);
+        course.setName(updateCourseDto.getName());
+        courseRepository.save(course);
     }
 }
