@@ -13,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
+import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.List;
 
@@ -20,6 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class CodelabControllerTest {
 
     @LocalServerPort
@@ -64,7 +66,7 @@ public class CodelabControllerTest {
                 .contentType(ContentType.JSON)
                 .port(port)
                 .when()
-                .post("/codelab")
+                .post("/codelabs")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.CREATED.value())
@@ -93,7 +95,7 @@ public class CodelabControllerTest {
                 .contentType(ContentType.JSON)
                 .port(port)
                 .when()
-                .post("/codelab")
+                .post("/codelabs")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.FORBIDDEN.value());
@@ -113,7 +115,7 @@ public class CodelabControllerTest {
                 .port(port)
                 .queryParam("moduleId", 1L)
                 .when()
-                .get("/codelab/student")
+                .get("/codelabs/student")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.OK.value())
@@ -138,7 +140,7 @@ public class CodelabControllerTest {
                 .port(port)
                 .queryParam("moduleId", 1L)
                 .when()
-                .get("/codelab/coach")
+                .get("/codelabs/coach")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.OK.value())
@@ -162,7 +164,7 @@ public class CodelabControllerTest {
                 .contentType(ContentType.JSON)
                 .port(port)
                 .when()
-                .get("/codelab/1")
+                .get("/codelabs/1")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.OK.value())
@@ -187,7 +189,7 @@ public class CodelabControllerTest {
                 .port(port)
                 .body(updateCodelabProgressDto)
                 .when()
-                .post("/codelab/progress")
+                .post("/codelabs/progress")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.NO_CONTENT.value());
@@ -209,7 +211,7 @@ public class CodelabControllerTest {
                 .port(port)
                 .body(updateCodelabDto)
                 .when()
-                .put("/codelab/1")
+                .put("/codelabs/1")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.NO_CONTENT.value());
