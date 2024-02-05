@@ -4,6 +4,8 @@ import com.switchfully.switchfullylmsbackend.dtos.comments.CommentDto;
 import com.switchfully.switchfullylmsbackend.entities.Comment;
 import org.springframework.stereotype.Component;
 
+import java.time.*;
+
 @Component
 public class CommentMapper {
 
@@ -16,7 +18,8 @@ public class CommentMapper {
         return new CommentDto(
                 comment.getId(),
                 comment.getText(),
-                comment.getStudent().getDisplayName()
+                comment.getStudent().getDisplayName(),
+                comment.getCreatedDate()
         );
     }
 }
