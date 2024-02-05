@@ -23,9 +23,9 @@ import org.keycloak.TokenVerifier;
 import org.keycloak.common.VerificationException;
 import org.keycloak.representations.AccessToken;
 
-import java.util.Objects;
 import java.util.Base64;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -51,10 +51,6 @@ public class UserService {
     }
 
     public UserDto updateUser(AbstractUser abstractUser, UpdateUserDto updateUserDto) {
-        AbstractUser emailUser = userRepository.findByEmail(updateUserDto.getEmail());
-        if (emailUser != null && !Objects.equals(emailUser.getId(), abstractUser.getId())) {
-            throw new EmailAlreadyExistsException();
-        }
         abstractUser.setDisplayName(updateUserDto.getDisplayName());
 
         return userMapper.mapAbstractUserToUserDto(userRepository.save(abstractUser), abstractUser.getRole());
@@ -121,4 +117,9 @@ public class UserService {
         }
     }
 
+    public List<StudentDto> getAllStudents() {
+        return studentRepository.findAll().stream()
+                .map(studentMapper::mapStudentToStudentDto)
+                .collect(Collectors.toList());
+    }
 }

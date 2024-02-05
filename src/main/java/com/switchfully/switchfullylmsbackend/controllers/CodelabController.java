@@ -29,13 +29,20 @@ public class CodelabController {
         return codelabService.createCodelab(createCodelabDto);
     }
 
-    @GetMapping(produces = "application/json")
+    @GetMapping(path = "/student", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAuthority('student')")
-    public List<CodelabWithProgressDto> getCodelabsWithProgress(@RequestHeader("Authorization") String bearerToken, @RequestParam Long moduleId) {
+    public List<CodelabWithProgressDto> getCodelabsWithProgressByModuleId(@RequestHeader("Authorization") String bearerToken, @RequestParam Long moduleId) {
         Student student = userService.getStudentByToken(bearerToken);
 
-        return codelabService.getCodelabsWithProgress(moduleId, student);
+        return codelabService.getCodelabsWithProgressByModuleId(moduleId, student);
+    }
+
+    @GetMapping(path="/coach", produces = "application/json")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAuthority('coach')")
+    public List<CodelabDto> getCodelabsByModuleId(@RequestParam Long moduleId) {
+        return codelabService.getCodelabsByModuleId(moduleId);
     }
 
     @GetMapping(path = "/{codelabId}", produces = "application/json")
@@ -43,13 +50,6 @@ public class CodelabController {
     @PreAuthorize("hasAnyAuthority('coach', 'student')")
     public CodelabDto getCodelab(@PathVariable Long codelabId) {
         return codelabService.getCodelab(codelabId);
-    }
-
-    @GetMapping(path = "/module/{moduleId}", produces = "application/json")
-    @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasAnyAuthority('coach', 'student')")
-    public List<CodelabDto> getCodelabsByModuleId(@PathVariable Long moduleId) {
-        return codelabService.getCodelabsByModuleId(moduleId);
     }
 
     @PostMapping(path ="/progress", consumes = "application/json", produces = "application/json")
@@ -61,18 +61,11 @@ public class CodelabController {
         codelabService.updateCodelabProgress(updateCodelabProgressDto, student);
     }
 
-    @PutMapping(path = "/update", consumes = "application/json", produces = "application/json")
+    @PutMapping(path = "/{codelabId}", consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("hasAuthority('coach')")
-    public void updateCodelab(@RequestBody UpdateCodelabDto updateCodelabDto) {
-        codelabService.updateCodelab(updateCodelabDto);
-    }
-
-    @GetMapping(path="/all", produces = "application/json")
-    @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasAuthority('coach')")
-    public List<CodelabDto> getCodelabs() {
-        return codelabService.getCodelabs();
+    public void updateCodelab(@PathVariable Long codelabId, @RequestBody UpdateCodelabDto updateCodelabDto) {
+        codelabService.updateCodelab(codelabId, updateCodelabDto);
     }
 
 }

@@ -1,8 +1,11 @@
 package com.switchfully.switchfullylmsbackend.controllers;
 
+import com.switchfully.switchfullylmsbackend.dtos.classgroups.AddStudentToClassGroupDto;
 import com.switchfully.switchfullylmsbackend.dtos.classgroups.ClassGroupDto;
 import com.switchfully.switchfullylmsbackend.dtos.classgroups.CreateClassGroupDto;
+import com.switchfully.switchfullylmsbackend.dtos.users.StudentDto;
 import com.switchfully.switchfullylmsbackend.entities.Coach;
+import com.switchfully.switchfullylmsbackend.entities.Student;
 import com.switchfully.switchfullylmsbackend.services.ClassGroupService;
 import com.switchfully.switchfullylmsbackend.services.UserService;
 import org.springframework.http.HttpStatus;
@@ -43,6 +46,21 @@ public class ClassGroupController {
     public List<ClassGroupDto> getClassGroupsByUser(@RequestParam Long userId) {
         return classgroupService.getClassGroupsByUserId(userId);
     }
+
+    @GetMapping(path= "/all", produces = "application/json")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAuthority('coach')")
+    public List<ClassGroupDto> getAllClassGroups() {
+        return classgroupService.getAllClassGroups();
+    }
+    
+    @PostMapping(path = "/add-student", consumes = "application/json", produces = "application/json")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAuthority('coach')")
+    public ClassGroupDto linkStudentToClassGroup(@RequestBody AddStudentToClassGroupDto addStudentToClassGroupDto) {
+        return classgroupService.linkStudentToClassGroup(addStudentToClassGroupDto.getClassGroupId(), addStudentToClassGroupDto.getStudentId());
+    }
+    
 }
 
 

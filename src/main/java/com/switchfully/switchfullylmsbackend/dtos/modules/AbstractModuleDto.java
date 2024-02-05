@@ -1,8 +1,8 @@
 package com.switchfully.switchfullylmsbackend.dtos.modules;
 
 public class AbstractModuleDto {
-    private Long id;
-    private String name;
+    private final Long id;
+    private final String name;
 
     public AbstractModuleDto(Long id, String name) {
         this.id = id;

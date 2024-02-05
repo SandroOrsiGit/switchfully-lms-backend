@@ -1,12 +1,9 @@
 package com.switchfully.switchfullylmsbackend.services;
 
-import com.switchfully.switchfullylmsbackend.dtos.codelabprogresses.CodelabProgressDto;
 import com.switchfully.switchfullylmsbackend.dtos.codelabs.*;
-import com.switchfully.switchfullylmsbackend.dtos.progresses.ProgressDto;
 import com.switchfully.switchfullylmsbackend.entities.*;
 import com.switchfully.switchfullylmsbackend.entities.Module;
 import com.switchfully.switchfullylmsbackend.exceptions.CodelabNotFoundException;
-import com.switchfully.switchfullylmsbackend.exceptions.CourseNotFoundException;
 import com.switchfully.switchfullylmsbackend.exceptions.ModuleNotFoundException;
 import com.switchfully.switchfullylmsbackend.exceptions.ProgressNotFoundException;
 import com.switchfully.switchfullylmsbackend.mappers.CodelabMapper;
@@ -24,30 +21,24 @@ import java.util.Objects;
 public class CodelabService {
     private final CodelabRepository codelabRepository;
     private final CodelabProgressRepository codelabProgressRepository;
-    private final CourseRepository courseRepository;
     private final ModuleRepository moduleRepository;
     private final ProgressRepository progressRepository;
     private final ProgressMapper progressMapper;
     private final CodelabMapper codelabMapper;
-    private final CodelabProgressMapper codelabProgressMapper;
 
     public CodelabService(CodelabRepository codelabRepository,
                           CodelabMapper codelabMapper,
                           CodelabProgressRepository codelabProgressRepository,
-                          CourseRepository courseRepository,
                           ModuleRepository moduleRepository,
                           ProgressRepository progressRepository,
-                          ProgressMapper progressMapper,
-                          CodelabProgressMapper codelabProgressMapper
+                          ProgressMapper progressMapper
     ) {
         this.codelabRepository = codelabRepository;
         this.codelabMapper = codelabMapper;
         this.codelabProgressRepository = codelabProgressRepository;
-        this.courseRepository = courseRepository;
         this.moduleRepository = moduleRepository;
         this.progressRepository = progressRepository;
         this.progressMapper = progressMapper;
-        this.codelabProgressMapper = codelabProgressMapper;
     }
 
     public CodelabDto createCodelab(CreateCodelabDto createCodelabDto) {
@@ -69,7 +60,7 @@ public class CodelabService {
         return codelabRepository.findByModuleId(moduleId).stream().map(codelabMapper::mapCodelabToCodelabDto).toList();
     }
 
-    public List<CodelabWithProgressDto> getCodelabsWithProgress(Long moduleId, Student student) {
+    public List<CodelabWithProgressDto> getCodelabsWithProgressByModuleId(Long moduleId, Student student) {
         Module module = moduleRepository.findById(moduleId).orElseThrow(ModuleNotFoundException::new);
         List<Codelab> codelabs = codelabRepository.findByModule(module);
         List<CodelabProgress> codelabProgresses = codelabs.stream()
@@ -102,12 +93,8 @@ public class CodelabService {
         }
     }
 
-    public List<CodelabDto> getCodelabs() {
-        return codelabRepository.findAll().stream().map(codelabMapper::mapCodelabToCodelabDto).toList();
-    }
-
-    public void updateCodelab(UpdateCodelabDto updateCodelabDto) {
-        Codelab codelab = codelabRepository.findById(updateCodelabDto.getCodelabId()).orElseThrow(CodelabNotFoundException::new);
+    public void updateCodelab(Long codelabId, UpdateCodelabDto updateCodelabDto) {
+        Codelab codelab = codelabRepository.findById(codelabId).orElseThrow(CodelabNotFoundException::new);
         if (updateCodelabDto.getName() != null && !updateCodelabDto.getName().trim().isEmpty()) {
             codelab.setName(updateCodelabDto.getName());
         }
@@ -116,18 +103,4 @@ public class CodelabService {
             codelab.setModule(module);
         }
     }
-
-//    public List<CodelabProgressDto> getCodelabsProgressesByModuleId(Long moduleId, Student student) {
-//        Module module = moduleRepository.findById(moduleId).orElseThrow(ModuleNotFoundException::new);
-//        List<Codelab> codelabs = codelabRepository.findByModule(module);
-//
-//        return codelabs.stream()
-//                .map(
-//                        codelab -> codelabProgressRepository.findByCodelabAndStudent(codelab, student).stream()
-//                                .map(codelabProgressMapper::mapCodelabProgressToCodelabProgressDto)
-//                                .toList()
-//                )
-//                .flatMap(List::stream)
-//                .toList();
-//    }
 }

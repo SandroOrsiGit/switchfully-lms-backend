@@ -1,5 +1,6 @@
 package com.switchfully.switchfullylmsbackend.controllers;
 
+import com.switchfully.switchfullylmsbackend.dtos.classgroups.AddStudentToClassGroupDto;
 import com.switchfully.switchfullylmsbackend.dtos.classgroups.ClassGroupDto;
 import com.switchfully.switchfullylmsbackend.dtos.classgroups.CreateClassGroupDto;
 import io.restassured.RestAssured;
@@ -127,4 +128,74 @@ public class ClassGroupControllerTest {
         
         assertThat(classGroups).hasOnlyElementsOfType(ClassGroupDto.class);
     }
+
+    @Test
+    void whenGetClassGroupsById_thenReturnClassGroupWithGivenIdAndStatusCodeOK() {
+        String accessToken = getAccessToken("coach@lms.com", "coach");
+
+        ClassGroupDto classGroup =
+                RestAssured
+                        .given()
+                        .auth()
+                        .oauth2(accessToken)
+                        .port(port)
+                        .contentType(ContentType.JSON)
+                        .when()
+                        .get("/class-groups/1")
+                        .then()
+                        .assertThat()
+                        .statusCode(HttpStatus.OK.value())
+                        .extract()
+                        .as(ClassGroupDto.class);
+
+        assertThat(classGroup).isNotNull();
+    }
+
+    @Test
+    void whenGetAllClassGroupsAsCoach_thenReturnListOfClassGroupsAndStatusCodeOK() {
+        String accessToken = getAccessToken("coach@lms.com", "coach");
+
+        ClassGroupDto[] classGroups =
+                RestAssured
+                        .given()
+                        .auth()
+                        .oauth2(accessToken)
+                        .port(port)
+                        .contentType(ContentType.JSON)
+                        .when()
+                        .get("/class-groups/all")
+                        .then()
+                        .assertThat()
+                        .statusCode(HttpStatus.OK.value())
+                        .extract()
+                        .as(ClassGroupDto[].class);
+
+        assertThat(classGroups).hasOnlyElementsOfType(ClassGroupDto.class);
+    }
+
+    @Test
+    void whenLinkStudentToClassGroupAsCoach_thenReturnClassGroupAndStatusCodeOK() {
+        String accessToken = getAccessToken("coach@lms.com", "coach");
+
+        AddStudentToClassGroupDto addStudentToClassGroupDto = new AddStudentToClassGroupDto(2L, 2L);
+
+        ClassGroupDto classGroup =
+                RestAssured
+                        .given()
+                        .auth()
+                        .oauth2(accessToken)
+                        .port(port)
+                        .contentType(ContentType.JSON)
+                        .body(addStudentToClassGroupDto)
+                        .when()
+                        .post("/class-groups/add-student")
+                        .then()
+                        .assertThat()
+                        .statusCode(HttpStatus.OK.value())
+                        .extract()
+                        .as(ClassGroupDto.class);
+
+        assertThat(classGroup).isNotNull();
+    }
+
 }

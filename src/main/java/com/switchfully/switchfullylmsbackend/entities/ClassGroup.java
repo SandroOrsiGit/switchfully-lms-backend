@@ -34,7 +34,7 @@ public class ClassGroup {
             joinColumns = @JoinColumn(name = "class_group_id"),
             inverseJoinColumns = @JoinColumn(name = "student_id")
     )
-    private List<Student> students =  new ArrayList<>();
+    private final List<Student> students =  new ArrayList<>();
 
     public ClassGroup() {
     }
@@ -77,4 +77,20 @@ public class ClassGroup {
         return students;
     }
 
+    public void addStudent(Student student) {
+        students.add(student);
+    }
+
+    @Override
+    public String toString() {
+        return "ClassGroup{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", course=" + course +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", coaches=" + coaches +
+                ", students=" + students +
+                '}';
+    }
 }

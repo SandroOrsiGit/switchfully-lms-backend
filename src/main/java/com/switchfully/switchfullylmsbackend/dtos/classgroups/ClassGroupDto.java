@@ -2,7 +2,6 @@ package com.switchfully.switchfullylmsbackend.dtos.classgroups;
 
 import com.switchfully.switchfullylmsbackend.dtos.courses.CourseDto;
 import com.switchfully.switchfullylmsbackend.dtos.users.CoachDto;
-import com.switchfully.switchfullylmsbackend.dtos.users.StudentDto;
 import com.switchfully.switchfullylmsbackend.dtos.users.StudentNoCodelabProgressDto;
 
 import java.time.LocalDate;

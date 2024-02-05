@@ -1,7 +1,6 @@
 package com.switchfully.switchfullylmsbackend.dtos.classgroups;
 
 import java.time.LocalDate;
-import java.util.List;
 
 public class CreateClassGroupDto {
     private String name;

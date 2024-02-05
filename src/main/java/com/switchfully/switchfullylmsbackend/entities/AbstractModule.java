@@ -14,7 +14,7 @@ public abstract class AbstractModule {
     @Column(name = "name")
     private String name;
     @OneToMany(mappedBy = "module")
-    private List<Codelab> codelabs = new ArrayList<>();
+    private final List<Codelab> codelabs = new ArrayList<>();
 
     public AbstractModule(String name) {
         this.name = name;

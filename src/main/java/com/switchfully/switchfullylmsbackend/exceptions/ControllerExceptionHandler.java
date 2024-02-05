@@ -1,6 +1,5 @@
 package com.switchfully.switchfullylmsbackend.exceptions;
 
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -8,14 +7,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.io.IOException;
-
 @ControllerAdvice
 public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(StudentDoesntExistException.class)
+    @ExceptionHandler(StudentNotFoundException.class)
     @ResponseBody
-    private ResponseEntity<Object> studentDoesntExist(StudentDoesntExistException e) {
+    private ResponseEntity<Object> studentDoesntExist(StudentNotFoundException e) {
         return responseEntityBuilder(e, HttpStatus.NOT_FOUND);
     }
 
@@ -67,6 +64,12 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         return responseEntityBuilder(e, HttpStatus.FORBIDDEN);
     }
 
+    @ExceptionHandler(StudentAlreadyExistsException.class)
+    @ResponseBody
+    private ResponseEntity<Object> studentAlreadyExistsException(StudentAlreadyExistsException e) {
+        return responseEntityBuilder(e, HttpStatus.BAD_REQUEST);
+    }
+    
     private ResponseEntity<Object> responseEntityBuilder(Exception e, HttpStatus status) {
         ApiError apiError = new ApiError(status, e.getMessage(), e);
         return new ResponseEntity<>(apiError, apiError.getStatus());

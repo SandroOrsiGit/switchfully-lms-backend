@@ -2,7 +2,6 @@ package com.switchfully.switchfullylmsbackend.dtos.codelabprogresses;
 
 import com.switchfully.switchfullylmsbackend.dtos.codelabs.CodelabNoCommentDto;
 import com.switchfully.switchfullylmsbackend.dtos.progresses.ProgressDto;
-import com.switchfully.switchfullylmsbackend.dtos.codelabs.CodelabDto;
 
 public class CodelabProgressDto {
     private Long id;
