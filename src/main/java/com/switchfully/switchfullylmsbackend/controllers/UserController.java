@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(path = "/user")
 @CrossOrigin(origins = "http://localhost:4200")
@@ -50,6 +52,12 @@ public class UserController {
         AbstractUser abstractUser = userService.getUserByToken(bearerToken);
         return userService.updateUser(abstractUser, updateUserDto);
 
+    }
+
+    @GetMapping(path= "/students")
+    @PreAuthorize("hasAnyAuthority('coach')")
+    public List<StudentDto> getAllStudents() {
+        return userService.getAllStudents();
     }
 
 }

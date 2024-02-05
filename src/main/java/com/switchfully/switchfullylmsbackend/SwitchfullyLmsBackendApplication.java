@@ -17,8 +17,7 @@ public class SwitchfullyLmsBackendApplication {
     public static void main(String[] args) {
         SpringApplication.run(SwitchfullyLmsBackendApplication.class, args);
     }
-
-
+    
     @Bean
     public Keycloak keycloak(@Value("${master.keycloak.username}") String adminUsername, @Value("${master.keycloak.password}") String adminPassword) {
         return KeycloakBuilder.builder()

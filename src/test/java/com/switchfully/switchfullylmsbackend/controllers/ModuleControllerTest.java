@@ -52,6 +52,8 @@ public class ModuleControllerTest {
         CreateModuleDto createModuleDto = new CreateModuleDto();
         createModuleDto.setName("TestName");
 
+        createModuleDto.setCourseIds(List.of(1L, 2L));
+
         String accessToken = getAccessToken("coach@lms.com", "coach");
 
         //WHEN

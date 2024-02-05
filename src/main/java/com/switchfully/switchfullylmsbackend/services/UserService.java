@@ -25,6 +25,7 @@ import org.keycloak.representations.AccessToken;
 
 import java.util.Base64;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -116,4 +117,9 @@ public class UserService {
         }
     }
 
+    public List<StudentDto> getAllStudents() {
+        return studentRepository.findAll().stream()
+                .map(studentMapper::mapStudentToStudentDto)
+                .collect(Collectors.toList());
+    }
 }
