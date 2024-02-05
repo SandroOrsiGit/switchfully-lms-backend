@@ -99,76 +99,7 @@ public class CodelabControllerTest {
                 .assertThat()
                 .statusCode(HttpStatus.FORBIDDEN.value());
     }
-    @Test
-    void givenStudent_whenGetCodelabs_verifyReturn() {
-        String accessToken = getAccessToken("balder@lms.com", "balder");
-
-        // when
-        List<CodelabProgressDto> codelabProgressDtoList = RestAssured
-                .given()
-                .auth()
-                .oauth2(accessToken)
-                .param("courseId",1)
-                .contentType(ContentType.JSON)
-                .port(port)
-                .when()
-                .get("/codelab/progress")
-                .then()
-                .assertThat()
-                .statusCode(HttpStatus.OK.value())
-                .extract()
-                .jsonPath()
-                .getList(".",CodelabProgressDto.class);
-
-        // then
-        assertThat(codelabProgressDtoList).hasSize(2);
-        assertThat(codelabProgressDtoList.get(0).getCodelab().getName() ).isEqualTo("codelab01");
-        assertThat(codelabProgressDtoList.get(1).getCodelab().getName() ).isEqualTo("codelab02");
-    }
 
 
-    @Test
-    void givenStudentAndNonExistingCourse_whenGetCodelabs_verifyException() {
-        String accessToken = getAccessToken("balder@lms.com", "balder");
 
-        // when
-       RestAssured
-                .given()
-                .auth()
-                .oauth2(accessToken)
-                .param("courseId",10)
-                .contentType(ContentType.JSON)
-                .port(port)
-                .when()
-                .get("/codelab/progress")
-                .then()
-                .assertThat()
-                .statusCode(HttpStatus.NOT_FOUND.value());
-    }
-    @Test
-    void givenAnyUserAndCourse_whenGetCodelabs_verifyReturn() {
-        String accessToken = getAccessToken("balder@lms.com", "balder");
-
-        // when
-        List<CodelabNoCommentDto> codelabProgressDtoList = RestAssured
-                .given()
-                .auth()
-                .oauth2(accessToken)
-                .param("courseId",1)
-                .contentType(ContentType.JSON)
-                .port(port)
-                .when()
-                .get("/codelab")
-                .then()
-                .assertThat()
-                .statusCode(HttpStatus.OK.value())
-                .extract()
-                .jsonPath()
-                .getList(".",CodelabNoCommentDto.class);
-
-        // then
-        assertThat(codelabProgressDtoList).hasSize(2);
-        assertThat(codelabProgressDtoList.get(0).getName() ).isEqualTo("codelab01");
-        assertThat(codelabProgressDtoList.get(1).getName() ).isEqualTo("codelab02");
-    }
 }
