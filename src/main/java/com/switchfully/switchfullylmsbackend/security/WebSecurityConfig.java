@@ -17,13 +17,12 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
         http.csrf(
-                c -> c.ignoringRequestMatchers("user/register", "user/update", "user/emailAvailable")
+                c -> c.ignoringRequestMatchers("users")
         );
         http.authorizeHttpRequests(c -> c.anyRequest().permitAll());
         http.oauth2ResourceServer(c -> c.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())));
         return http.build();
     }
-
     private Converter<Jwt,? extends AbstractAuthenticationToken> jwtAuthenticationConverter() {
         JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
         converter.setJwtGrantedAuthoritiesConverter(new KeycloakGrantedAuthoritiesConverter());
