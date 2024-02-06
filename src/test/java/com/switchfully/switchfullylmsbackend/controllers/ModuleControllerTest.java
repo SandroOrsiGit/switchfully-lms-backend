@@ -129,6 +129,21 @@ public class ModuleControllerTest {
         assertThat(moduleDtos).hasSize(2);
         assertThat(moduleDtos.get(0).getName()).isEqualTo("Java basics");
         assertThat(moduleDtos.get(1).getName()).isEqualTo(".NET basics");
-
     }
+
+//    @Test
+//    void whenGetModulesByValidCourse_thenReturnCorrectListOfModules() {
+//        //GIVEN
+//        String accessToken = getAccessToken("student@lms.com", "student");
+//
+//        //WHEN
+//        List<ModuleDto> moduleDtoList = RestAssured
+//                .given()
+//                .auth()
+//                .oauth2(accessToken)
+//                .contentType(ContentType.JSON)
+//                .port(port)
+//                .when()
+//
+//    }
 }
