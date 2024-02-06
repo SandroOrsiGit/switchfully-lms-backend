@@ -35,4 +35,8 @@ public class Module extends AbstractModule {
    public List<Course> getCourses() {
       return courses;
    }
+
+   public void setCourses(List<Course> courses) {
+      this.courses = courses;
+   }
 }

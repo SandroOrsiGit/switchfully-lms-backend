@@ -3,7 +3,9 @@ package com.switchfully.switchfullylmsbackend.services;
 import com.switchfully.switchfullylmsbackend.dtos.modules.CreateModuleDto;
 import com.switchfully.switchfullylmsbackend.dtos.modules.ModuleDto;
 
+import com.switchfully.switchfullylmsbackend.dtos.modules.UpdateModuleDto;
 import com.switchfully.switchfullylmsbackend.entities.*;
+import com.switchfully.switchfullylmsbackend.entities.Module;
 import com.switchfully.switchfullylmsbackend.exceptions.CodelabNotFoundException;
 import com.switchfully.switchfullylmsbackend.exceptions.CourseNotFoundException;
 import com.switchfully.switchfullylmsbackend.exceptions.ModuleNotFoundException;
@@ -84,5 +86,13 @@ public class ModuleService {
 
     public ModuleDto getModule(Long moduleId) {
         return this.moduleMapper.mapModuleToModuleDto(this.moduleRepository.findById(moduleId).orElseThrow(ModuleNotFoundException::new));
+    }
+
+    public void updateModule(Long moduleId, UpdateModuleDto updateModuleDto) {
+        Module module = moduleRepository.findById(moduleId).orElseThrow(ModuleNotFoundException::new);
+        List<Course> courses = updateModuleDto.getCourseIds().stream().map(courseId -> courseRepository.findById(courseId).orElseThrow(CourseNotFoundException::new)).toList();
+
+        module.setName(updateModuleDto.getName());
+        module.setCourses(courses);
     }
 }

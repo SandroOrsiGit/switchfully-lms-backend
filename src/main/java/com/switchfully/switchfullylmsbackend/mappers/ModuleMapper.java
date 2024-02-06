@@ -1,9 +1,6 @@
 package com.switchfully.switchfullylmsbackend.mappers;
 
-import com.switchfully.switchfullylmsbackend.dtos.modules.AbstractModuleDto;
-import com.switchfully.switchfullylmsbackend.dtos.modules.CreateModuleDto;
-import com.switchfully.switchfullylmsbackend.dtos.modules.ModuleDto;
-import com.switchfully.switchfullylmsbackend.dtos.modules.SubModuleDto;
+import com.switchfully.switchfullylmsbackend.dtos.modules.*;
 import com.switchfully.switchfullylmsbackend.entities.AbstractModule;
 import com.switchfully.switchfullylmsbackend.entities.Course;
 import com.switchfully.switchfullylmsbackend.entities.Module;
@@ -51,6 +48,4 @@ public class ModuleMapper {
    public AbstractModuleDto mapAbstractModuleToAbstractModuleDto(AbstractModule abstractModule) {
       return new AbstractModuleDto(abstractModule.getId(), abstractModule.getName());
    }
-
-
 }
