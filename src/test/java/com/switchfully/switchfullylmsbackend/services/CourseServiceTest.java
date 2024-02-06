@@ -2,8 +2,10 @@ package com.switchfully.switchfullylmsbackend.services;
 
 import com.switchfully.switchfullylmsbackend.dtos.courses.CreateCourseDto;
 import com.switchfully.switchfullylmsbackend.dtos.courses.CourseDto;
+import com.switchfully.switchfullylmsbackend.dtos.courses.UpdateCourseDto;
 import com.switchfully.switchfullylmsbackend.entities.AbstractUser;
 import com.switchfully.switchfullylmsbackend.entities.Course;
+import com.switchfully.switchfullylmsbackend.exceptions.CourseNotFoundException;
 import com.switchfully.switchfullylmsbackend.repositories.UserRepository;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
@@ -15,6 +17,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertThrows;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase
@@ -74,5 +77,30 @@ public class CourseServiceTest {
         SoftAssertions softAssertions = new SoftAssertions();
         softAssertions.assertThat(courseDtoList).as("size check").hasSize(3);
         softAssertions.assertAll();
+    }
+
+    @Test
+    void givenValidCourseId_whenUpdateCourse_thenNewInformationIsSaved() {
+        //GIVEN
+        Long courseId = 1L;
+        UpdateCourseDto updateCourseDto = new UpdateCourseDto("New name");
+        String oldName = courseService.getCourse(courseId).getName();
+
+        //WHEN
+        courseService.updateCourse(courseId, updateCourseDto);
+
+        //THEN
+        assertThat(courseService.getCourse(courseId).getName()).isEqualTo("New name");
+        assertThat(courseService.getCourse(courseId).getName()).isNotEqualTo(oldName);
+    }
+
+    @Test
+    void givenInvalidCourseId_whenUpdateCourse_thenThrowException() {
+        //GIVEN
+        Long invalidCourseId = 150000L;
+        UpdateCourseDto updateCourseDto = new UpdateCourseDto("new name");
+
+        //WHEN & THEN
+        assertThrows(CourseNotFoundException.class, () -> courseService.updateCourse(invalidCourseId, updateCourseDto));
     }
 }
