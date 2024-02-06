@@ -146,11 +146,12 @@ public class ModuleControllerTest {
                 .contentType(ContentType.JSON)
                 .port(port)
                 .when()
-                .get("/modules/{courseId}", 1)
+                .get("/modules/course/{courseId}", 1)
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.OK.value())
                 .extract()
+                .body()
                 .jsonPath()
                 .getList(".", ModuleDto.class);
 
