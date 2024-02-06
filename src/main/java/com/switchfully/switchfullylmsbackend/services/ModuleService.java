@@ -6,6 +6,7 @@ import com.switchfully.switchfullylmsbackend.dtos.modules.ModuleDto;
 import com.switchfully.switchfullylmsbackend.entities.*;
 import com.switchfully.switchfullylmsbackend.exceptions.CodelabNotFoundException;
 import com.switchfully.switchfullylmsbackend.exceptions.CourseNotFoundException;
+import com.switchfully.switchfullylmsbackend.exceptions.ModuleNotFoundException;
 import com.switchfully.switchfullylmsbackend.exceptions.NotAPartOfThisCourseException;
 import com.switchfully.switchfullylmsbackend.mappers.ModuleMapper;
 import com.switchfully.switchfullylmsbackend.repositories.ClassGroupRepository;
@@ -81,4 +82,7 @@ public class ModuleService {
         return moduleMapper.mapModuleToModuleDto(moduleRepository.findByCodelabs(codelab));
     }
 
+    public ModuleDto getModule(Long moduleId) {
+        return this.moduleMapper.mapModuleToModuleDto(this.moduleRepository.findById(moduleId).orElseThrow(ModuleNotFoundException::new));
+    }
 }
