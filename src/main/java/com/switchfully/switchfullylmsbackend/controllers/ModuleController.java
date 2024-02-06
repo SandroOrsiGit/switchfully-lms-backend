@@ -2,6 +2,7 @@ package com.switchfully.switchfullylmsbackend.controllers;
 
 import com.switchfully.switchfullylmsbackend.dtos.modules.CreateModuleDto;
 import com.switchfully.switchfullylmsbackend.dtos.modules.ModuleDto;
+import com.switchfully.switchfullylmsbackend.dtos.modules.UpdateModuleDto;
 import com.switchfully.switchfullylmsbackend.entities.AbstractUser;
 import com.switchfully.switchfullylmsbackend.entities.Coach;
 import com.switchfully.switchfullylmsbackend.entities.Course;
@@ -39,13 +40,13 @@ public class ModuleController {
    @GetMapping(path = "/{moduleId}")
    @ResponseStatus(HttpStatus.OK)
    public ModuleDto getModule(@PathVariable Long moduleId) {
-      return moduleService.getModule(moduleId);
+      return moduleService.getModuleById(moduleId);
    }
 
    @GetMapping
    @ResponseStatus(HttpStatus.OK)
+   @PreAuthorize("hasAuthority('coach')")
    public List<ModuleDto> getAllModules(@RequestHeader("Authorization") String bearerToken) {
-      Coach coach = userService.getCoachByToken(bearerToken);
       return moduleService.getAllModules();
    }
 
@@ -63,4 +64,10 @@ public class ModuleController {
       return moduleService.getModuleByCodelab(codelabId);
    }
 
+   @PutMapping(path = "/{moduleId}", consumes = "application/json", produces = "application/json")
+   @ResponseStatus(HttpStatus.NO_CONTENT)
+   @PreAuthorize("hasAuthority('coach')")
+   public void updateCodelab(@PathVariable Long moduleId, @RequestBody UpdateModuleDto updateModuleDto) {
+      moduleService.updateModule(moduleId, updateModuleDto);
+   }
 }

@@ -2,6 +2,7 @@ package com.switchfully.switchfullylmsbackend.controllers;
 
 import com.switchfully.switchfullylmsbackend.dtos.modules.CreateModuleDto;
 import com.switchfully.switchfullylmsbackend.dtos.modules.ModuleDto;
+import com.switchfully.switchfullylmsbackend.dtos.modules.UpdateModuleDto;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Test;
@@ -145,11 +146,12 @@ public class ModuleControllerTest {
                 .contentType(ContentType.JSON)
                 .port(port)
                 .when()
-                .get("/modules/{courseId}", 1)
+                .get("/modules/course/{courseId}", 1)
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.OK.value())
                 .extract()
+                .body()
                 .jsonPath()
                 .getList(".", ModuleDto.class);
 
@@ -182,5 +184,28 @@ public class ModuleControllerTest {
         assertThat(moduleDto.getId()).isEqualTo(1);
         assertThat(moduleDto.getName()).isEqualTo("Java basics");
 
+    }
+
+    @Test
+    void givenCoachAndUpdateModuleDto_whenUpdateModule_thenModuleIsUpdated() {
+        // GIVEN
+        UpdateModuleDto updateModuleDto = new UpdateModuleDto("NewName", List.of(1L));
+
+        String accessToken = getAccessToken("coach@lms.com", "coach");
+
+        // WHEN + THEN
+        RestAssured
+                .given()
+                .auth()
+                .oauth2(accessToken)
+                .body(updateModuleDto)
+                .accept(ContentType.JSON)
+                .contentType(ContentType.JSON)
+                .port(port)
+                .when()
+                .put("/modules/1")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.NO_CONTENT.value());
     }
 }
