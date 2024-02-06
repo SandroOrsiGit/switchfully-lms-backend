@@ -131,19 +131,56 @@ public class ModuleControllerTest {
         assertThat(moduleDtos.get(1).getName()).isEqualTo(".NET basics");
     }
 
-//    @Test
-//    void whenGetModulesByValidCourse_thenReturnCorrectListOfModules() {
-//        //GIVEN
-//        String accessToken = getAccessToken("student@lms.com", "student");
-//
-//        //WHEN
-//        List<ModuleDto> moduleDtoList = RestAssured
-//                .given()
-//                .auth()
-//                .oauth2(accessToken)
-//                .contentType(ContentType.JSON)
-//                .port(port)
-//                .when()
-//
-//    }
+    @Test
+    void whenGetModulesByValidCourse_thenReturnCorrectListOfModules() {
+        //GIVEN
+        String accessToken = getAccessToken("coach@lms.com", "coach");
+
+
+        //WHEN
+        List<ModuleDto> moduleDtoList = RestAssured
+                .given()
+                .auth()
+                .oauth2(accessToken)
+                .contentType(ContentType.JSON)
+                .port(port)
+                .when()
+                .get("/modules/{courseId}", 1)
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .jsonPath()
+                .getList(".", ModuleDto.class);
+
+        assertThat(moduleDtoList).hasSize(1);
+        assertThat(moduleDtoList.get(0).getName()).isEqualTo("Java basics");
+
+    }
+
+    @Test
+    void whenGetModulesByValidCodelab_thenReturnCorrectListOfModules() {
+        //GIVEN
+        String accessToken = getAccessToken("coach@lms.com", "coach");
+
+
+        //WHEN
+        ModuleDto moduleDto = RestAssured
+                .given()
+                .auth()
+                .oauth2(accessToken)
+                .contentType(ContentType.JSON)
+                .port(port)
+                .when()
+                .get("/modules/codelab/{codelabId}", 1)
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .as(ModuleDto.class);
+
+        assertThat(moduleDto.getId()).isEqualTo(1);
+        assertThat(moduleDto.getName()).isEqualTo("Java basics");
+
+    }
 }
