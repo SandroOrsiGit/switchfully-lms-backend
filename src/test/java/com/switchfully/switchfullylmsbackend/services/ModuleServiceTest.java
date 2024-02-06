@@ -48,7 +48,7 @@ public class ModuleServiceTest {
     }
 
     @Test
-    void givenStudent_whenGetModulesForValidCourse_thenReturnCorrectListOfModuleDto() {
+    void givenStudent_whenGetModulesByCourse_thenReturnCorrectListOfModuleDto() {
         // given
         AbstractUser abstractUser = userRepository.findById(1L).get();
         Course course = courseRepository.findById(1L).get();
@@ -66,7 +66,7 @@ public class ModuleServiceTest {
     }
 
     @Test
-    void givenCoachAndCourse_whenGetModules_thenReturnListOfAllModules() {
+    void givenCoachAndCourse_whenGetModulesByCourse_thenReturnListOfAllModules() {
         // given
         AbstractUser abstractUser = userRepository.findById(9L).get();
         Course course = courseRepository.findById(1L).get();
@@ -79,6 +79,18 @@ public class ModuleServiceTest {
         SoftAssertions softAssertions = new SoftAssertions();
         softAssertions.assertThat(moduleDtoList).hasSize(1);
         softAssertions.assertThat(moduleDtoList.get(0).getName()).isEqualTo("Java basics");
+
+        softAssertions.assertAll();
+    }
+
+    @Test
+    void whenGetAllModules_thenReturnListOfAllModules() {
+        // when
+        List<ModuleDto> actual = moduleService.getAllModules();
+
+        // then
+        SoftAssertions softAssertions = new SoftAssertions();
+        softAssertions.assertThat(actual).hasSize(2);
 
         softAssertions.assertAll();
     }

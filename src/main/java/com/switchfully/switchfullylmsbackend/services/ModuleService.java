@@ -61,18 +61,6 @@ public class ModuleService {
         return moduleRepository.findByCourses(course).stream().map(moduleMapper::mapModuleToModuleDto).toList();
     }
 
-    private void checkIfStudentIsPartOfCourse(Student student, Course course) {
-        List<ClassGroup> classGroupList = classGroupRepository.findByStudentsId(student.getId());
-
-        List<Course> courseList = classGroupList.stream()
-                .map(ClassGroup::getCourse)
-                .toList();
-
-        if (!courseList.contains(course)) {
-            throw new NotAPartOfThisCourseException();
-        }
-    }
-
     public List<ModuleDto> getAllModules() {
         return moduleRepository.findAll().stream()
                 .map(moduleMapper::mapModuleToModuleDto)
@@ -84,8 +72,20 @@ public class ModuleService {
         return moduleMapper.mapModuleToModuleDto(moduleRepository.findByCodelabs(codelab));
     }
 
-    public ModuleDto getModule(Long moduleId) {
+    public ModuleDto getModuleById(Long moduleId) {
         return this.moduleMapper.mapModuleToModuleDto(this.moduleRepository.findById(moduleId).orElseThrow(ModuleNotFoundException::new));
+    }
+
+    private void checkIfStudentIsPartOfCourse(Student student, Course course) {
+        List<ClassGroup> classGroupList = classGroupRepository.findByStudentsId(student.getId());
+
+        List<Course> courseList = classGroupList.stream()
+                .map(ClassGroup::getCourse)
+                .toList();
+
+        if (!courseList.contains(course)) {
+            throw new NotAPartOfThisCourseException();
+        }
     }
 
     public void updateModule(Long moduleId, UpdateModuleDto updateModuleDto) {

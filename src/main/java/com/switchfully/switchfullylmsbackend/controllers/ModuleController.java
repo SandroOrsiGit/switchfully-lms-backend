@@ -1,6 +1,5 @@
 package com.switchfully.switchfullylmsbackend.controllers;
 
-import com.switchfully.switchfullylmsbackend.dtos.codelabs.UpdateCodelabDto;
 import com.switchfully.switchfullylmsbackend.dtos.modules.CreateModuleDto;
 import com.switchfully.switchfullylmsbackend.dtos.modules.ModuleDto;
 import com.switchfully.switchfullylmsbackend.dtos.modules.UpdateModuleDto;
@@ -41,13 +40,13 @@ public class ModuleController {
    @GetMapping(path = "/{moduleId}")
    @ResponseStatus(HttpStatus.OK)
    public ModuleDto getModule(@PathVariable Long moduleId) {
-      return moduleService.getModule(moduleId);
+      return moduleService.getModuleById(moduleId);
    }
 
    @GetMapping
    @ResponseStatus(HttpStatus.OK)
+   @PreAuthorize("hasAuthority('coach')")
    public List<ModuleDto> getAllModules(@RequestHeader("Authorization") String bearerToken) {
-      Coach coach = userService.getCoachByToken(bearerToken);
       return moduleService.getAllModules();
    }
 
