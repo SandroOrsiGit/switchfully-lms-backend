@@ -4,7 +4,7 @@ import com.switchfully.switchfullylmsbackend.dtos.classgroups.ClassGroupDto;
 import com.switchfully.switchfullylmsbackend.dtos.classgroups.CreateClassGroupDto;
 import com.switchfully.switchfullylmsbackend.dtos.courses.CourseDto;
 import com.switchfully.switchfullylmsbackend.dtos.users.CoachDto;
-import com.switchfully.switchfullylmsbackend.dtos.users.StudentNoCodelabProgressDto;
+import com.switchfully.switchfullylmsbackend.dtos.users.StudentDto;
 import com.switchfully.switchfullylmsbackend.entities.ClassGroup;
 import com.switchfully.switchfullylmsbackend.entities.Coach;
 import com.switchfully.switchfullylmsbackend.entities.Course;
@@ -44,7 +44,7 @@ public class ClassGroupMapper {
                     addedClassGroup.getEndDate(),
                     mapCourseToCourseDto(addedClassGroup),
                     mapCoachListToCoachDtoList(addedClassGroup),
-                    mapStudentListToStudentNoCodelabProgressDtoList(addedClassGroup)
+                    mapStudentListToStudentDtoList(addedClassGroup)
             );
     }
 
@@ -66,12 +66,12 @@ public class ClassGroupMapper {
         }
     }
 
-    private List<StudentNoCodelabProgressDto> mapStudentListToStudentNoCodelabProgressDtoList(ClassGroup classGroup) {
+    private List<StudentDto> mapStudentListToStudentDtoList(ClassGroup classGroup) {
         if (classGroup.getStudents().isEmpty()) {
             return new ArrayList<>();
         } else {
             return classGroup.getStudents().stream()
-                    .map(studentMapper::mapStudentToStudentNoCodelabProgressDto)
+                    .map(studentMapper::mapStudentToStudentDto)
                     .collect(Collectors.toList());
         }
     }
