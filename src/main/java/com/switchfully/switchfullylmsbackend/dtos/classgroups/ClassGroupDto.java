@@ -2,7 +2,7 @@ package com.switchfully.switchfullylmsbackend.dtos.classgroups;
 
 import com.switchfully.switchfullylmsbackend.dtos.courses.CourseDto;
 import com.switchfully.switchfullylmsbackend.dtos.users.CoachDto;
-import com.switchfully.switchfullylmsbackend.dtos.users.StudentNoCodelabProgressDto;
+import com.switchfully.switchfullylmsbackend.dtos.users.StudentDto;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -13,21 +13,21 @@ public class ClassGroupDto {
     private String name;
     private LocalDate startDate;
     private LocalDate endDate;
-    private CourseDto courseDto;
-    private List<CoachDto> coachDtoList;
-    private List<StudentNoCodelabProgressDto> studentNoCodelabProgressDtoList;
+    private CourseDto course;
+    private List<CoachDto> coaches;
+    private List<StudentDto> students;
 
     public ClassGroupDto() {
     }
 
-    public ClassGroupDto(Long id, String name, LocalDate startDate, LocalDate endDate, CourseDto courseDto, List<CoachDto> coachDtoList, List<StudentNoCodelabProgressDto> studentNoCodelabProgressDtoList) {
+    public ClassGroupDto(Long id, String name, LocalDate startDate, LocalDate endDate, CourseDto course, List<CoachDto> coaches, List<StudentDto> students) {
         this.id = id;
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.courseDto = courseDto;
-        this.coachDtoList = coachDtoList;
-        this.studentNoCodelabProgressDtoList = studentNoCodelabProgressDtoList;
+        this.course = course;
+        this.coaches = coaches;
+        this.students = students;
     }
 
     public Long getId() {
@@ -45,14 +45,14 @@ public class ClassGroupDto {
         return endDate;
     }
 
-    public CourseDto getCourseDto() {
-        return courseDto;
+    public CourseDto getCourse() {
+        return course;
     }
-    public List<CoachDto> getCoachDtoList() {
-        return coachDtoList;
+    public List<CoachDto> getCoaches() {
+        return coaches;
     }
-    public List<StudentNoCodelabProgressDto> getStudentNoCodelabProgressDtoList() {
-        return studentNoCodelabProgressDtoList;
+    public List<StudentDto> getStudents() {
+        return students;
     }
 
     @Override
