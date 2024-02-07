@@ -1,10 +1,8 @@
 package com.switchfully.switchfullylmsbackend.services;
 
-import com.switchfully.switchfullylmsbackend.dtos.users.CreateStudentDto;
-import com.switchfully.switchfullylmsbackend.dtos.users.StudentDto;
-import com.switchfully.switchfullylmsbackend.dtos.users.UpdateUserDto;
+import com.switchfully.switchfullylmsbackend.dtos.courses.CourseDto;
+import com.switchfully.switchfullylmsbackend.dtos.users.*;
 import com.switchfully.switchfullylmsbackend.entities.AbstractUser;
-import com.switchfully.switchfullylmsbackend.dtos.users.UserDto;
 import com.switchfully.switchfullylmsbackend.entities.Coach;
 import com.switchfully.switchfullylmsbackend.entities.Student;
 import com.switchfully.switchfullylmsbackend.exceptions.*;
@@ -34,12 +32,14 @@ public class UserService {
     private final StudentRepository studentRepository;
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final CourseService courseService;
 
-    public UserService(StudentMapper studentMapper, StudentRepository studentRepository, UserRepository userRepository, UserMapper userMapper) {
+    public UserService(StudentMapper studentMapper, StudentRepository studentRepository, UserRepository userRepository, UserMapper userMapper, CourseService courseService) {
         this.studentMapper = studentMapper;
         this.studentRepository = studentRepository;
         this.userRepository = userRepository;
         this.userMapper = userMapper;
+        this.courseService = courseService;
     }
 
     public StudentDto createStudent(CreateStudentDto createStudentDto, String createdUserId) {
@@ -121,5 +121,15 @@ public class UserService {
         return studentRepository.findAll().stream()
                 .map(studentMapper::mapStudentToStudentDto)
                 .collect(Collectors.toList());
+    }
+
+    public StudentWithCoursesDto getStudentWithCourseById(Long id) {
+        AbstractUser abstractUser = userRepository.findById(id)
+                .orElseThrow(() -> new IdNotFoundException("User with id " + id + " not found"));
+
+        List<CourseDto> courseDtoList =  courseService.getCourses(abstractUser);
+
+        return userMapper.mapAbstractUserToStudentWithCoursesDto(abstractUser, courseDtoList);
+
     }
 }
