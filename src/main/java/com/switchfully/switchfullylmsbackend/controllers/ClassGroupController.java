@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path="/class-groups")
-@CrossOrigin(origins = {"http://localhost:4200", "https://backend-lms-fjct.onrender.com"})
+@CrossOrigin(origins = {"http://localhost:4200", "https://switchfully-lms.netlify.app"})
 public class ClassGroupController {
     private final ClassGroupService classgroupService;
     private final UserService userService;

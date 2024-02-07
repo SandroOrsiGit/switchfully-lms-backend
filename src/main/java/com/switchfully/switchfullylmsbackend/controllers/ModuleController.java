@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:4200", "https://backend-lms-fjct.onrender.com"})
+@CrossOrigin(origins = {"http://localhost:4200", "https://switchfully-lms.netlify.app"})
 @RequestMapping(path = "/modules")
 public class ModuleController {
 
