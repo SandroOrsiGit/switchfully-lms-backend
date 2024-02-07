@@ -58,9 +58,9 @@ public class UserController {
         return userService.getAllStudents();
     }
 
-    @GetMapping(path = "/students/{id}", consumes = "application/json", produces = "application/json")
+    @GetMapping(path = "/students/{id}")
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasAnyAuthority('coach')")
+    @PreAuthorize("hasAuthority('coach')")
     public StudentWithCoursesDto getStudentById(@PathVariable Long id) {
         return userService.getStudentWithCourseById(id);
     }
