@@ -3,7 +3,9 @@ package com.switchfully.switchfullylmsbackend.services;
 import com.switchfully.switchfullylmsbackend.dtos.modules.CreateModuleDto;
 import com.switchfully.switchfullylmsbackend.dtos.modules.ModuleDto;
 
+import com.switchfully.switchfullylmsbackend.dtos.modules.UpdateModuleDto;
 import com.switchfully.switchfullylmsbackend.entities.*;
+import com.switchfully.switchfullylmsbackend.entities.Module;
 import com.switchfully.switchfullylmsbackend.exceptions.CodelabNotFoundException;
 import com.switchfully.switchfullylmsbackend.exceptions.CourseNotFoundException;
 import com.switchfully.switchfullylmsbackend.exceptions.ModuleNotFoundException;
@@ -59,6 +61,21 @@ public class ModuleService {
         return moduleRepository.findByCourses(course).stream().map(moduleMapper::mapModuleToModuleDto).toList();
     }
 
+    public List<ModuleDto> getAllModules() {
+        return moduleRepository.findAll().stream()
+                .map(moduleMapper::mapModuleToModuleDto)
+                .collect(Collectors.toList());
+    }
+
+    public ModuleDto getModuleByCodelab(Long codelabId) {
+        Codelab codelab = codelabRepository.findById(codelabId).orElseThrow(CodelabNotFoundException::new);
+        return moduleMapper.mapModuleToModuleDto(moduleRepository.findByCodelabs(codelab));
+    }
+
+    public ModuleDto getModuleById(Long moduleId) {
+        return this.moduleMapper.mapModuleToModuleDto(this.moduleRepository.findById(moduleId).orElseThrow(ModuleNotFoundException::new));
+    }
+
     private void checkIfStudentIsPartOfCourse(Student student, Course course) {
         List<ClassGroup> classGroupList = classGroupRepository.findByStudentsId(student.getId());
 
@@ -71,18 +88,11 @@ public class ModuleService {
         }
     }
 
-    public List<ModuleDto> getAllModules() {
-        return moduleRepository.findAll().stream()
-                .map(moduleMapper::mapModuleToModuleDto)
-                .collect(Collectors.toList());
-    }
+    public void updateModule(Long moduleId, UpdateModuleDto updateModuleDto) {
+        Module module = moduleRepository.findById(moduleId).orElseThrow(ModuleNotFoundException::new);
+        List<Course> courses = updateModuleDto.getCourseIds().stream().map(courseId -> courseRepository.findById(courseId).orElseThrow(CourseNotFoundException::new)).toList();
 
-    public ModuleDto getModuleByCodelab(Long codelabId) {
-        Codelab codelab = codelabRepository.findById(codelabId).orElseThrow(CodelabNotFoundException::new);
-        return moduleMapper.mapModuleToModuleDto(moduleRepository.findByCodelabs(codelab));
-    }
-
-    public ModuleDto getModule(Long moduleId) {
-        return this.moduleMapper.mapModuleToModuleDto(this.moduleRepository.findById(moduleId).orElseThrow(ModuleNotFoundException::new));
+        module.setName(updateModuleDto.getName());
+        module.setCourses(courses);
     }
 }
