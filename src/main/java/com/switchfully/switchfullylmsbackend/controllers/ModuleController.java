@@ -4,7 +4,6 @@ import com.switchfully.switchfullylmsbackend.dtos.modules.CreateModuleDto;
 import com.switchfully.switchfullylmsbackend.dtos.modules.ModuleDto;
 import com.switchfully.switchfullylmsbackend.dtos.modules.UpdateModuleDto;
 import com.switchfully.switchfullylmsbackend.entities.AbstractUser;
-import com.switchfully.switchfullylmsbackend.entities.Coach;
 import com.switchfully.switchfullylmsbackend.entities.Course;
 import com.switchfully.switchfullylmsbackend.services.CourseService;
 import com.switchfully.switchfullylmsbackend.services.ModuleService;
@@ -16,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {"http://localhost:4200", "https://backend-lms-fjct.onrender.com"})
 @RequestMapping(path = "/modules")
 public class ModuleController {
 

@@ -3,9 +3,7 @@ package com.switchfully.switchfullylmsbackend.controllers;
 import com.switchfully.switchfullylmsbackend.dtos.classgroups.AddStudentToClassGroupDto;
 import com.switchfully.switchfullylmsbackend.dtos.classgroups.ClassGroupDto;
 import com.switchfully.switchfullylmsbackend.dtos.classgroups.CreateClassGroupDto;
-import com.switchfully.switchfullylmsbackend.dtos.users.StudentDto;
 import com.switchfully.switchfullylmsbackend.entities.Coach;
-import com.switchfully.switchfullylmsbackend.entities.Student;
 import com.switchfully.switchfullylmsbackend.services.ClassGroupService;
 import com.switchfully.switchfullylmsbackend.services.UserService;
 import org.springframework.http.HttpStatus;
@@ -15,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path="/class-groups")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {"http://localhost:4200", "https://backend-lms-fjct.onrender.com"})
 public class ClassGroupController {
     private final ClassGroupService classgroupService;
     private final UserService userService;

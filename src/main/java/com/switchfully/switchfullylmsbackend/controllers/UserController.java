@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "/users")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {"http://localhost:4200", "https://backend-lms-fjct.onrender.com"})
 public class UserController {
     private final KeycloakService keycloakService;
     private final UserService userService;
