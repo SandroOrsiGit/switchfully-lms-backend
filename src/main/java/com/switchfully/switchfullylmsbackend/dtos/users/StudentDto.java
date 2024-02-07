@@ -9,15 +9,13 @@ public class StudentDto {
     private Long id;
     private String email;
     private String displayName;
-    private List<CodelabProgressDto> codelabProgressDtoList = new ArrayList<>();
 
     public StudentDto() {}
 
-    public StudentDto(Long id, String email, String displayName, List<CodelabProgressDto> codelabProgressDtoList) {
+    public StudentDto(Long id, String email, String displayName) {
         this.id = id;
         this.email = email;
         this.displayName = displayName;
-        this.codelabProgressDtoList = codelabProgressDtoList;
     }
 
     //    ---Getters---------------
@@ -29,8 +27,5 @@ public class StudentDto {
     }
     public String getDisplayName() {
         return displayName;
-    }
-    public List<CodelabProgressDto> getCodelabProgressDtoList() {
-        return codelabProgressDtoList;
     }
 }
