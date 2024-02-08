@@ -9,6 +9,7 @@ import org.springframework.stereotype.*;
 import org.springframework.transaction.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -52,13 +53,16 @@ public class CourseService {
             return classGroupRepository.findByStudentsId(student.getId()).stream()
                     .map(ClassGroup::getCourse)
                     .filter(Objects::nonNull)
+                    .sorted(Comparator.comparing(Course::getName))
                     .map(courseMapper::mapCourseToCourseDto)
                     .toList();
         }
 
         Coach coach = coachRepository.findByEmail(abstractUser.getEmail());
         if (coach != null) {
-            return courseRepository.findAll().stream().map(courseMapper::mapCourseToCourseDto).toList();
+            return courseRepository.findAll().stream()
+                    .sorted(Comparator.comparing(Course::getName))
+                    .map(courseMapper::mapCourseToCourseDto).toList();
         }
 
         return new ArrayList<>();

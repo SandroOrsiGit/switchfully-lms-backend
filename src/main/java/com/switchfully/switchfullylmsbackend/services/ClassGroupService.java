@@ -16,6 +16,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -60,6 +61,7 @@ public class ClassGroupService {
         }
         return classGroups
                 .stream()
+                .sorted(Comparator.comparing(ClassGroup::getName))
                 .map(classGroupMapper::mapClassGroupToClassGroupDto)
                 .collect(Collectors.toList());
     }
@@ -70,7 +72,9 @@ public class ClassGroupService {
     }
 
     public List<ClassGroupDto> getAllClassGroups() {
-        return classGroupRepository.findAll().stream().map(classGroupMapper::mapClassGroupToClassGroupDto).collect(Collectors.toList());
+        return classGroupRepository.findAll().stream()
+                .sorted(Comparator.comparing(ClassGroup::getName))
+                .map(classGroupMapper::mapClassGroupToClassGroupDto).collect(Collectors.toList());
     }
     
     public ClassGroupDto linkStudentToClassGroup(Long classGroupId, Long studentId) {

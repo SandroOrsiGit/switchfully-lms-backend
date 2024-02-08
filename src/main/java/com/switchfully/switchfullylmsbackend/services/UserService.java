@@ -4,6 +4,7 @@ import com.switchfully.switchfullylmsbackend.dtos.courses.CourseDto;
 import com.switchfully.switchfullylmsbackend.dtos.users.*;
 import com.switchfully.switchfullylmsbackend.entities.AbstractUser;
 import com.switchfully.switchfullylmsbackend.entities.Coach;
+import com.switchfully.switchfullylmsbackend.entities.Module;
 import com.switchfully.switchfullylmsbackend.entities.Student;
 import com.switchfully.switchfullylmsbackend.exceptions.*;
 
@@ -22,6 +23,7 @@ import org.keycloak.common.VerificationException;
 import org.keycloak.representations.AccessToken;
 
 import java.util.Base64;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -119,6 +121,7 @@ public class UserService {
 
     public List<StudentDto> getAllStudents() {
         return studentRepository.findAll().stream()
+                .sorted(Comparator.comparing(Student::getDisplayName))
                 .map(studentMapper::mapStudentToStudentDto)
                 .collect(Collectors.toList());
     }
