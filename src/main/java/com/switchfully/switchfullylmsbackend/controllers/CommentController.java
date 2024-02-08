@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(path = "/comments")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {"http://localhost:4200", "https://switchfully-lms.netlify.app"})
 public class CommentController {
 	private final CommentService commentService;
 	private final UserService userService;
