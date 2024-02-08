@@ -17,7 +17,7 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
         http.csrf(
-                c -> c.ignoringRequestMatchers("users")
+                c -> c.ignoringRequestMatchers("users/register")
         );
         http.authorizeHttpRequests(c -> c.anyRequest().permitAll());
         http.oauth2ResourceServer(c -> c.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())));
