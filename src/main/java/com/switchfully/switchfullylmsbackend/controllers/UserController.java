@@ -23,7 +23,7 @@ public class UserController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-	@PostMapping(consumes = "application/json", produces = "application/json")
+	@PostMapping(path = "/register", consumes = "application/json", produces = "application/json")
     public StudentDto createStudent(@RequestBody CreateStudentDto createStudentDto) {
         String createdUserId = keycloakService.addUser(createStudentDto);
 
