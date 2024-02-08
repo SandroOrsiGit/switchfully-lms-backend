@@ -13,6 +13,7 @@ import com.switchfully.switchfullylmsbackend.repositories.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -57,7 +58,9 @@ public class CodelabService {
     }
 
     public List<CodelabDto> getCodelabsByModuleId(Long moduleId) {
-        return codelabRepository.findByModuleId(moduleId).stream().map(codelabMapper::mapCodelabToCodelabDto).toList();
+        return codelabRepository.findByModuleId(moduleId).stream()
+                .sorted(Comparator.comparing(Codelab::getName))
+                .map(codelabMapper::mapCodelabToCodelabDto).toList();
     }
 
     public List<CodelabWithProgressDto> getCodelabsWithProgressByModuleId(Long moduleId, Student student) {

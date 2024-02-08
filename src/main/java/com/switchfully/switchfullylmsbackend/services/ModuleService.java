@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -58,11 +59,14 @@ public class ModuleService {
         if (abstractUser instanceof Student student) {
             checkIfStudentIsPartOfCourse(student, course);
         }
-        return moduleRepository.findByCourses(course).stream().map(moduleMapper::mapModuleToModuleDto).toList();
+        return moduleRepository.findByCourses(course).stream()
+                .sorted(Comparator.comparing(Module::getName))
+                .map(moduleMapper::mapModuleToModuleDto).toList();
     }
 
     public List<ModuleDto> getAllModules() {
         return moduleRepository.findAll().stream()
+                .sorted(Comparator.comparing(Module::getName))
                 .map(moduleMapper::mapModuleToModuleDto)
                 .collect(Collectors.toList());
     }
