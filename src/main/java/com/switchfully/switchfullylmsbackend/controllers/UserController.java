@@ -1,9 +1,6 @@
 package com.switchfully.switchfullylmsbackend.controllers;
 
-import com.switchfully.switchfullylmsbackend.dtos.users.CreateStudentDto;
-import com.switchfully.switchfullylmsbackend.dtos.users.StudentDto;
-import com.switchfully.switchfullylmsbackend.dtos.users.UserDto;
-import com.switchfully.switchfullylmsbackend.dtos.users.UpdateUserDto;
+import com.switchfully.switchfullylmsbackend.dtos.users.*;
 import com.switchfully.switchfullylmsbackend.entities.*;
 import com.switchfully.switchfullylmsbackend.security.KeycloakService;
 import com.switchfully.switchfullylmsbackend.services.UserService;
@@ -55,9 +52,17 @@ public class UserController {
     }
 
     @GetMapping(path= "/students")
+    @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAnyAuthority('coach')")
     public List<StudentDto> getAllStudents() {
         return userService.getAllStudents();
+    }
+
+    @GetMapping(path = "/students/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAuthority('coach')")
+    public StudentWithCoursesDto getStudentById(@PathVariable Long id) {
+        return userService.getStudentWithCourseById(id);
     }
 
 }
